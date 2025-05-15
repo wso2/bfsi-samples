@@ -60,7 +60,7 @@ public class PersistAuthorizedConsentApi {
             Map<String, Object> validationResponse = new HashMap<>();
 
             // Consent persist step
-            FDXConsentPersistUtils.FDXConsentPersist(persistAuthorizedConsentRequestBody, validationResponse);
+            FDXConsentPersistUtils.persistFDXConsent(persistAuthorizedConsentRequestBody, validationResponse);
 
             if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponseInConsent.StatusEnum.ERROR) {
                 FailedResponseInConsent failedResponseInConsent = new FailedResponseInConsent();

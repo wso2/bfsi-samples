@@ -25,7 +25,7 @@ public class FDXConsentPersistUtils {
 
     private static final Log log = LogFactory.getLog(FDXConsentPersistUtils.class);
 
-    public static void FDXConsentPersist(
+    public static void persistFDXConsent(
             @Valid @NotNull PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody,
             Map<String, Object> validationResponse) {
 

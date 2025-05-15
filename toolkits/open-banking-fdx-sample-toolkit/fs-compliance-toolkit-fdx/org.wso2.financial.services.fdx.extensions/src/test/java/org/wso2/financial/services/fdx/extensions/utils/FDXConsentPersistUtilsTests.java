@@ -24,7 +24,7 @@ public class FDXConsentPersistUtilsTests {
     }
 
     @Test
-    public void testFDXConsentPersistSuccess() {
+    public void testPersistFDXConsentSuccess() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
@@ -58,7 +58,7 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
 
         // Assert
         Assert.assertEquals(validationResponse.get("status").toString(), "SUCCESS");
@@ -71,7 +71,7 @@ public class FDXConsentPersistUtilsTests {
     }
 
     @Test(expectedExceptions = ConsentException.class)
-    public void testFDXConsentPersistWhenConsentDataIsNull() {
+    public void testPersistFDXConsentPersistWhenConsentDataIsNull() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         requestBody.setData(null);
@@ -79,11 +79,11 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
     }
 
     @Test(expectedExceptions = ConsentException.class)
-    public void testFDXConsentPersistWithNullAccountIds() {
+    public void testPersistFDXConsentWithNullAccountIds() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
@@ -117,11 +117,11 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
     }
 
     @Test(expectedExceptions = ConsentException.class)
-    public void testFDXConsentPersistWithNonJSONArrayAccountIds() {
+    public void testPersistFDXConsentWithNonJSONArrayAccountIds() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
@@ -155,11 +155,11 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
     }
 
     @Test(expectedExceptions = ConsentException.class)
-    public void testFDXConsentPersistWithIntegerAccountIds() {
+    public void testPersistFDXConsentWithIntegerAccountIds() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
@@ -193,11 +193,11 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
     }
 
     @Test(expectedExceptions = ConsentException.class)
-    public void testFDXConsentPersistWithEmptyAuthorizationDetails() {
+    public void testPersistFDXConsentWithEmptyAuthorizationDetails() {
         // Arrange
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
@@ -223,7 +223,7 @@ public class FDXConsentPersistUtilsTests {
         Map<String, Object> validationResponse = new HashMap<>();
 
         // Act - should throw ConsentException
-        FDXConsentPersistUtils.FDXConsentPersist(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
 
         // If no exception, fail the test
         Assert.fail("Expected ConsentException due to empty authorizationDetails");

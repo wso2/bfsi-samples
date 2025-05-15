@@ -26,8 +26,8 @@ public class PersistAuthorizedConsentApiTests {
     @Test
     void testPersistAuthorizedConsentPost_Success() {
         try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
-            // Mock the behavior of FDXConsentPersist
-            mockedUtils.when(() -> FDXConsentPersistUtils.FDXConsentPersist(Mockito.any(), Mockito.any()))
+            // Mock the behavior of persistFDXConsent
+            mockedUtils.when(() -> FDXConsentPersistUtils.persistFDXConsent(Mockito.any(), Mockito.any()))
                     .thenAnswer(invocation -> {
                         Map<String, Object> validationResponse = invocation.getArgument(1);
                         validationResponse.put(FDXCommonConstants.STATUS,
@@ -54,8 +54,8 @@ public class PersistAuthorizedConsentApiTests {
     @Test
     void testPersistAuthorizedConsentPost_Failure() {
         try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
-            // Mock the behavior of FDXConsentPersist
-            mockedUtils.when(() -> FDXConsentPersistUtils.FDXConsentPersist(Mockito.any(), Mockito.any()))
+            // Mock the behavior of persistFDXConsent
+            mockedUtils.when(() -> FDXConsentPersistUtils.persistFDXConsent(Mockito.any(), Mockito.any()))
                     .thenAnswer(invocation -> {
                         Map<String, Object> validationResponse = invocation.getArgument(1);
                         validationResponse.put(FDXCommonConstants.STATUS, FailedResponseInConsent.StatusEnum.ERROR);
@@ -80,8 +80,8 @@ public class PersistAuthorizedConsentApiTests {
     @Test
     void testPersistAuthorizedConsentPost_Exception() {
         try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
-            // Mock the behavior of FDXConsentPersist to throw an exception
-            mockedUtils.when(() -> FDXConsentPersistUtils.FDXConsentPersist(Mockito.any(), Mockito.any()))
+            // Mock the behavior of persistFDXConsent to throw an exception
+            mockedUtils.when(() -> FDXConsentPersistUtils.persistFDXConsent(Mockito.any(), Mockito.any()))
                     .thenThrow(new RuntimeException("Mock exception"));
 
             // Mock request body
