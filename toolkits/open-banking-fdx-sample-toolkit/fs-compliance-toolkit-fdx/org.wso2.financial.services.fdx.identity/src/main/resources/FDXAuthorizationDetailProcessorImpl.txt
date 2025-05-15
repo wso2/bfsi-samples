@@ -1,0 +1,158 @@
+
+// Use this implementation if the Client application's scopes are not registered as an api resource
+
+package org.wso2.financial.services.fdx.identity.authorize.impl;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.osgi.service.component.annotations.Component;
+import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
+import org.wso2.carbon.identity.oauth.rar.exception.AuthorizationDetailsProcessingException;
+import org.wso2.carbon.identity.oauth.rar.model.AuthorizationDetail;
+import org.wso2.carbon.identity.oauth.rar.model.AuthorizationDetails;
+import org.wso2.carbon.identity.oauth.rar.model.ValidationResult;
+import org.wso2.carbon.identity.oauth2.IdentityOAuth2Exception;
+import org.wso2.carbon.identity.oauth2.IdentityOAuth2ServerException;
+import org.wso2.carbon.identity.oauth2.rar.core.AuthorizationDetailsProcessor;
+import org.wso2.carbon.identity.oauth2.rar.model.AuthorizationDetailsContext;
+import org.wso2.financial.services.fdx.identity.rar.authorize.commons.ScopeDataClusterMappings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+import static org.wso2.carbon.identity.oauth2.util.OAuth2Util.getServiceProvider;
+
+/**
+ * The {@code FDXAuthorizationDetailProcessorImpl} class is an implementation of the
+ * {@code AuthorizationDetailsProcessor}
+ * inteface that provides validation for authorization details specific to the FDX authorization flow.
+ * <p>
+ * This class validates the authorization details provided in a rich authorization request against the scopes
+ * defined for the client application. The validation logic ensures that the requested data clusters are within
+ * the scope of the client application.
+ * </p>
+ */
+@Component(service = AuthorizationDetailsProcessor.class)
+public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetailsProcessor {
+    private static final Log logger = LogFactory.getLog(FDXAuthorizationDetailProcessorImpl.class);
+
+    @Override
+    public ValidationResult validate(AuthorizationDetailsContext authorizationDetailsContext) throws
+        AuthorizationDetailsProcessingException, IdentityOAuth2ServerException {
+        try {
+            logger.debug("Starting validation");
+            AuthorizationDetail authorizationDetail = authorizationDetailsContext.getAuthorizationDetail();
+            List<List<String>> dataClusters = getDataClusters(authorizationDetail);
+            String clientId = authorizationDetailsContext.getOAuthAppDO().getOauthConsumerKey();
+
+            ServiceProvider serviceProvider = getServiceProvider(clientId);
+            ServiceProviderProperty[] spProperties = serviceProvider.getSpProperties();
+            String scopeString = null;
+
+            for (ServiceProviderProperty entry : spProperties) {
+                if (Objects.equals(entry.getName(), "scope")) {
+                    scopeString = entry.getValue();
+                    break;
+                }
+            }
+            if (scopeString != null && !scopeString.isEmpty()) {
+                String[] scopes = scopeString.split("\\s+");
+
+                for (List<String> dataCluster : dataClusters) {
+                    for (String cluster : dataCluster) {
+                        Set<String> scopeMapping = ScopeDataClusterMappings.getScopeByDataCluster(cluster);
+                        for (String scope : scopeMapping) {
+                            if (!Arrays.asList(scopes).contains(scope)) {
+                                logger.debug("Requested scope not found");
+                                throw new AuthorizationDetailsProcessingException("invalid_scope");
+                            }
+                        }
+                    }
+                }
+            } else {
+                logger.debug("Client scopes not found");
+                return ValidationResult.invalid("Client scopes not found");
+            }
+            logger.debug("Validation successful");
+            return ValidationResult.valid();
+        } catch (IdentityOAuth2Exception | NullPointerException e) {
+            logger.error("Error during validation", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<List<String>> getDataClusters(AuthorizationDetail authorizationDetails) {
+        List<List<String>> dataClusters = new ArrayList<>();
+
+        // Get details map
+        Map<String, Object> details = authorizationDetails.getDetails();
+        if (details == null || !details.containsKey("consentRequest")) {
+            return dataClusters; // Return empty list if no consentRequest
+        }
+
+        // Get consentRequest
+        Object consentRequestObj = details.get("consentRequest");
+        if (!(consentRequestObj instanceof Map)) {
+            return dataClusters; // Return empty list if not a Map
+        }
+
+        Map<String, Object> consentRequest = (Map<String, Object>) consentRequestObj;
+        if (!consentRequest.containsKey("resources")) {
+            return dataClusters;  // Return empty list if no resources
+        }
+
+        // Get resources list
+        Object resourcesObj = consentRequest.get("resources");
+        if (!(resourcesObj instanceof List)) {
+            return dataClusters; // Return empty list if not a List
+        }
+
+        List<?> resources = (List<?>) resourcesObj;
+        for (Object resourceObj : resources) {
+            if (resourceObj instanceof Map) {
+                Map<String, Object> resource = (Map<String, Object>) resourceObj;
+                if (!resource.containsKey("dataClusters")) {
+                    continue; // Skip if no dataClusters
+                }
+
+                Object dataClustersObj = resource.get("dataClusters");
+                if (dataClustersObj instanceof List) {
+                    List<?> clusterList = (List<?>) dataClustersObj;
+                    List<String> extractedClusters = new ArrayList<>();
+
+                    for (Object cluster : clusterList) {
+                        if (cluster instanceof String) {
+                            extractedClusters.add((String) cluster);
+                        }
+                    }
+
+                    if (!extractedClusters.isEmpty()) {
+                        dataClusters.add(extractedClusters);
+                    }
+                }
+            }
+        }
+
+        return dataClusters;
+    }
+
+    @Override
+    public String getType() {
+        return "fdx_v1.0";
+    }
+
+    @Override
+    public boolean isEqualOrSubset(AuthorizationDetail authorizationDetail, AuthorizationDetails authorizationDetails) {
+        return false;
+    }
+
+    @Override
+    public AuthorizationDetail enrich(AuthorizationDetailsContext authorizationDetailsContext) {
+        return null;
+    }
+}
