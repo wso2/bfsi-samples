@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="consent-extension-test-suite">
+    <test name="consent-extension-test-all">
+        <classes>
+            <class name="org.wso2.financial.services.fdx.extensions.api.PopulateConsentAuthorizeScreenApiTests"/>
+            <class name="org.wso2.financial.services.fdx.extensions.api.PersistAuthorizedConsentApiTests"/>
+            <class name="org.wso2.financial.services.fdx.extensions.utils.FDXConsentRetrievalUtilsTests"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,132 @@
+package org.wso2.financial.services.fdx.extensions.utils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class FDXCommonConstants {
+    public static final String STATUS = "status";
+    public static final String TYPE = "type";
+    public static final String RECEIPT = "receipt";
+    public static final String CONSENT_DATA = "consentData";
+    public static final String CONSUMER_DATA = "consumerData";
+    public static final String DATA = "data";
+
+    public static final String RESPONSE_STATUS = "responseStatus";
+    public static final String INVALID_REQUEST_MSG = "invalid_request";
+    public static final String USER_ID_KEY_NAME = "userId";
+    public static final String ACCOUNT = "Account";
+    public static final Object ACCOUNTS = "accounts";
+    public static final String ACCOUNT_ID = "account_id";
+
+    public static final String ACCOUNT_TYPE = "type";
+    public static final String ACCOUNT_ID_DISPLAYABLE = "accountIdToDisplay";
+    public static final String CLIENT_ID = "client_id";
+    public static final String IS_ERROR = "isError";
+    public static final String AUTHORIZATION_DETAILS = "authorization_details";
+    public static final String DURATION_PERIOD = "durationPeriod";
+    public static final String EXPIRATION_DATE_TIME = "expiryDate";
+    public static final String RESOURCES = "resources";
+    public static final String TITLE = "Title";
+    public static final String PERMISSION_TITLE = "Permissions";
+    public static final String EXPIRATION_DATE_TITLE = "Expiration Date Time";
+
+    public static final Map<String, Map<String, List<String>>> DATA_CLUSTERS;
+    public static final String PERMISSIONS = "permissions";
+    public static final String REDIRECT_URL = "redirect_uri";
+    public static final String CONSENT_EXPIRY = "consent_expiration";
+    public static final String SP_FULL_NAME = "sp_full_name";
+    public static final String DATA_REQUESTED = "data_requested";
+    public static final String SHARABLE_ACCOUNTS_ENDPOINT = "ConsentManagement.SharableAccountsRetrieveEndpoint";
+    public static final String SERVICE_URL_SLASH = "/";
+    public static final String ACCEPT_HEADER_VALUE = "application/json";
+    public static final String ACCEPT_HEADER_NAME = "Accept";
+    public static final String CHAR_SET = "UTF-8";
+    public static final String ACCOUNTS_ARRAY = "accounts[]";
+    public static final String ACCOUNT_IDS = "accountIds";
+    public static final String AWAITING_AUTH_STATUS = "awaitingAuthorization";
+    public static final String ZERO = "0";
+    public static final String CREATED_STATUS = "created";
+    public static final String AUTH_RESOURCE_TYPE = "FDX_Auth";
+    public static final String AUTHORIZED_STATUS = "authorized";
+    public static final String COMMON_AUTH_ID = "commonAuthId";
+    public static final String IS_RECURRING = "isRecurring";
+    public static final String AUTHORIZATION_RESOURCES_KEY = "authorizationResources";
+    public static final String SERVER_ERROR_MSG = "server_error";
+    public static final String PERSIST_PAYLOAD = "persistPayload";
+    public static final String DURATION_TYPE = "durationType";
+    public static final String CONSENT_REQUEST = "consentRequest";
+    public static final String FDX_TYPE = "FDX_ACCOUNTS";
+    public static final String FREQUENCY_SIMPLE = "frequency";
+    public static final String SP_QUERY_PARAMS = "spQueryParams";
+    public static final String ONE_TIME = "ONE_TIME";
+    public static final String COOKIES = "cookies";
+    public static final String ATTRIBUTES = "commonAuthId";
+    public static final String DATA_CLUSTERS_TITLE = "dataClusters";
+    public static final String FDX_CONSENT_AUTHORISED = "Authorised";
+    public static final String FDX_CONSENT_STATUS = "consentStatus";
+    public static final String ERROR = "error";
+    public static final Integer BAD_REQUEST = 400;
+
+    static {
+        Map<String, Map<String, List<String>>> dataCluster = new HashMap<>();
+        dataCluster.put("ACCOUNT_BASIC", createPermissionLanguage(
+                "Account Information - Basic",
+                "Account display name", "Masked account number", "Account type and Description"));
+        dataCluster.put("ACCOUNT_DETAILED", createPermissionLanguage(
+                "Account Information - Details",
+                "Account display name", "Masked account number", "Account type and Description",
+                "Account balances", "Credit limits", "Due dates and Interest rates"));
+        dataCluster.put("ACCOUNT_PAYMENTS", createPermissionLanguage(
+                "Account Information - Payments",
+                "Full account and routing number", "SWIFT or IBAN numbers"));
+        dataCluster.put("TRANSACTIONS", createPermissionLanguage(
+                "Transactions",
+                "Historical and current transactions", "Transaction types", "Amounts",
+                "Dates and descriptions"));
+        dataCluster.put("INVESTMENTS", createPermissionLanguage(
+                "Investments",
+                "Investment contributions", "Investment loans", "Pension data",
+                "Vesting and account holding details"));
+        dataCluster.put("PAYMENT_SUPPORT", createPermissionLanguage(
+                "Payments IDs",
+                "Full account number and bank routing number"));
+        dataCluster.put("CUSTOMER_CONTACT", createPermissionLanguage(
+                "Customer and Account Contact Information",
+                "Your Name, Email, Address and Phone on file with this institution.",
+                "Name, Email, Address and Phone of any other account holders."));
+        dataCluster.put("CUSTOMER_PERSONAL", createPermissionLanguage(
+                "Sensitive personal Information",
+                "Your Name, Email, Address and Phone on file with this institution.",
+                "Name, Email, Address and Phone of any other account holders.", "Your Date of Birth", "Tax ID",
+                "SSN (Social Security Number)"));
+        dataCluster.put("STATEMENTS", createPermissionLanguage(
+                "Statements",
+                "Periodic PDF statement showing personal information",
+                "Account and transaction details. May contain PII such as name, address."));
+        dataCluster.put("BILLS", createPermissionLanguage(
+                "Bills",
+                ""));
+        dataCluster.put("TAX", createPermissionLanguage(
+                "Tax",
+                "All tax form entities (both JSON and PDF)"));
+        dataCluster.put("REWARDS", createPermissionLanguage(
+                "Rewards",
+                ""));
+        dataCluster.put("IMAGES", createPermissionLanguage(
+                "Images",
+                "Images of checks and receipts, which may include PII such as name, " +
+                        "full account and routing number."));
+
+        DATA_CLUSTERS = Collections.unmodifiableMap(dataCluster);
+    }
+
+    private static Map<String, List<String>> createPermissionLanguage(String uxName, String... uxDescription) {
+        Map<String, List<String>> permissionLanguage = new LinkedHashMap<>();
+        permissionLanguage.put(uxName, Arrays.asList(uxDescription));
+        return permissionLanguage;
+    }
+}

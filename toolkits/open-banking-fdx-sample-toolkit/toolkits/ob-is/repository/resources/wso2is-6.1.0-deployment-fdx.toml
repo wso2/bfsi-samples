@@ -394,7 +394,7 @@ connection_verification_timeout=1
 
 #=======================dcr configs======================
 [open_banking.dcr]
-validator = "org.wso2.openbanking.fdx.identity.dcr.validation.FDXRegistrationValidatorImpl"
+validator = "validation.dcr.org.wso2.financial.services.fdx.identity.FDXRegistrationValidatorImpl"
 jwks_url_sandbox = "https://keystore.openbankingtest.org.uk/0015800001HQQrZAAX/oQ4KoaavpOuoE7rvQsZEOV.jwks"
 jwks_url_production = "https://keystore.openbankingtest.org.uk/0015800001HQQrZAAX/oQ4KoaavpOuoE7rvQsZEOV.jwks"
 applicationupdater = "com.wso2.openbanking.accelerator.identity.listener.application.ApplicationUpdaterImpl"
