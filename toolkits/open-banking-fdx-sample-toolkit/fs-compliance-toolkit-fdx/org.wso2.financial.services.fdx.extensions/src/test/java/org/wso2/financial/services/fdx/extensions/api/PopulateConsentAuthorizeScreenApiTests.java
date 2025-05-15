@@ -36,7 +36,7 @@ public class PopulateConsentAuthorizeScreenApiTests {
                     });
 
             // Mock the behavior of retrieveDataClusterData
-            mockedUtils.when(() -> FDXConsentRetrievalUtils.retrieveDataClusterData(Mockito.any(), Mockito.any()))
+            mockedUtils.when(() -> FDXConsentRetrievalUtils.retrieveDataClusterData(Mockito.any()))
                     .thenAnswer(invocation -> null);
 
             // Mock the behavior of retrieveAccountData
@@ -103,7 +103,7 @@ public class PopulateConsentAuthorizeScreenApiTests {
                     });
 
             // Mock the behavior of retrieveDataClusterData
-            mockedUtils.when(() -> FDXConsentRetrievalUtils.retrieveDataClusterData(Mockito.any(), Mockito.any()))
+            mockedUtils.when(() -> FDXConsentRetrievalUtils.retrieveDataClusterData(Mockito.any()))
                     .thenAnswer(invocation -> null);
 
             mockedUtils.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(Mockito.any(), Mockito.any()))

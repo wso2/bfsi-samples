@@ -248,10 +248,7 @@ public class FDXConsentRetrievalUtils {
         return baseURL.contains("?") ? baseURL + "&" + query : baseURL + "?" + query;
     }
 
-
-    public static void retrieveDataClusterData(
-            @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody,
-            JSONObject validationResponse) {
+    public static void retrieveDataClusterData(JSONObject validationResponse) {
 
         // If previous validation failed
         if (validationResponse.has(FDXCommonConstants.STATUS)) {
@@ -292,7 +289,6 @@ public class FDXConsentRetrievalUtils {
             ((JSONObject) item).put(FDXCommonConstants.DATA_REQUESTED, dataClusterMapping);
         }
     }
-
 
     /**
      * Masks the account number based on its length.

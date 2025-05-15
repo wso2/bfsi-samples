@@ -55,8 +55,7 @@ public class PopulateConsentAuthorizeScreenApi {
             JSONObject validationResponse = new JSONObject();
 
             FDXConsentRetrievalUtils.retrieveConsentData(populateConsentAuthorizeScreenRequestBody, validationResponse);
-            FDXConsentRetrievalUtils.retrieveDataClusterData(populateConsentAuthorizeScreenRequestBody,
-                    validationResponse);
+            FDXConsentRetrievalUtils.retrieveDataClusterData(validationResponse);
             FDXConsentRetrievalUtils.retrieveAccountData(populateConsentAuthorizeScreenRequestBody, validationResponse);
 
             if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
