@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Defines the context related to the failed response.
+ */
 @JsonTypeName("FailedResponse")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -139,6 +141,9 @@ public class FailedResponse implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Indicate the outcome of the request. For a failed operation, this should be set to ERROR.
+     **/
     public enum StatusEnum {
 
         ERROR(String.valueOf("ERROR"));
@@ -152,7 +157,8 @@ public class FailedResponse implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

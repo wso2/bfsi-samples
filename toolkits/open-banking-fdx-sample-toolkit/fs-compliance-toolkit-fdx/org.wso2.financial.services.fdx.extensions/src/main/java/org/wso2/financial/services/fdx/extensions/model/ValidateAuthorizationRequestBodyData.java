@@ -23,7 +23,7 @@ public class ValidateAuthorizationRequestBodyData implements Serializable {
     }
 
     /**
-     *
+     * Set the request object of validate authorization request body data
      **/
     public ValidateAuthorizationRequestBodyData requestObject(Object requestObject) {
         this.requestObject = requestObject;

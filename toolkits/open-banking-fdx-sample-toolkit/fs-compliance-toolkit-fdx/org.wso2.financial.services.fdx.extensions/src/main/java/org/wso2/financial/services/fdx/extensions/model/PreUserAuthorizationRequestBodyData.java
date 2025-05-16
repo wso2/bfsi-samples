@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * full request object
+ * Detail of the context of the full request object
  **/
 @ApiModel(description = "full request object")
 @JsonTypeName("PreUserAuthorizationRequestBodyData")
@@ -23,7 +23,7 @@ public class PreUserAuthorizationRequestBodyData implements Serializable {
     }
 
     /**
-     *
+     * Set the full request object.
      **/
     public PreUserAuthorizationRequestBodyData requestObject(Object requestObject) {
         this.requestObject = requestObject;

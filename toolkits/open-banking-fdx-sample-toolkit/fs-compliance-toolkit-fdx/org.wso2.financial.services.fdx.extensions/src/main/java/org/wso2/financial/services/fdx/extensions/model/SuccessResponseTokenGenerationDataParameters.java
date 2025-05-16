@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Details of the context for SuccessResponseTokenGeneration
+ */
 @JsonTypeName("SuccessResponseTokenGenerationDataParameters")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class SuccessResponseTokenGenerationDataParameters implements Serializabl
     }
 
     /**
-     *
+     * Set the key of success response token generation data parameters
      **/
     public SuccessResponseTokenGenerationDataParameters key(String key) {
         this.key = key;
@@ -40,7 +42,7 @@ public class SuccessResponseTokenGenerationDataParameters implements Serializabl
     }
 
     /**
-     *
+     * Set the value of success response token generation data parameters
      **/
     public SuccessResponseTokenGenerationDataParameters value(String value) {
         this.value = value;

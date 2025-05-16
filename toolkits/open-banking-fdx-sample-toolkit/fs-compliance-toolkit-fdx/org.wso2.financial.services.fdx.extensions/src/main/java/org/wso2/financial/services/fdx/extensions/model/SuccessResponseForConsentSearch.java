@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the success response for consent search.
+ **/
 @JsonTypeName("SuccessResponseForConsentSearch")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class SuccessResponseForConsentSearch implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the response in consent search.
      **/
     public SuccessResponseForConsentSearch responseId(String responseId) {
         this.responseId = responseId;
@@ -41,7 +43,7 @@ public class SuccessResponseForConsentSearch implements Serializable {
     }
 
     /**
-     *
+     * Set the data for the success response in consent search.
      **/
     public SuccessResponseForConsentSearch data(SuccessResponseForConsentSearchData data) {
         this.data = data;

@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the detailedConsentResourceData
+ */
 @JsonTypeName("DetailedConsentResourceData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -23,13 +25,14 @@ public class DetailedConsentResourceData implements Serializable {
     private Integer frequency;
     private Object receipt;
     private Object attributes;
-    private @Valid List<@Valid Authorization> authorizations = new ArrayList<>();
+    @Valid
+    private List<@Valid Authorization> authorizations = new ArrayList<>();
 
     public DetailedConsentResourceData() {
     }
 
     /**
-     *
+     * Set the type of the detailed consent resource data
      **/
     public DetailedConsentResourceData type(String type) {
         this.type = type;
@@ -49,7 +52,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the detailed consent resource data
      **/
     public DetailedConsentResourceData status(String status) {
         this.status = status;
@@ -69,7 +72,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the validity time of the detailed consent resource data
      **/
     public DetailedConsentResourceData validityTime(Long validityTime) {
         this.validityTime = validityTime;
@@ -89,7 +92,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the recurring indicator of the detailed consent resource data
      **/
     public DetailedConsentResourceData recurringIndicator(Boolean recurringIndicator) {
         this.recurringIndicator = recurringIndicator;
@@ -109,7 +112,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the frequency of the detailed consent resource data
      **/
     public DetailedConsentResourceData frequency(Integer frequency) {
         this.frequency = frequency;
@@ -129,7 +132,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the receipt of the detailed consent resource data
      **/
     public DetailedConsentResourceData receipt(Object receipt) {
         this.receipt = receipt;
@@ -149,7 +152,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the attributes of the detailed consent resource data
      **/
     public DetailedConsentResourceData attributes(Object attributes) {
         this.attributes = attributes;
@@ -169,7 +172,7 @@ public class DetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the authorizations of the detailed consent resource data
      **/
     public DetailedConsentResourceData authorizations(List<@Valid Authorization> authorizations) {
         this.authorizations = authorizations;

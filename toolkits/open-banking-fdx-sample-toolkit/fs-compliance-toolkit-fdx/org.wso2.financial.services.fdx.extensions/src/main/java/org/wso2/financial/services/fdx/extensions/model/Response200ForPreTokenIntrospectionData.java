@@ -10,19 +10,22 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the pre-token introspection response.
+ */
 @JsonTypeName("Response200ForPreTokenIntrospection_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class Response200ForPreTokenIntrospectionData implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<@Valid ResponseBaseDataClaims> attributes = new ArrayList<>();
+    @Valid
+    private List<@Valid ResponseBaseDataClaims> attributes = new ArrayList<>();
 
     public Response200ForPreTokenIntrospectionData() {
     }
 
     /**
-     *
+     * Set the attributes of the pre-token introspection response data.
      **/
     public Response200ForPreTokenIntrospectionData attributes(List<@Valid ResponseBaseDataClaims> attributes) {
         this.attributes = attributes;

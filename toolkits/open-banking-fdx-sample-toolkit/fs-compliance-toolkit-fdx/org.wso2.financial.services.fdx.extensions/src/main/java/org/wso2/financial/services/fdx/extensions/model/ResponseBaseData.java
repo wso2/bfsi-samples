@@ -10,19 +10,22 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the response base data.
+ */
 @JsonTypeName("ResponseBaseData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class ResponseBaseData implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<@Valid ResponseBaseDataClaims> claims = new ArrayList<>();
+    @Valid
+    private List<@Valid ResponseBaseDataClaims> claims = new ArrayList<>();
 
     public ResponseBaseData() {
     }
 
     /**
-     *
+     * Set the claims of the response base data.
      **/
     public ResponseBaseData claims(List<@Valid ResponseBaseDataClaims> claims) {
         this.claims = claims;

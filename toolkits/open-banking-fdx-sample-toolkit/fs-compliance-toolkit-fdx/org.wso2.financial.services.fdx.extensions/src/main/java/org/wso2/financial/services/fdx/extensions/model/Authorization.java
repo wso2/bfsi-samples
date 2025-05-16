@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the amended authorization
+ */
 @JsonTypeName("Authorization")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -19,13 +21,14 @@ public class Authorization implements Serializable {
     private String userId;
     private String type;
     private String status;
-    private @Valid List<@Valid Resource> resources = new ArrayList<>();
+    @Valid
+    private List<@Valid Resource> resources = new ArrayList<>();
 
     public Authorization() {
     }
 
     /**
-     *
+     * Set the unique identifier for the user associated with the authorization.
      **/
     public Authorization userId(String userId) {
         this.userId = userId;
@@ -45,7 +48,7 @@ public class Authorization implements Serializable {
     }
 
     /**
-     *
+     * Set the type of authorization.
      **/
     public Authorization type(String type) {
         this.type = type;
@@ -65,7 +68,7 @@ public class Authorization implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the authorization.
      **/
     public Authorization status(String status) {
         this.status = status;
@@ -85,7 +88,7 @@ public class Authorization implements Serializable {
     }
 
     /**
-     *
+     * Set the list of resources associated with the authorization.
      **/
     public Authorization resources(List<@Valid Resource> resources) {
         this.resources = resources;

@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the failed response client process data.
+ */
 @JsonTypeName("FailedResponseClientProcess_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -98,6 +100,9 @@ public class FailedResponseClientProcessData implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * Enum for error
+     */
     public enum ErrorEnum {
 
         INVALID_CLIENT_METADATA(String.valueOf("invalid_client_metadata")),
@@ -113,7 +118,8 @@ public class FailedResponseClientProcessData implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static ErrorEnum fromString(String s) {
             for (ErrorEnum b : ErrorEnum.values()) {

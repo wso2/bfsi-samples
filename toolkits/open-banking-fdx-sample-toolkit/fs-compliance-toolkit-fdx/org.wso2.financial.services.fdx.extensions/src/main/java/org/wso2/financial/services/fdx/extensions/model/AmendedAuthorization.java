@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the amended authorization
+ */
 @JsonTypeName("AmendedAuthorization")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -19,14 +21,16 @@ public class AmendedAuthorization implements Serializable {
     private String id;
     private String type;
     private String status;
-    private @Valid List<@Valid Resource> resources = new ArrayList<>();
-    private @Valid List<@Valid AmendedResource> amendedResources = new ArrayList<>();
+    @Valid
+    private List<@Valid Resource> resources = new ArrayList<>();
+    @Valid
+    private List<@Valid AmendedResource> amendedResources = new ArrayList<>();
 
     public AmendedAuthorization() {
     }
 
     /**
-     *
+     * Set the unique identifier for the amended authorization.
      **/
     public AmendedAuthorization id(String id) {
         this.id = id;
@@ -46,7 +50,7 @@ public class AmendedAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the type of the amended authorization.
      **/
     public AmendedAuthorization type(String type) {
         this.type = type;
@@ -66,7 +70,7 @@ public class AmendedAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the amended authorization.
      **/
     public AmendedAuthorization status(String status) {
         this.status = status;
@@ -86,7 +90,7 @@ public class AmendedAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the list of resources associated with the amended authorization.
      **/
     public AmendedAuthorization resources(List<@Valid Resource> resources) {
         this.resources = resources;
@@ -124,7 +128,7 @@ public class AmendedAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the list of amended resources associated with the amended authorization.
      **/
     public AmendedAuthorization amendedResources(List<@Valid AmendedResource> amendedResources) {
         this.amendedResources = amendedResources;
@@ -207,6 +211,4 @@ public class AmendedAuthorization implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
-
 }
-

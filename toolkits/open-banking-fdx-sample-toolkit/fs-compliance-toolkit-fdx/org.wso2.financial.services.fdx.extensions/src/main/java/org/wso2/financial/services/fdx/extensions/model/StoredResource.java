@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the stored resource.
+ */
 @JsonTypeName("StoredResource")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -22,7 +24,7 @@ public class StoredResource implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the stored resource.
      **/
     public StoredResource id(String id) {
         this.id = id;
@@ -42,7 +44,7 @@ public class StoredResource implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the account associated with the stored resource.
      **/
     public StoredResource accountId(String accountId) {
         this.accountId = accountId;
@@ -62,7 +64,7 @@ public class StoredResource implements Serializable {
     }
 
     /**
-     *
+     * Set the permission associated with the stored resource.
      **/
     public StoredResource permission(String permission) {
         this.permission = permission;
@@ -82,7 +84,7 @@ public class StoredResource implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the stored resource.
      **/
     public StoredResource status(String status) {
         this.status = status;

@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the success response for consent revocation admin data.
+ **/
 @JsonTypeName("SuccessResponseConsentRevocationAdminData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")

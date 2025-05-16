@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for ValidateAuthorizationRequestBody
+ */
 @JsonTypeName("ValidateAuthorizationRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class ValidateAuthorizationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the request id of validate authorization request body
      **/
     public ValidateAuthorizationRequestBody requestId(String requestId) {
         this.requestId = requestId;
@@ -41,7 +43,7 @@ public class ValidateAuthorizationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of validate authorization request body
      **/
     public ValidateAuthorizationRequestBody data(ValidateAuthorizationRequestBodyData data) {
         this.data = data;

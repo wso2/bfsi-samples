@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the response base data claims.
+ */
 @JsonTypeName("ResponseBase_data_claims")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class ResponseBaseDataClaims implements Serializable {
     }
 
     /**
-     *
+     * Set the key of the response base data claims.
      **/
     public ResponseBaseDataClaims key(String key) {
         this.key = key;
@@ -40,7 +42,7 @@ public class ResponseBaseDataClaims implements Serializable {
     }
 
     /**
-     *
+     * Set the value of the response base data claims.
      **/
     public ResponseBaseDataClaims value(String value) {
         this.value = value;

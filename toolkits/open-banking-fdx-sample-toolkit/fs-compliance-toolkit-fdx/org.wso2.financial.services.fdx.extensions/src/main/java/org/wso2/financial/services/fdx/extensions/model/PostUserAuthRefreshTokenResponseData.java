@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the post user auth refresh token response data.
+ */
 @JsonTypeName("PostUserAuthRefreshTokenResponseData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -19,7 +21,7 @@ public class PostUserAuthRefreshTokenResponseData implements Serializable {
     }
 
     /**
-     *
+     * Set the refresh token validity period of the post user auth refresh token response data.
      **/
     public PostUserAuthRefreshTokenResponseData refreshTokenValidityPeriod(Integer refreshTokenValidityPeriod) {
         this.refreshTokenValidityPeriod = refreshTokenValidityPeriod;

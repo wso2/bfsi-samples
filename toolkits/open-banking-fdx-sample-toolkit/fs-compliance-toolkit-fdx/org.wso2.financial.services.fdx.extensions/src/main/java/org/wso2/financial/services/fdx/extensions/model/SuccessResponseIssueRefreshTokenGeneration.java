@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for SuccessResponseIssueRefreshTokenGeneration
+ */
 @JsonTypeName("SuccessResponseIssueRefreshTokenGeneration")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -24,7 +26,7 @@ public class SuccessResponseIssueRefreshTokenGeneration implements Serializable 
     }
 
     /**
-     *
+     * Set the response id of success response issue refresh token generation
      **/
     public SuccessResponseIssueRefreshTokenGeneration responseId(String responseId) {
         this.responseId = responseId;
@@ -43,7 +45,7 @@ public class SuccessResponseIssueRefreshTokenGeneration implements Serializable 
     }
 
     /**
-     *
+     * Set the status of success response issue refresh token generation
      **/
     public SuccessResponseIssueRefreshTokenGeneration status(StatusEnum status) {
         this.status = status;
@@ -62,7 +64,7 @@ public class SuccessResponseIssueRefreshTokenGeneration implements Serializable 
     }
 
     /**
-     *
+     * Set the data of success response issue refresh token generation
      **/
     public SuccessResponseIssueRefreshTokenGeneration data(SuccessResponseIssueRefreshTokenGenerationData data) {
         this.data = data;
@@ -124,6 +126,9 @@ public class SuccessResponseIssueRefreshTokenGeneration implements Serializable 
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * Enum for status
+     */
     public enum StatusEnum {
 
         SUCCESS(String.valueOf("SUCCESS"));
@@ -137,7 +142,8 @@ public class SuccessResponseIssueRefreshTokenGeneration implements Serializable 
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

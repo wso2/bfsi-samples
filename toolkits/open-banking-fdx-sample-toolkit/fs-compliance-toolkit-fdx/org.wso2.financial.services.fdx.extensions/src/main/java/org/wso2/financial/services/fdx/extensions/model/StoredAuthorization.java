@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the stored authorization.
+ */
 @JsonTypeName("StoredAuthorization")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,13 +22,14 @@ public class StoredAuthorization implements Serializable {
     private String userId;
     private String type;
     private String status;
-    private @Valid List<@Valid StoredResource> resources = new ArrayList<>();
+    @Valid
+    private List<@Valid StoredResource> resources = new ArrayList<>();
 
     public StoredAuthorization() {
     }
 
     /**
-     *
+     * Set the unique identifier for the stored authorization.
      **/
     public StoredAuthorization id(String id) {
         this.id = id;
@@ -46,7 +49,7 @@ public class StoredAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the user associated with the stored authorization.
      **/
     public StoredAuthorization userId(String userId) {
         this.userId = userId;
@@ -66,7 +69,7 @@ public class StoredAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the type of the stored authorization.
      **/
     public StoredAuthorization type(String type) {
         this.type = type;
@@ -86,7 +89,7 @@ public class StoredAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the stored authorization.
      **/
     public StoredAuthorization status(String status) {
         this.status = status;
@@ -106,7 +109,7 @@ public class StoredAuthorization implements Serializable {
     }
 
     /**
-     *
+     * Set the list of resources associated with the stored authorization.
      **/
     public StoredAuthorization resources(List<@Valid StoredResource> resources) {
         this.resources = resources;

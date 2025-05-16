@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the error mapper response.
+ */
 @JsonTypeName("Response200ForErrorMapper")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class Response200ForErrorMapper implements Serializable {
     }
 
     /**
-     *
+     * Set the unique response id for the error mapper response.
      **/
     public Response200ForErrorMapper responseId(String responseId) {
         this.responseId = responseId;
@@ -41,7 +43,7 @@ public class Response200ForErrorMapper implements Serializable {
     }
 
     /**
-     *
+     * Set the error code for the error mapper response.
      **/
     public Response200ForErrorMapper errorCode(Integer errorCode) {
         this.errorCode = errorCode;

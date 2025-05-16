@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for SuccessResponsePersistAuthorizedConsent
+ */
 @JsonTypeName("SuccessResponsePersistAuthorizedConsent_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class SuccessResponsePersistAuthorizedConsentData implements Serializable
     }
 
     /**
-     *
+     * Set the consent resource of success response persist authorized consent
      **/
     public SuccessResponsePersistAuthorizedConsentData consentResource(
             DetailedConsentResourceDataWithAmendments consentResource) {

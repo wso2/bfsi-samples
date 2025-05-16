@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the consent resource data.
+ */
 @JsonTypeName("BasicConsentResourceData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -25,7 +27,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the receipt associated with the consent resource data.
      **/
     public BasicConsentResourceData receipt(Object receipt) {
         this.receipt = receipt;
@@ -45,7 +47,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the type of the consent resource data.
      **/
     public BasicConsentResourceData type(String type) {
         this.type = type;
@@ -65,7 +67,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the consent resource data.
      **/
     public BasicConsentResourceData status(String status) {
         this.status = status;
@@ -85,7 +87,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the frequency of the consent resource data.
      **/
     public BasicConsentResourceData frequency(Integer frequency) {
         this.frequency = frequency;
@@ -105,7 +107,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the validity time of the consent resource data.
      **/
     public BasicConsentResourceData validityTime(Long validityTime) {
         this.validityTime = validityTime;
@@ -125,7 +127,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the recurring indicator of the consent resource data.
      **/
     public BasicConsentResourceData recurringIndicator(Boolean recurringIndicator) {
         this.recurringIndicator = recurringIndicator;
@@ -145,7 +147,7 @@ public class BasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the attributes of the consent resource data.
      **/
     public BasicConsentResourceData attributes(Object attributes) {
         this.attributes = attributes;

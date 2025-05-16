@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the stored detailed consent resource data.
+ */
 @JsonTypeName("StoredDetailedConsentResourceData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -27,14 +29,15 @@ public class StoredDetailedConsentResourceData implements Serializable {
     private Integer validityTime;
     private Boolean recurringIndicator;
     private Object attributes;
-    private @Valid List<@Valid StoredAuthorization> authorizations = new ArrayList<>();
+    @Valid
+    private List<@Valid StoredAuthorization> authorizations = new ArrayList<>();
     private String fileContent;
 
     public StoredDetailedConsentResourceData() {
     }
 
     /**
-     *
+     * Set the unique identifier for the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData id(String id) {
         this.id = id;
@@ -54,7 +57,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the receipt associated with the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData receipt(Object receipt) {
         this.receipt = receipt;
@@ -74,7 +77,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the time when the stored detailed consent resource data was created.
      **/
     public StoredDetailedConsentResourceData createdTime(Integer createdTime) {
         this.createdTime = createdTime;
@@ -94,7 +97,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the time when the stored detailed consent resource data was last updated.
      **/
     public StoredDetailedConsentResourceData updatedTime(Integer updatedTime) {
         this.updatedTime = updatedTime;
@@ -114,7 +117,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the client ID associated with the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData clientId(String clientId) {
         this.clientId = clientId;
@@ -134,7 +137,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the type of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData type(String type) {
         this.type = type;
@@ -154,7 +157,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData status(String status) {
         this.status = status;
@@ -174,7 +177,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the frequency of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData frequency(Integer frequency) {
         this.frequency = frequency;
@@ -194,7 +197,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the validity time of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData validityTime(Integer validityTime) {
         this.validityTime = validityTime;
@@ -214,7 +217,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the recurring indicator of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData recurringIndicator(Boolean recurringIndicator) {
         this.recurringIndicator = recurringIndicator;
@@ -234,7 +237,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the attributes of the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData attributes(Object attributes) {
         this.attributes = attributes;
@@ -254,7 +257,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the list of authorizations associated with the stored detailed consent resource data.
      **/
     public StoredDetailedConsentResourceData authorizations(List<@Valid StoredAuthorization> authorizations) {
         this.authorizations = authorizations;
@@ -292,7 +295,7 @@ public class StoredDetailedConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the content of the uploaded file.
      **/
     public StoredDetailedConsentResourceData fileContent(String fileContent) {
         this.fileContent = fileContent;

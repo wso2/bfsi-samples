@@ -24,7 +24,7 @@ public class ErrorMapperData implements Serializable {
     }
 
     /**
-     *
+     * Set the error data of the error mapper data
      **/
     public ErrorMapperData error(Error error) {
         this.error = error;

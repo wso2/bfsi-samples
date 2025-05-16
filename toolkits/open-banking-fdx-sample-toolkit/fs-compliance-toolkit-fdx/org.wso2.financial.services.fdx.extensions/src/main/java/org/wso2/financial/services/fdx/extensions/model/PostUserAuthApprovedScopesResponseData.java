@@ -10,19 +10,22 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the post user auth approved scopes response data.
+ */
 @JsonTypeName("PostUserAuthApprovedScopesResponseData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class PostUserAuthApprovedScopesResponseData implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<String> approvedScopes = new ArrayList<>();
+    @Valid
+    private List<String> approvedScopes = new ArrayList<>();
 
     public PostUserAuthApprovedScopesResponseData() {
     }
 
     /**
-     *
+     * Set the approved scopes of the post user auth approved scopes response data
      **/
     public PostUserAuthApprovedScopesResponseData approvedScopes(List<String> approvedScopes) {
         this.approvedScopes = approvedScopes;

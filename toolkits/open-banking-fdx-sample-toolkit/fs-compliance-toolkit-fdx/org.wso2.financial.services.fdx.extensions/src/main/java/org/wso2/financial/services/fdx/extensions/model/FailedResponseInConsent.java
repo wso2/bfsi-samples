@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Defines the context data related to the failed response in consent.
+ */
 @JsonTypeName("FailedResponseInConsent")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -137,6 +139,9 @@ public class FailedResponseInConsent implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * Enum for status
+     */
     public enum StatusEnum {
 
         ERROR(String.valueOf("ERROR"));
@@ -150,7 +155,8 @@ public class FailedResponseInConsent implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

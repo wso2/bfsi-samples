@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the persist authorized consent.
+ */
 @JsonTypeName("PersistAuthorizedConsent")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -23,7 +25,7 @@ public class PersistAuthorizedConsent implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the consent.
      **/
     public PersistAuthorizedConsent consentId(String consentId) {
         this.consentId = consentId;
@@ -43,7 +45,7 @@ public class PersistAuthorizedConsent implements Serializable {
     }
 
     /**
-     *
+     * Set the approval status of the consent.
      **/
     public PersistAuthorizedConsent isApproved(Boolean isApproved) {
         this.isApproved = isApproved;
@@ -63,7 +65,7 @@ public class PersistAuthorizedConsent implements Serializable {
     }
 
     /**
-     *
+     * Set the user granted data associated with the consent.
      **/
     public PersistAuthorizedConsent userGrantedData(UserGrantedData userGrantedData) {
         this.userGrantedData = userGrantedData;
@@ -84,7 +86,7 @@ public class PersistAuthorizedConsent implements Serializable {
     }
 
     /**
-     *
+     * Set the consent resource associated with the consent.
      **/
     public PersistAuthorizedConsent consentResource(StoredDetailedConsentResourceData consentResource) {
         this.consentResource = consentResource;

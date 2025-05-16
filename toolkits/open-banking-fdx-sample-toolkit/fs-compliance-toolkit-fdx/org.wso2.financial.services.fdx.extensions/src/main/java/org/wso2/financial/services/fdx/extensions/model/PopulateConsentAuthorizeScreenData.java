@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the populate consent authorize screen data.
+ */
 @JsonTypeName("PopulateConsentAuthorizeScreenData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -23,7 +25,7 @@ public class PopulateConsentAuthorizeScreenData implements Serializable {
     }
 
     /**
-     *
+     * Set the unique consent id for the populate consent authorize screen data.
      **/
     public PopulateConsentAuthorizeScreenData consentId(String consentId) {
         this.consentId = consentId;
@@ -43,7 +45,7 @@ public class PopulateConsentAuthorizeScreenData implements Serializable {
     }
 
     /**
-     *
+     * Set the unique user id for the populate consent authorize screen data.
      **/
     public PopulateConsentAuthorizeScreenData userId(String userId) {
         this.userId = userId;
@@ -83,7 +85,7 @@ public class PopulateConsentAuthorizeScreenData implements Serializable {
     }
 
     /**
-     *
+     * Set the consent resource data for the populate consent authorize screen data.
      **/
     public PopulateConsentAuthorizeScreenData consentResource(StoredDetailedConsentResourceData consentResource) {
         this.consentResource = consentResource;

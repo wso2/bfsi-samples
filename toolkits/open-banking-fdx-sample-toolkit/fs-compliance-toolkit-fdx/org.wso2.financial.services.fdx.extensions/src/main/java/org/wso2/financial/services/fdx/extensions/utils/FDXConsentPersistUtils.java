@@ -21,6 +21,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Utility class for persisting FDX consent.
+ */
 public class FDXConsentPersistUtils {
 
     private static final Log log = LogFactory.getLog(FDXConsentPersistUtils.class);

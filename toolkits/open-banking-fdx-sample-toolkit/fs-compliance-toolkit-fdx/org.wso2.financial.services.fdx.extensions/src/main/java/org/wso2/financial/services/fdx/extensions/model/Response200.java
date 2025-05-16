@@ -10,7 +10,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Defines the context related to the response 200.
+ */
 @JsonTypeName("Response200")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -48,7 +50,7 @@ public class Response200 implements Serializable {
     }
 
     /**
-     *
+     * Set the unique response id for the response 200.
      **/
     public Response200 responseId(String responseId) {
         this.responseId = responseId;
@@ -107,7 +109,7 @@ public class Response200 implements Serializable {
     }
 
     /**
-     * :\&quot;Custom error object to response back\&quot;
+     * Custom error object to response back
      **/
     public Response200 data(Object data) {
         this.data = data;
@@ -161,6 +163,9 @@ public class Response200 implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Enum for status
+     */
     public enum StatusEnum {
 
         ERROR(String.valueOf("ERROR"));
@@ -174,7 +179,8 @@ public class Response200 implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

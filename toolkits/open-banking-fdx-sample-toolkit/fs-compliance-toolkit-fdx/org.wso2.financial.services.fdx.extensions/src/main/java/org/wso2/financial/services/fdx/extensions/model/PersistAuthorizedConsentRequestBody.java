@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the persist authorized consent request body.
+ */
 @JsonTypeName("PersistAuthorizedConsentRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class PersistAuthorizedConsentRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the unique request identifier.
      **/
     public PersistAuthorizedConsentRequestBody requestId(String requestId) {
         this.requestId = requestId;
@@ -41,7 +43,7 @@ public class PersistAuthorizedConsentRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the persist authorized consent request body.
      **/
     public PersistAuthorizedConsentRequestBody data(PersistAuthorizedConsent data) {
         this.data = data;

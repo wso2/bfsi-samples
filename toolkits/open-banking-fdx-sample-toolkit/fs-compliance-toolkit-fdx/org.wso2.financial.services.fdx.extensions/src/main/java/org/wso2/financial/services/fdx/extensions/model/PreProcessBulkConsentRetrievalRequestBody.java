@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the pre-process bulk consent retrieval request body.
+ */
 @JsonTypeName("PreProcessBulkConsentRetrievalRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -41,7 +43,7 @@ public class PreProcessBulkConsentRetrievalRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the pre-process bulk consent retrieval request body
      **/
     public PreProcessBulkConsentRetrievalRequestBody data(ConsentSearchData data) {
         this.data = data;

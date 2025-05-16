@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the user authentication request base.
+ */
 @JsonTypeName("PostUserAuthRequestBase")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class PostUserAuthRequestBase implements Serializable {
     }
 
     /**
-     *
+     * Set the unique request identifier.
      **/
     public PostUserAuthRequestBase requestId(String requestId) {
         this.requestId = requestId;
@@ -41,7 +43,7 @@ public class PostUserAuthRequestBase implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the user authentication request.
      **/
     public PostUserAuthRequestBase data(PostUserAuthRequestBaseData data) {
         this.data = data;

@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the client process request body.
+ */
 @JsonTypeName("ClientProcessRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -41,7 +43,7 @@ public class ClientProcessRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the client process data of the client process request body
      **/
     public ClientProcessRequestBody data(ClientProcessData data) {
         this.data = data;

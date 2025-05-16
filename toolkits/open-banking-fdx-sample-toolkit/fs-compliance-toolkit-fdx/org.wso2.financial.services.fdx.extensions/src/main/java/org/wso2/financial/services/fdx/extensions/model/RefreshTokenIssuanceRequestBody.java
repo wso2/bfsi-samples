@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the refresh token issuance request body.
+ */
 @JsonTypeName("RefreshTokenIssuanceRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class RefreshTokenIssuanceRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the request ID of the refresh token issuance request body.
      **/
     public RefreshTokenIssuanceRequestBody requestId(String requestId) {
         this.requestId = requestId;
@@ -41,7 +43,7 @@ public class RefreshTokenIssuanceRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the refresh token issuance request body.
      **/
     public RefreshTokenIssuanceRequestBody data(RefreshTokenRequestBody data) {
         this.data = data;

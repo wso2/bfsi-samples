@@ -23,7 +23,7 @@ public class SuccessResponseClientProcessData implements Serializable {
     }
 
     /**
-     *
+     * Set the client data for the success response.
      **/
     public SuccessResponseClientProcessData clientData(Object clientData) {
         this.clientData = clientData;

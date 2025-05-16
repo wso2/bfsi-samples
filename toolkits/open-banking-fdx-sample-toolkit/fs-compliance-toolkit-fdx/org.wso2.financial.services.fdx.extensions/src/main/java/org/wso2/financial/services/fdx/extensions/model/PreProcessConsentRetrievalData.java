@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the pre-process consent retrieval data.
+ */
 @JsonTypeName("PreProcessConsentRetrievalData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -43,7 +45,7 @@ public class PreProcessConsentRetrievalData implements Serializable {
     }
 
     /**
-     *
+     * Set the consent resource of the pre-process consent retrieval data.
      **/
     public PreProcessConsentRetrievalData consentResource(StoredBasicConsentResourceData consentResource) {
         this.consentResource = consentResource;
@@ -85,7 +87,7 @@ public class PreProcessConsentRetrievalData implements Serializable {
     }
 
     /**
-     * Resource url
+     * Set the Resource url of the pre-process consent retrieval data.
      **/
     public PreProcessConsentRetrievalData consentResourcePath(String consentResourcePath) {
         this.consentResourcePath = consentResourcePath;

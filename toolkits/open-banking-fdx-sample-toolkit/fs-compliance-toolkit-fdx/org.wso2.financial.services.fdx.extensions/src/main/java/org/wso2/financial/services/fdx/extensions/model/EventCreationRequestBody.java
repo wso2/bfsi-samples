@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the event creation request body.
+ */
 @JsonTypeName("EventCreationRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -41,7 +43,7 @@ public class EventCreationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the event creation request body
      **/
     public EventCreationRequestBody data(EventCreationRequest data) {
         this.data = data;

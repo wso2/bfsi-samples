@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the enrich consent search request body.
+ */
 @JsonTypeName("EnrichFileUploadResponseRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -41,7 +43,7 @@ public class EnrichFileUploadResponseRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the enrich file upload response request body
      **/
     public EnrichFileUploadResponseRequestBody data(RequestForEnrichFileUploadResponse data) {
         this.data = data;

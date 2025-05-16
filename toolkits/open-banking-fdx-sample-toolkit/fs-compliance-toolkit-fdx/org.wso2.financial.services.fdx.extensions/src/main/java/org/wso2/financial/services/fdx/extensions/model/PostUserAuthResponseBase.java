@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the post user auth request base data.
+ */
 @JsonTypeName("PostUserAuthResponseBase")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -22,7 +24,7 @@ public class PostUserAuthResponseBase implements Serializable {
     }
 
     /**
-     *
+     * Set the unique response id for the post user auth request.
      **/
     public PostUserAuthResponseBase responseId(String responseId) {
         this.responseId = responseId;
@@ -41,7 +43,7 @@ public class PostUserAuthResponseBase implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the post user auth request.
      **/
     public PostUserAuthResponseBase status(StatusEnum status) {
         this.status = status;
@@ -99,6 +101,9 @@ public class PostUserAuthResponseBase implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * Enum for status
+     */
     public enum StatusEnum {
 
         SUCCESS(String.valueOf("SUCCESS"));
@@ -112,7 +117,8 @@ public class PostUserAuthResponseBase implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

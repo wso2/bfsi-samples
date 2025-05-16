@@ -7,6 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class contains common constants used in the FDX extension.
+ */
 public class FDXCommonConstants {
     public static final String STATUS = "status";
     public static final String TYPE = "type";
@@ -18,50 +21,27 @@ public class FDXCommonConstants {
     public static final String RESPONSE_STATUS = "responseStatus";
     public static final String INVALID_REQUEST_MSG = "invalid_request";
     public static final String USER_ID_KEY_NAME = "userId";
-    public static final String ACCOUNT = "Account";
-    public static final Object ACCOUNTS = "accounts";
     public static final String ACCOUNT_ID = "account_id";
 
     public static final String ACCOUNT_TYPE = "type";
     public static final String ACCOUNT_ID_DISPLAYABLE = "accountIdToDisplay";
-    public static final String CLIENT_ID = "client_id";
-    public static final String IS_ERROR = "isError";
     public static final String AUTHORIZATION_DETAILS = "authorization_details";
     public static final String DURATION_PERIOD = "durationPeriod";
     public static final String EXPIRATION_DATE_TIME = "expiryDate";
     public static final String RESOURCES = "resources";
-    public static final String TITLE = "Title";
-    public static final String PERMISSION_TITLE = "Permissions";
-    public static final String EXPIRATION_DATE_TITLE = "Expiration Date Time";
 
     public static final Map<String, Map<String, List<String>>> DATA_CLUSTERS;
-    public static final String PERMISSIONS = "permissions";
     public static final String REDIRECT_URL = "redirect_uri";
-    public static final String CONSENT_EXPIRY = "consent_expiration";
-    public static final String SP_FULL_NAME = "sp_full_name";
     public static final String DATA_REQUESTED = "data_requested";
-    public static final String SHARABLE_ACCOUNTS_ENDPOINT = "ConsentManagement.SharableAccountsRetrieveEndpoint";
-    public static final String SERVICE_URL_SLASH = "/";
-    public static final String ACCEPT_HEADER_VALUE = "application/json";
-    public static final String ACCEPT_HEADER_NAME = "Accept";
-    public static final String CHAR_SET = "UTF-8";
-    public static final String ACCOUNTS_ARRAY = "accounts[]";
     public static final String ACCOUNT_IDS = "accountIds";
-    public static final String AWAITING_AUTH_STATUS = "awaitingAuthorization";
-    public static final String ZERO = "0";
-    public static final String CREATED_STATUS = "created";
-    public static final String AUTH_RESOURCE_TYPE = "FDX_Auth";
-    public static final String AUTHORIZED_STATUS = "authorized";
     public static final String COMMON_AUTH_ID = "commonAuthId";
     public static final String IS_RECURRING = "isRecurring";
     public static final String AUTHORIZATION_RESOURCES_KEY = "authorizationResources";
     public static final String SERVER_ERROR_MSG = "server_error";
-    public static final String PERSIST_PAYLOAD = "persistPayload";
     public static final String DURATION_TYPE = "durationType";
     public static final String CONSENT_REQUEST = "consentRequest";
     public static final String FDX_TYPE = "FDX_ACCOUNTS";
     public static final String FREQUENCY_SIMPLE = "frequency";
-    public static final String SP_QUERY_PARAMS = "spQueryParams";
     public static final String ONE_TIME = "ONE_TIME";
     public static final String COOKIES = "cookies";
     public static final String ATTRIBUTES = "commonAuthId";

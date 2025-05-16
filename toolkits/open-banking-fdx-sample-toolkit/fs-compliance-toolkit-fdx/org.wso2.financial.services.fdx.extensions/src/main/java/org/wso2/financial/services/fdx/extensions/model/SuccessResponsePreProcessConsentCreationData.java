@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for SuccessResponsePreProcessConsentCreation
+ */
 @JsonTypeName("SuccessResponsePreProcessConsentCreationData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class SuccessResponsePreProcessConsentCreationData implements Serializabl
     }
 
     /**
-     *
+     * Set the consent resource of success response pre process consent creation
      **/
     public SuccessResponsePreProcessConsentCreationData consentResource(DetailedConsentResourceData consentResource) {
         this.consentResource = consentResource;

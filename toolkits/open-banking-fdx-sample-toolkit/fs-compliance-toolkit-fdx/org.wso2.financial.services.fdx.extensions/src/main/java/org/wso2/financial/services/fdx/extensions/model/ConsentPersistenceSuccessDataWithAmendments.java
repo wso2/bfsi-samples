@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the consent persistence success data with amendments.
+ */
 @JsonTypeName("ConsentPersistenceSuccessDataWithAmendments")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -22,14 +24,16 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     private Boolean recurringIndicator;
     private Integer frequency;
     private Object consentPayload;
-    private @Valid List<@Valid Authorization> authorizations = new ArrayList<>();
-    private @Valid List<@Valid AmendedAuthorization> amendments = new ArrayList<>();
+    @Valid
+    private List<@Valid Authorization> authorizations = new ArrayList<>();
+    @Valid
+    private List<@Valid AmendedAuthorization> amendments = new ArrayList<>();
 
     public ConsentPersistenceSuccessDataWithAmendments() {
     }
 
     /**
-     *
+     * Set the consent type of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments consentType(String consentType) {
         this.consentType = consentType;
@@ -49,7 +53,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the consent status of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments consentStatus(String consentStatus) {
         this.consentStatus = consentStatus;
@@ -69,7 +73,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the validity time of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments validityTime(Long validityTime) {
         this.validityTime = validityTime;
@@ -89,7 +93,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the recurring indicator of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments recurringIndicator(Boolean recurringIndicator) {
         this.recurringIndicator = recurringIndicator;
@@ -109,7 +113,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the frequency of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments frequency(Integer frequency) {
         this.frequency = frequency;
@@ -129,7 +133,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the consent payload of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments consentPayload(Object consentPayload) {
         this.consentPayload = consentPayload;
@@ -149,7 +153,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the authorizations of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments authorizations(List<@Valid Authorization> authorizations) {
         this.authorizations = authorizations;
@@ -187,7 +191,7 @@ public class ConsentPersistenceSuccessDataWithAmendments implements Serializable
     }
 
     /**
-     *
+     * Set the amendments of the consent persistence success data with amendments
      **/
     public ConsentPersistenceSuccessDataWithAmendments amendments(List<@Valid AmendedAuthorization> amendments) {
         this.amendments = amendments;

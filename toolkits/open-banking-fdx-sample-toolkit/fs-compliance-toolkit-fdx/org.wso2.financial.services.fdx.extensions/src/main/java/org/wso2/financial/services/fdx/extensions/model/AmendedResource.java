@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the AmendedResource.
+ */
 @JsonTypeName("AmendedResource")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class AmendedResource implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the amended resource.
      **/
     public AmendedResource id(String id) {
         this.id = id;
@@ -41,7 +43,7 @@ public class AmendedResource implements Serializable {
     }
 
     /**
-     *
+     * Set the permission associated with the amended resource.
      **/
     public AmendedResource permission(String permission) {
         this.permission = permission;
@@ -61,7 +63,7 @@ public class AmendedResource implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the amended resource.
      **/
     public AmendedResource status(String status) {
         this.status = status;

@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Details of the context for UserGrantedData
+ */
 @JsonTypeName("UserGrantedData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class UserGrantedData implements Serializable {
     }
 
     /**
-     *
+     * Set the request parameters of user granted data
      **/
     public UserGrantedData requestParameters(Object requestParameters) {
         this.requestParameters = requestParameters;
@@ -41,7 +43,7 @@ public class UserGrantedData implements Serializable {
     }
 
     /**
-     *
+     * Set the authorized resources of user granted data
      **/
     public UserGrantedData authorizedResources(Object authorizedResources) {
         this.authorizedResources = authorizedResources;
@@ -61,7 +63,7 @@ public class UserGrantedData implements Serializable {
     }
 
     /**
-     *
+     * Set the user id of user granted data
      **/
     public UserGrantedData userId(String userId) {
         this.userId = userId;

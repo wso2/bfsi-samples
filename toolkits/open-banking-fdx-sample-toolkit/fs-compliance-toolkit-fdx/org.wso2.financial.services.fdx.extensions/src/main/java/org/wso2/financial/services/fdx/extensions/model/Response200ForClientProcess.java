@@ -11,7 +11,9 @@ import java.util.Objects;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Defines the context related to the response 200 for client process.
+ */
 @JsonTypeName("Response200ForClientProcess")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -47,7 +49,7 @@ public class Response200ForClientProcess implements Serializable {
     }
 
     /**
-     *
+     * Set the unique response id for the response 200 for client process.
      **/
     public Response200ForClientProcess responseId(String responseId) {
         this.responseId = responseId;
@@ -85,7 +87,7 @@ public class Response200ForClientProcess implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the failed response in client process
      **/
     public Response200ForClientProcess data(FailedResponseClientProcessData data) {
         this.data = data;
@@ -160,6 +162,9 @@ public class Response200ForClientProcess implements Serializable {
         return sb.toString();
     }
 
+    /**
+     * Enum for status.
+     **/
     public enum StatusEnum {
 
         ERROR(String.valueOf("ERROR"));
@@ -173,7 +178,8 @@ public class Response200ForClientProcess implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static StatusEnum fromString(String s) {
             for (StatusEnum b : StatusEnum.values()) {

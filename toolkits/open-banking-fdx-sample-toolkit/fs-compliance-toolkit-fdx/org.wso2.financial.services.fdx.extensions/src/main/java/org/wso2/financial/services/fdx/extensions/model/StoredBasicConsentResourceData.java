@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the stored basic consent resource data.
+ */
 @JsonTypeName("StoredBasicConsentResourceData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -29,7 +31,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData id(String id) {
         this.id = id;
@@ -49,7 +51,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the receipt associated with the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData receipt(Object receipt) {
         this.receipt = receipt;
@@ -69,7 +71,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the time when the stored basic consent resource data was created.
      **/
     public StoredBasicConsentResourceData createdTime(Integer createdTime) {
         this.createdTime = createdTime;
@@ -89,7 +91,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the time when the stored basic consent resource data was last updated.
      **/
     public StoredBasicConsentResourceData updatedTime(Integer updatedTime) {
         this.updatedTime = updatedTime;
@@ -109,7 +111,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the client ID associated with the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData clientId(String clientId) {
         this.clientId = clientId;
@@ -129,7 +131,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the type of the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData type(String type) {
         this.type = type;
@@ -149,7 +151,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData status(String status) {
         this.status = status;
@@ -169,7 +171,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the frequency of the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData frequency(Integer frequency) {
         this.frequency = frequency;
@@ -189,7 +191,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the validity time of the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData validityTime(Integer validityTime) {
         this.validityTime = validityTime;
@@ -209,7 +211,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the recurring indicator for the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData recurringIndicator(Boolean recurringIndicator) {
         this.recurringIndicator = recurringIndicator;
@@ -229,7 +231,7 @@ public class StoredBasicConsentResourceData implements Serializable {
     }
 
     /**
-     *
+     * Set the attributes associated with the stored basic consent resource data.
      **/
     public StoredBasicConsentResourceData attributes(Object attributes) {
         this.attributes = attributes;

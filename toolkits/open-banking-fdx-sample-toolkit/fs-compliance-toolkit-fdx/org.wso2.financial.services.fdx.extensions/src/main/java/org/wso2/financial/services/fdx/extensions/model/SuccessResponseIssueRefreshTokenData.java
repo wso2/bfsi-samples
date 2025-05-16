@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Details of the context for SuccessResponseIssueRefreshToken
+ */
 @JsonTypeName("SuccessResponseIssueRefreshTokenData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class SuccessResponseIssueRefreshTokenData implements Serializable {
     }
 
     /**
-     *
+     * Set the issue refresh token of success response issue refresh token
      **/
     public SuccessResponseIssueRefreshTokenData issueRefreshToken(Boolean issueRefreshToken) {
         this.issueRefreshToken = issueRefreshToken;
@@ -40,7 +42,7 @@ public class SuccessResponseIssueRefreshTokenData implements Serializable {
     }
 
     /**
-     *
+     * Set the refresh token validity period of success response issue refresh token
      **/
     public SuccessResponseIssueRefreshTokenData refreshTokenValidityPeriod(Long refreshTokenValidityPeriod) {
         this.refreshTokenValidityPeriod = refreshTokenValidityPeriod;

@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the pre-user authorization request body.
+ */
 @JsonTypeName("PreUserAuthorizationRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class PreUserAuthorizationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set a unique request identifier for the pre-user authorization request.
      **/
     public PreUserAuthorizationRequestBody requestId(String requestId) {
         this.requestId = requestId;
@@ -41,7 +43,7 @@ public class PreUserAuthorizationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the data of the pre-user authorization request body.
      **/
     public PreUserAuthorizationRequestBody data(PreUserAuthorizationRequestBodyData data) {
         this.data = data;

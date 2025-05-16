@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for SuccessResponseForEventWithDetails
+ */
 @JsonTypeName("SuccessResponseForEventWithDetails_data")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -18,13 +20,14 @@ public class SuccessResponseForEventWithDetailsData implements Serializable {
     private static final long serialVersionUID = 1L;
     private String callbackUrl;
     private String version;
-    private @Valid List<String> eventTypes = new ArrayList<>();
+    @Valid
+    private List<String> eventTypes = new ArrayList<>();
 
     public SuccessResponseForEventWithDetailsData() {
     }
 
     /**
-     *
+     * Set the callback URL of success response for event with details
      **/
     public SuccessResponseForEventWithDetailsData callbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
@@ -44,7 +47,7 @@ public class SuccessResponseForEventWithDetailsData implements Serializable {
     }
 
     /**
-     *
+     * Set the version of success response for event with details
      **/
     public SuccessResponseForEventWithDetailsData version(String version) {
         this.version = version;
@@ -64,7 +67,7 @@ public class SuccessResponseForEventWithDetailsData implements Serializable {
     }
 
     /**
-     *
+     * Set the event types of success response for event with details
      **/
     public SuccessResponseForEventWithDetailsData eventTypes(List<String> eventTypes) {
         this.eventTypes = eventTypes;

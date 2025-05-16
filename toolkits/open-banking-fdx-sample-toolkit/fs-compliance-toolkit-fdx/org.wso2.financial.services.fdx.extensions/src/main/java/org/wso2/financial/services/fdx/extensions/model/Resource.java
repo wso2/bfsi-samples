@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the resource.
+ */
 @JsonTypeName("Resource")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     *
+     * Set the unique identifier for the account.
      **/
     public Resource accountId(String accountId) {
         this.accountId = accountId;
@@ -41,7 +43,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     *
+     * Set the permission associated with the resource.
      **/
     public Resource permission(String permission) {
         this.permission = permission;
@@ -61,7 +63,7 @@ public class Resource implements Serializable {
     }
 
     /**
-     *
+     * Set the status of the resource.
      **/
     public Resource status(String status) {
         this.status = status;

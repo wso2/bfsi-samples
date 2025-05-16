@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for ValidateConsentAccessRequestBody
+ */
 @JsonTypeName("ValidateConsentAccessRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -41,7 +43,7 @@ public class ValidateConsentAccessRequestBody implements Serializable {
     }
 
     /**
-     *
+     * The data of validate consent access request body
      **/
     public ValidateConsentAccessRequestBody data(ValidateConsentAccessData data) {
         this.data = data;

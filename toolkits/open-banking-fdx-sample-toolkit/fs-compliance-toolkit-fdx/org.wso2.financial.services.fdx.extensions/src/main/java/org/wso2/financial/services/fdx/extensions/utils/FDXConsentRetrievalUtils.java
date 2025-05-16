@@ -133,12 +133,13 @@ public class FDXConsentRetrievalUtils {
             JSONObject validationResponse) throws Exception {
         // If previous validation failed
         if (validationResponse.has(FDXCommonConstants.STATUS)) {
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR)
+            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
                 return;
-        } else
+            }
+        } else {
             validationResponse.put(FDXCommonConstants.STATUS,
                     SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
-
+        }
         String accountsURL = ConfigurableProperties.SHARABLE_ENDPOINT;
         String userId = populateConsentAuthorizeScreenRequestBody.getData().getUserId();
 
@@ -252,12 +253,13 @@ public class FDXConsentRetrievalUtils {
 
         // If previous validation failed
         if (validationResponse.has(FDXCommonConstants.STATUS)) {
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR)
+            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
                 return;
-        } else
+            }
+        } else {
             validationResponse.put(FDXCommonConstants.STATUS,
                     SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
-
+        }
         for (Object item : validationResponse.getJSONArray(FDXCommonConstants.CONSENT_DATA)) {
             Map<String, Object> consentDataItem = ((JSONObject) item).toMap();
             Map<String, List<String>> dataClusterMapping = new HashMap<>();

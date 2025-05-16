@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the refresh token request body.
+ */
 @JsonTypeName("RefreshTokenRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -22,7 +24,7 @@ public class RefreshTokenRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the grant type of the refresh token request body.
      **/
     public RefreshTokenRequestBody grantType(String grantType) {
         this.grantType = grantType;
@@ -42,7 +44,7 @@ public class RefreshTokenRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the consent created time of the refresh token request body.
      **/
     public RefreshTokenRequestBody consentCreatedTime(Long consentCreatedTime) {
         this.consentCreatedTime = consentCreatedTime;
@@ -62,7 +64,7 @@ public class RefreshTokenRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the consent validity period of the refresh token request body.
      **/
     public RefreshTokenRequestBody consentValidityPeriod(Long consentValidityPeriod) {
         this.consentValidityPeriod = consentValidityPeriod;
@@ -82,7 +84,7 @@ public class RefreshTokenRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set the default refresh token validity period of the refresh token request body.
      **/
     public RefreshTokenRequestBody defaultRefreshTokenValidityPeriod(Long defaultRefreshTokenValidityPeriod) {
         this.defaultRefreshTokenValidityPeriod = defaultRefreshTokenValidityPeriod;

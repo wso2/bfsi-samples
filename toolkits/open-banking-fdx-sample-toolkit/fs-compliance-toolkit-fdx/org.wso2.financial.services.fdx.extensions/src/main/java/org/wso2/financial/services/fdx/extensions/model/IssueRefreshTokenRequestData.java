@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the issue refresh token request data.
+ */
 @JsonTypeName("IssueRefreshTokenRequestData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -22,7 +24,7 @@ public class IssueRefreshTokenRequestData implements Serializable {
     }
 
     /**
-     *
+     * Set the grant type of the issue refresh token request data.
      **/
     public IssueRefreshTokenRequestData grantType(String grantType) {
         this.grantType = grantType;
@@ -42,7 +44,7 @@ public class IssueRefreshTokenRequestData implements Serializable {
     }
 
     /**
-     *
+     * Set the consent created time of the issue refresh token request data.
      **/
     public IssueRefreshTokenRequestData consentCreatedTime(Long consentCreatedTime) {
         this.consentCreatedTime = consentCreatedTime;
@@ -62,7 +64,7 @@ public class IssueRefreshTokenRequestData implements Serializable {
     }
 
     /**
-     *
+     * Set the consent validity period of the issue refresh token request data.
      **/
     public IssueRefreshTokenRequestData consentValidityPeriod(Long consentValidityPeriod) {
         this.consentValidityPeriod = consentValidityPeriod;
@@ -82,7 +84,7 @@ public class IssueRefreshTokenRequestData implements Serializable {
     }
 
     /**
-     *
+     * Set the default refresh token validity period of the issue refresh token request data.
      **/
     public IssueRefreshTokenRequestData defaultRefreshTokenValidityPeriod(Long defaultRefreshTokenValidityPeriod) {
         this.defaultRefreshTokenValidityPeriod = defaultRefreshTokenValidityPeriod;

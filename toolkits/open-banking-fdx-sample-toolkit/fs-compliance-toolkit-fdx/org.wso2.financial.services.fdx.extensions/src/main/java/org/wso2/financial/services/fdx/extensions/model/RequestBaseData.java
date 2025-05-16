@@ -7,7 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the request base data.
+ */
 @JsonTypeName("RequestBaseData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class RequestBaseData implements Serializable {
     }
 
     /**
-     *
+     * Set the user ID of the request base data.
      **/
     public RequestBaseData userId(String userId) {
         this.userId = userId;
@@ -40,7 +42,7 @@ public class RequestBaseData implements Serializable {
     }
 
     /**
-     *
+     * Set the consent ID of the request base data.
      **/
     public RequestBaseData consentId(String consentId) {
         this.consentId = consentId;

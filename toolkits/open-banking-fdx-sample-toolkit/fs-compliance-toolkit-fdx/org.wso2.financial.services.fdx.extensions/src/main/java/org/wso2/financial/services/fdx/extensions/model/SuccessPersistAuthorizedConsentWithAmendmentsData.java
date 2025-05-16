@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context related to the success persist authorized consent with amendments data.
+ */
 @JsonTypeName("SuccessPersistAuthorizedConsentWithAmendmentsData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -20,7 +22,7 @@ public class SuccessPersistAuthorizedConsentWithAmendmentsData implements Serial
     }
 
     /**
-     *
+     * Set the data of the success persist authorized consent with amendments data.
      **/
     public SuccessPersistAuthorizedConsentWithAmendmentsData data(ConsentPersistenceSuccessDataWithAmendments data) {
         this.data = data;

@@ -10,13 +10,16 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the user authentication request.
+ */
 @JsonTypeName("PostUserAuthRequestBaseData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class PostUserAuthRequestBaseData implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<String> scopes = new ArrayList<>();
+    @Valid
+    private List<String> scopes = new ArrayList<>();
     private String consentId;
     private Integer validityPeriod;
 

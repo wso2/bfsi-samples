@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context related to the event subscription request.
+ */
 @JsonTypeName("EventSubscriptionRequest")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -21,7 +23,7 @@ public class EventSubscriptionRequest implements Serializable {
     }
 
     /**
-     *
+     * Set the event type of the event subscription request
      **/
     public EventSubscriptionRequest eventType(EventTypeEnum eventType) {
         this.eventType = eventType;
@@ -98,6 +100,9 @@ public class EventSubscriptionRequest implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * The event type of the event subscription request
+     **/
     public enum EventTypeEnum {
 
         SUBSCRIPTION_CREATION(String.valueOf("SubscriptionCreation")),
@@ -116,7 +121,8 @@ public class EventSubscriptionRequest implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static EventTypeEnum fromString(String s) {
             for (EventTypeEnum b : EventTypeEnum.values()) {

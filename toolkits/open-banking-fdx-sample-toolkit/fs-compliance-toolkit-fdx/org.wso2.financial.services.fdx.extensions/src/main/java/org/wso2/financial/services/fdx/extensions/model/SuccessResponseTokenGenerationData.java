@@ -10,19 +10,22 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Details of the context for SuccessResponseTokenGenerationData
+ */
 @JsonTypeName("SuccessResponseTokenGenerationData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class SuccessResponseTokenGenerationData implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<@Valid SuccessResponseTokenGenerationDataParameters> parameters = new ArrayList<>();
+    @Valid
+    private List<@Valid SuccessResponseTokenGenerationDataParameters> parameters = new ArrayList<>();
 
     public SuccessResponseTokenGenerationData() {
     }
 
     /**
-     *
+     * Set the parameters of success response token generation data
      **/
     public SuccessResponseTokenGenerationData parameters(
             List<@Valid SuccessResponseTokenGenerationDataParameters> parameters) {

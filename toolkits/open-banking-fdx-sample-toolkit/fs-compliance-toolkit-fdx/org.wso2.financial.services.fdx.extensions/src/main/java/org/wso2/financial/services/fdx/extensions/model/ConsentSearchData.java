@@ -9,7 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Objects;
 
-
+/**
+ * Defines the context data related to the consent search data.
+ */
 @JsonTypeName("ConsentSearchData")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen",
         date = "2025-05-07T09:57:13.986407+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
@@ -24,7 +26,7 @@ public class ConsentSearchData implements Serializable {
     }
 
     /**
-     *
+     * Set the search type of the consent search data
      **/
     public ConsentSearchData searchType(SearchTypeEnum searchType) {
         this.searchType = searchType;
@@ -123,6 +125,9 @@ public class ConsentSearchData implements Serializable {
         return o.toString().replace("\n", "\n    ");
     }
 
+    /**
+     * The search type of the consent search data
+     **/
     public enum SearchTypeEnum {
 
         BULK_SERACH(String.valueOf("BULK_SERACH")), AMENDMENT_HISTORY(String.valueOf("AMENDMENT_HISTORY"));
@@ -136,7 +141,8 @@ public class ConsentSearchData implements Serializable {
 
         /**
          * Convert a String into String, as specified in the
-         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">See JAX RS 2.0 Specification, section 3.2, p. 12</a>
+         * <a href="https://download.oracle.com/otndocs/jcp/jaxrs-2_0-fr-eval-spec/index.html">
+         * See JAX RS 2.0 Specification, section 3.2, p. 12</a>
          */
         public static SearchTypeEnum fromString(String s) {
             for (SearchTypeEnum b : SearchTypeEnum.values()) {

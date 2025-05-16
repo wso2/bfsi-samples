@@ -10,20 +10,23 @@ import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
 
-
+/**
+ * Defines the context data related to the access token generation request body
+ */
 @JsonTypeName("AccessTokenGenerationRequestBody")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaJAXRSSpecServerCodegen", date = "2025-04" +
         "-25T07:03:50.021891+05:30[Asia/Colombo]", comments = "Generator version: 7.12.0")
 public class AccessTokenGenerationRequestBody implements Serializable {
     private static final long serialVersionUID = 1L;
-    private @Valid List<String> scopes = new ArrayList<>();
+    @Valid
+    private List<String> scopes = new ArrayList<>();
     private String grantType;
 
     public AccessTokenGenerationRequestBody() {
     }
 
     /**
-     *
+     * Set scopes for the access token generation request
      **/
     public AccessTokenGenerationRequestBody scopes(List<String> scopes) {
         this.scopes = scopes;
@@ -60,7 +63,7 @@ public class AccessTokenGenerationRequestBody implements Serializable {
     }
 
     /**
-     *
+     * Set grant type for the access token generation request
      **/
     public AccessTokenGenerationRequestBody grantType(String grantType) {
         this.grantType = grantType;
