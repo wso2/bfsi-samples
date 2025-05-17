@@ -1,5 +1,9 @@
 package org.wso2.financial.services.fdx.extensions.utils;
 
+import org.apache.http.StatusLine;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mockito.MockedStatic;
@@ -7,10 +11,19 @@ import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.wso2.financial.services.accelerator.common.util.HTTPClientUtils;
+import org.wso2.financial.services.fdx.extensions.configurations.ConfigurableProperties;
 import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorizeScreenData;
 import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorizeScreenRequestBody;
+import org.wso2.financial.services.fdx.extensions.model.SuccessResponsePopulateConsentAuthorizeScreen;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.Mockito.mock;
@@ -32,7 +45,7 @@ public class FDXConsentRetrievalUtilsTests {
     }
 
     @Test
-    void testRetrieveConsentData_success() {
+    void testRetrieveConsentDataSuccess() {
         // Mock input
         Map<String, Object> requestParams = new HashMap<>();
         JSONArray authDetails = new JSONArray();
@@ -72,7 +85,7 @@ public class FDXConsentRetrievalUtilsTests {
     }
 
     @Test
-    void testRetrieveAccountData_success() throws Exception {
+    void testRetrieveAccountDataSuccess() throws Exception {
         // Mock input
         when(requestData.getUserId()).thenReturn("user123");
         when(requestBody.getData()).thenReturn(requestData);
@@ -109,7 +122,7 @@ public class FDXConsentRetrievalUtilsTests {
     }
 
     @Test
-    void testRetrieveAccountData_noAccounts() throws Exception {
+    void testRetrieveAccountDataWithoutAccounts() throws Exception {
         // Mock input
         when(requestData.getUserId()).thenReturn("user123");
         when(requestBody.getData()).thenReturn(requestData);
@@ -136,4 +149,100 @@ public class FDXConsentRetrievalUtilsTests {
         }
     }
 
+    @Test
+    void testGetConsentExpiryDateTimeWithZero() {
+        // Mock input
+        long durationPeriod = 0;
+
+        // Execute
+        OffsetDateTime result = (OffsetDateTime) FDXConsentRetrievalUtils.getConsentExpiryDateTime(durationPeriod);
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+
+        // Assert - allow for a 1 second difference
+        long secondsDifference = Math.abs(result.toEpochSecond() - now.toEpochSecond());
+        Assert.assertTrue(secondsDifference <= 1, "Time difference is more than 1 second");
+    }
+
+    @Test
+    public void testGetAccountsFromEndpoint_Non200Response() throws Exception {
+        // Mock URL
+        String url = ConfigurableProperties.SHARABLE_ENDPOINT;
+
+        // Mock HttpClient
+        CloseableHttpClient mockClient = Mockito.mock(CloseableHttpClient.class);
+        CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
+        StatusLine mockStatusLine = Mockito.mock(StatusLine.class);
+
+        // Mock behavior
+        Mockito.when(mockStatusLine.getStatusCode()).thenReturn(404); // simulate not found
+        Mockito.when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+        Mockito.when(mockClient.execute(Mockito.any(HttpGet.class))).thenReturn(mockResponse);
+
+        // Inject the mock into your utility if possible (assumes HTTPClientUtils is mockable)
+        try (MockedStatic<HTTPClientUtils> mockStatic = Mockito.mockStatic(HTTPClientUtils.class)) {
+            mockStatic.when(HTTPClientUtils::getHttpsClient).thenReturn(mockClient);
+            // Call the method
+            String result =
+                    FDXConsentRetrievalUtils.getAccountsFromEndpoint(url, Collections.emptyMap(),
+                            Collections.emptyMap());
+
+            // Assert
+            Assert.assertNull(result);
+        }
+    }
+
+    @Test
+    void testRetrieveDataClusterDataWithMultipleResources() {
+        // Prepare the authorization details
+        Map<String, Object> authorizationDetail = new HashMap<>();
+        Map<String, List<String>> resources = new HashMap<>();
+        resources.put("resource1", Arrays.asList("INVESTMENTS", "TRANSACTIONS"));
+        resources.put("resource2", Arrays.asList("TRANSACTIONS", "PAYMENT_SUPPORT"));
+        authorizationDetail.put(FDXCommonConstants.RESOURCES, resources);
+
+        List<Map<String, Object>> authorizationDetails = new ArrayList<>();
+        authorizationDetails.add(authorizationDetail);
+
+        // Prepare one consentData item with the above authDetails
+        Map<String, Object> consentDataItem = new HashMap<>();
+        consentDataItem.put(FDXCommonConstants.AUTHORIZATION_DETAILS, authorizationDetails);
+
+        JSONObject consentDataJson = new JSONObject(consentDataItem);
+
+        // Wrap in validationResponse
+        JSONObject validationResponse = new JSONObject();
+        validationResponse.put(FDXCommonConstants.STATUS,
+                SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
+        validationResponse.put(FDXCommonConstants.CONSENT_DATA, new JSONArray().put(consentDataJson));
+
+        // Execute
+        FDXConsentRetrievalUtils.retrieveDataClusterData(validationResponse);
+
+        // Assert status unchanged
+        Assert.assertEquals(
+                validationResponse.get(FDXCommonConstants.STATUS),
+                SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS
+        );
+
+        // Assert data requested has been populated
+        JSONObject updatedConsentItem = validationResponse
+                .getJSONArray(FDXCommonConstants.CONSENT_DATA)
+                .getJSONObject(0);
+
+        Assert.assertTrue(updatedConsentItem.has(FDXCommonConstants.DATA_REQUESTED));
+    }
+
+    @Test
+    void testAccountIdLengthLessThan4() {
+        String accountId = "123"; // Length = 3
+        String masked = FDXConsentRetrievalUtils.getMaskedAccountNumber(accountId);
+        Assert.assertEquals(masked, "**3");
+    }
+
+    @Test
+    void testAccountIdLengthGreaterThan4() {
+        String accountId = "123456789"; // Length = 9
+        String masked = FDXConsentRetrievalUtils.getMaskedAccountNumber(accountId);
+        Assert.assertEquals(masked, "*****6789");
+    }
 }

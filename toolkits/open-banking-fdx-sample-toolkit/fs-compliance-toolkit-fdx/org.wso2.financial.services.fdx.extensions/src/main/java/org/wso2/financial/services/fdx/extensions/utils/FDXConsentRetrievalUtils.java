@@ -123,7 +123,7 @@ public class FDXConsentRetrievalUtils {
                 "No debtor account found in consent"));
     }
 
-    private static Object getConsentExpiryDateTime(long sharingDuration) {
+    public static Object getConsentExpiryDateTime(long sharingDuration) {
         OffsetDateTime currentTime = OffsetDateTime.now(ZoneOffset.UTC);
         return currentTime.plusDays(sharingDuration);
     }
@@ -180,7 +180,7 @@ public class FDXConsentRetrievalUtils {
                 validationResponse.put(FDXCommonConstants.CONSUMER_DATA, consumerDataObject);
             } catch (JSONException e) {
                 log.error("Error occurred while parsing account data", e);
-                throw new Exception();
+                throw new JSONException(e.getMessage());
             }
         } else {
             log.error("Sharable accounts endpoint is not configured properly");
@@ -292,15 +292,6 @@ public class FDXConsentRetrievalUtils {
         }
     }
 
-    /**
-     * Masks the account number based on its length.
-     * If the account ID length is less than 4, mask all but the last character.
-     * If the account ID length is exactly 4, mask all but the last two characters.
-     * If the length is greater than 4, mask all but the last 4 characters.
-     *
-     * @param accountId plain account id.
-     * @return account number in the displayable masked format.
-     */
     public static String getMaskedAccountNumber(String accountId) {
         int accountIdLength = accountId.length();
         if (accountIdLength > 1) {
