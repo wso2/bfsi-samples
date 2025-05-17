@@ -6,26 +6,22 @@ import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.annotations.Component;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.AuthorizedScopes;
-import org.wso2.carbon.identity.application.common.model.ServiceProvider;
-import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementServiceImpl;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.oauth.rar.exception.AuthorizationDetailsProcessingException;
 import org.wso2.carbon.identity.oauth.rar.model.AuthorizationDetail;
 import org.wso2.carbon.identity.oauth.rar.model.AuthorizationDetails;
 import org.wso2.carbon.identity.oauth.rar.model.ValidationResult;
 import org.wso2.carbon.identity.oauth2.IdentityOAuth2Exception;
-import org.wso2.carbon.identity.oauth2.IdentityOAuth2ServerException;
 import org.wso2.carbon.identity.oauth2.rar.core.AuthorizationDetailsProcessor;
 import org.wso2.carbon.identity.oauth2.rar.model.AuthorizationDetailsContext;
 import org.wso2.financial.services.fdx.identity.authorize.commons.ScopeDataClusterMappings;
+import org.wso2.financial.services.fdx.identity.authorize.utils.AuthorizationDetailProcessorUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static org.wso2.carbon.identity.oauth2.util.OAuth2Util.getServiceProvider;
 
 /**
  * The {@code FDXAuthorizationDetailProcessorImpl} class is an implementation of the
@@ -42,28 +38,36 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
     private static final Log log = LogFactory.getLog(FDXAuthorizationDetailProcessorImpl.class);
 
     @Override
-    public ValidationResult validate(AuthorizationDetailsContext authorizationDetailsContext) throws
-        AuthorizationDetailsProcessingException, IdentityOAuth2ServerException {
+    public ValidationResult validate(AuthorizationDetailsContext authorizationDetailsContext)
+            throws AuthorizationDetailsProcessingException {
         try {
             AuthorizationDetail authorizationDetail = authorizationDetailsContext.getAuthorizationDetail();
             List<List<String>> dataClusters = getDataClusters(authorizationDetail);
             String clientId = authorizationDetailsContext.getOAuthAppDO().getOauthConsumerKey();
+            if (clientId != null) {
+                String tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+                String appId =
+                        AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(clientId, tenantDomain);
 
-            ServiceProvider serviceProvider = getServiceProvider(clientId);
-            String appId;
-            String tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
-            if (serviceProvider != null) {
-                appId = serviceProvider.getApplicationResourceId();
-                AuthorizedAPIManagementServiceImpl service = new AuthorizedAPIManagementServiceImpl();
-                List<AuthorizedScopes> clientScopes = service.getAuthorizedScopes(appId, tenantDomain);
+                List<AuthorizedScopes> clientScopes =
+                        AuthorizationDetailProcessorUtils.getAuthorizedScopesByAppId(appId, tenantDomain);
 
                 Set<String> scopeList = new HashSet<>();
                 for (AuthorizedScopes scope : clientScopes) {
-                    scopeList.addAll(scope.getScopes());
+                    if (scope != null && scope.getScopes() != null) {
+                        scope.getScopes().stream()
+                                .filter(s -> s != null && s.startsWith("fdx:"))
+                                .forEach(scopeList::add);
+                    }
                 }
+
                 for (List<String> dataCluster : dataClusters) {
                     for (String cluster : dataCluster) {
                         Set<String> scopeMapping = ScopeDataClusterMappings.getScopeByDataCluster(cluster);
+                        if (scopeMapping.isEmpty()) {
+                            log.debug("Requested data cluster not found");
+                            throw new AuthorizationDetailsProcessingException("invalid_scope");
+                        }
                         for (String scope : scopeMapping) {
                             if (!scopeList.contains(scope)) {
                                 log.debug("Requested scope not found");

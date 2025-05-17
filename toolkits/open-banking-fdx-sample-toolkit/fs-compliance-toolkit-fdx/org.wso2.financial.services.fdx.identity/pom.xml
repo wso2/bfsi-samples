@@ -51,6 +51,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.common</artifactId>
+            <version>7.8.146</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
             <artifactId>org.wso2.carbon.identity.oauth</artifactId>
             <scope>provided</scope>
@@ -229,7 +235,8 @@
                         <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
                         <Export-Package>
                             org.wso2.financial.services.fdx.identity.authorize.impl,
-                            org.wso2.financial.services.fdx.identity.authorize.commons
+                            org.wso2.financial.services.fdx.identity.authorize.commons,
+                            org.wso2.financial.services.fdx.identity.authorize.utils
                         </Export-Package>
                         <Import-Package>
                             org.wso2.carbon.identity.application.common.model,
@@ -244,9 +251,6 @@
                             org.wso2.carbon.identity.application.common,
                             org.wso2.carbon.identity.core.util
                         </Import-Package>
-<!--                        <Private-Package>-->
-<!--                            org.wso2.carbon.identity.oauth2.internal-->
-<!--                        </Private-Package>-->
                     </instructions>
                 </configuration>
             </plugin>

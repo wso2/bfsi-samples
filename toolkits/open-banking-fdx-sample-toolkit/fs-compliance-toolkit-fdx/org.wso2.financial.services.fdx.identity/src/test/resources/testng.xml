@@ -21,9 +21,7 @@
 <suite name="identity-base-test-suite">
     <test name="fdx-dcr-test-all">
         <classes>
-            <class name="org.wso2.financial.services.fdx.identity.dcr.FDXDCRValidationTest"/>
-            <class name="org.wso2.financial.services.fdx.identity.dcr.util.FDXRegistrationUtilsTest"/>
-            <class name="org.wso2.financial.services.fdx.identity.dcr.util.FDXValidatorUtilsTest"/>
+            <class name="org.wso2.financial.services.fdx.identity.authorize.impl.FDXAuthorizationDetailProcessorImplTests"/>
         </classes>
     </test>
 </suite>
