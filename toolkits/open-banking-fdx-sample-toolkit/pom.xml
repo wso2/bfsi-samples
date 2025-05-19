@@ -36,8 +36,8 @@
 
     <modules>
         <module>fs-compliance-toolkit-fdx</module>
+<!--        <module>components</module>-->
     </modules>
-
 
     <profiles>
         <profile>
