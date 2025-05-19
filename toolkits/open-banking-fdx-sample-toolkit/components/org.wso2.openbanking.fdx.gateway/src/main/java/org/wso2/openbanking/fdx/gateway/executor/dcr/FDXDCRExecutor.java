@@ -23,8 +23,8 @@ import com.wso2.openbanking.accelerator.gateway.executor.dcr.DCRExecutor;
 import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIRequestContext;
 import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIResponseContext;
 import org.apache.commons.lang3.StringUtils;
-import org.wso2.financial.services.fdx.common.utils.CommonConstants;
-import org.wso2.financial.services.fdx.common.utils.FDXCommonUtils;
+import org.wso2.openbanking.fdx.common.utils.CommonConstants;
+import org.wso2.openbanking.fdx.common.utils.FDXCommonUtils;
 import org.wso2.openbanking.fdx.gateway.util.FDXGatewayConstants;
 import org.wso2.openbanking.fdx.gateway.util.FDXGatewayUtils;
 

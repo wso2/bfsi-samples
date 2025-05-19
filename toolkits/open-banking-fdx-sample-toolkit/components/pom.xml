@@ -29,7 +29,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>components</artifactId>
+    <artifactId>ob-compliance-toolkit-fdx-main-components</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
 
