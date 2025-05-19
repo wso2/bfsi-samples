@@ -14,6 +14,7 @@ import org.wso2.carbon.identity.oauth.rar.model.ValidationResult;
 import org.wso2.carbon.identity.oauth2.IdentityOAuth2Exception;
 import org.wso2.carbon.identity.oauth2.rar.core.AuthorizationDetailsProcessor;
 import org.wso2.carbon.identity.oauth2.rar.model.AuthorizationDetailsContext;
+import org.wso2.financial.services.fdx.identity.authorize.commons.FDXIdentityCommonConstants;
 import org.wso2.financial.services.fdx.identity.authorize.commons.ScopeDataClusterMappings;
 import org.wso2.financial.services.fdx.identity.authorize.utils.AuthorizationDetailProcessorUtils;
 
@@ -88,28 +89,34 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
         }
     }
 
+    /**
+     * Extracts data clusters from the authorization details.
+     *
+     * @param authorizationDetails The authorization details object.
+     * @return A list of data clusters extracted from the authorization details.
+     */
     public List<List<String>> getDataClusters(AuthorizationDetail authorizationDetails) {
         List<List<String>> dataClusters = new ArrayList<>();
 
         // Get details map
         Map<String, Object> details = authorizationDetails.getDetails();
-        if (details == null || !details.containsKey("consentRequest")) {
+        if (details == null || !details.containsKey(FDXIdentityCommonConstants.CONSENT_REQUEST)) {
             return dataClusters; // Return empty list if no consentRequest
         }
 
         // Get consentRequest
-        Object consentRequestObj = details.get("consentRequest");
+        Object consentRequestObj = details.get(FDXIdentityCommonConstants.CONSENT_REQUEST);
         if (!(consentRequestObj instanceof Map)) {
             return dataClusters; // Return empty list if not a Map
         }
 
         Map<String, Object> consentRequest = (Map<String, Object>) consentRequestObj;
-        if (!consentRequest.containsKey("resources")) {
+        if (!consentRequest.containsKey(FDXIdentityCommonConstants.RESOURCES)) {
             return dataClusters;  // Return empty list if no resources
         }
 
         // Get resources list
-        Object resourcesObj = consentRequest.get("resources");
+        Object resourcesObj = consentRequest.get(FDXIdentityCommonConstants.RESOURCES);
         if (!(resourcesObj instanceof List)) {
             return dataClusters; // Return empty list if not a List
         }
@@ -118,11 +125,11 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
         for (Object resourceObj : resources) {
             if (resourceObj instanceof Map) {
                 Map<String, Object> resource = (Map<String, Object>) resourceObj;
-                if (!resource.containsKey("dataClusters")) {
+                if (!resource.containsKey(FDXIdentityCommonConstants.DATA_CLUSTERS)) {
                     continue; // Skip if no dataClusters
                 }
 
-                Object dataClustersObj = resource.get("dataClusters");
+                Object dataClustersObj = resource.get(FDXIdentityCommonConstants.DATA_CLUSTERS);
                 if (dataClustersObj instanceof List) {
                     List<?> clusterList = (List<?>) dataClustersObj;
                     List<String> extractedClusters = new ArrayList<>();
@@ -139,7 +146,6 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
                 }
             }
         }
-
         return dataClusters;
     }
 

@@ -13,6 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.financial.services.accelerator.common.util.HTTPClientUtils;
+import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ResponseStatus;
 import org.wso2.financial.services.fdx.extensions.configurations.ConfigurableProperties;
 import org.wso2.financial.services.fdx.extensions.model.FailedResponse;
 import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorizeScreenData;
@@ -38,11 +39,18 @@ import javax.validation.Valid;
 public class FDXConsentRetrievalUtils {
     private static final Log log = LogFactory.getLog(FDXConsentRetrievalUtils.class);
 
-    public static void retrieveConsentData(
-            @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody,
-            JSONObject validationResponse) {
+    /**
+     * Retrieves consent data and populates the response.
+     *
+     * @param populateConsentAuthorizeScreenRequestBody The request body containing the consent data to be retrieved.
+     * @throws Exception If an error occurs during the retrieval process.
+     */
+    public static JSONObject retrieveConsentData(
+            @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody) {
 
-        validationResponse.put(FDXCommonConstants.STATUS,
+        JSONObject consentRetrievalResponse = new JSONObject();
+
+        consentRetrievalResponse.put(FDXCommonConstants.STATUS,
                 SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
 
         PopulateConsentAuthorizeScreenData data = populateConsentAuthorizeScreenRequestBody.getData();
@@ -51,11 +59,21 @@ public class FDXConsentRetrievalUtils {
         JSONObject requestParameters = new JSONObject((Map<?, ?>) requestParam);
 
         // Append consent data to response
-        appendConsentDataToResponse(requestParameters, validationResponse);
+        appendConsentDataToResponse(requestParameters, consentRetrievalResponse);
+        retrieveDataClusterData(consentRetrievalResponse);
+        retrieveAccountData(populateConsentAuthorizeScreenRequestBody, consentRetrievalResponse);
+
+        return consentRetrievalResponse;
     }
 
+    /**
+     * Appends consent data to the response object.
+     *
+     * @param requestParameters        The request parameters containing consent details.
+     * @param consentRetrievalResponse The response object to be populated with consent data.
+     */
     private static void appendConsentDataToResponse(JSONObject requestParameters,
-                                                    JSONObject validationResponse) {
+                                                    JSONObject consentRetrievalResponse) {
 
         long sharingDuration = 0;
         JSONObject consentDataObject = new JSONObject();
@@ -65,11 +83,13 @@ public class FDXConsentRetrievalUtils {
                     (FDXCommonConstants.AUTHORIZATION_DETAILS);
             for (int i = 0; i < authorizationDetails.length(); i++) {
                 JSONObject authorizationDetail = authorizationDetails.getJSONObject(i);
-                if (authorizationDetail.has("consentRequest")) {
-                    JSONObject authorizationDetailJSON = authorizationDetail.getJSONObject("consentRequest");
+                if (authorizationDetail.has(FDXCommonConstants.CONSENT_REQUEST)) {
+                    JSONObject authorizationDetailJSON =
+                            authorizationDetail.getJSONObject(FDXCommonConstants.CONSENT_REQUEST);
                     Map<String, Object> requestMap = new HashMap<>();
                     if (authorizationDetailJSON.has(FDXCommonConstants.DURATION_TYPE) &&
-                            !authorizationDetailJSON.optString(FDXCommonConstants.DURATION_TYPE).equals("ONE_TIME")) {
+                            !authorizationDetailJSON.optString(FDXCommonConstants.DURATION_TYPE)
+                                    .equals(FDXCommonConstants.ONE_TIME_CONSENT)) {
                         String sharingDurationStr = authorizationDetailJSON.optString
                                 (FDXCommonConstants.DURATION_PERIOD, "");
                         sharingDuration = sharingDurationStr.isEmpty() ? 0 : Long.parseLong(sharingDurationStr);
@@ -86,8 +106,8 @@ public class FDXConsentRetrievalUtils {
 
                         for (int j = 0; j < resources.length(); j++) {
                             JSONObject resource = resources.getJSONObject(j);
-                            String resourceType = resource.getString("resourceType");
-                            JSONArray dataClusters = resource.getJSONArray("dataClusters");
+                            String resourceType = resource.getString(FDXCommonConstants.RESOURCE_TYPE);
+                            JSONArray dataClusters = resource.getJSONArray(FDXCommonConstants.DATA_CLUSTERS_TITLE);
 
                             List<String> dataClusterList = new ArrayList<>();
                             for (int k = 0; k < dataClusters.length(); k++) {
@@ -109,35 +129,48 @@ public class FDXConsentRetrievalUtils {
                     requestParameters.getString(FDXCommonConstants.REDIRECT_URL));
             consentDataArray.put(consentDataObject);
 
-            validationResponse.put(FDXCommonConstants.CONSENT_DATA, consentDataArray);
+            consentRetrievalResponse.put(FDXCommonConstants.CONSENT_DATA, consentDataArray);
         } else {
-            handleBadRequests(validationResponse);
+            handleBadRequests(consentRetrievalResponse, FDXCommonConstants.BAD_REQUEST,
+                    "\"Authorization details are not available\"");
         }
     }
 
-    private static void handleBadRequests(JSONObject response) {
+    private static void handleBadRequests(JSONObject response, Integer statusCode, String errorMessage) {
         response.clear();
         response.put(FDXCommonConstants.STATUS, FailedResponse.StatusEnum.ERROR);
-        response.put(FDXCommonConstants.RESPONSE_STATUS, FDXCommonConstants.BAD_REQUEST);
-        response.put(FDXCommonConstants.DATA, new JSONObject().put(FDXCommonConstants.ERROR,
-                "No debtor account found in consent"));
+        response.put(FDXCommonConstants.RESPONSE_STATUS, statusCode);
+        response.put(FDXCommonConstants.DATA, new JSONObject().put(errorMessage));
     }
 
+    /**
+     * Calculates the consent expiry date and time based on the sharing duration.
+     *
+     * @param sharingDuration The duration in days for which the consent is valid.
+     * @return The calculated expiry date and time.
+     */
     public static Object getConsentExpiryDateTime(long sharingDuration) {
         OffsetDateTime currentTime = OffsetDateTime.now(ZoneOffset.UTC);
         return currentTime.plusDays(sharingDuration);
     }
 
+    /**
+     * Retrieves account data from the specified endpoint and populates the response.
+     *
+     * @param populateConsentAuthorizeScreenRequestBody The request body containing the user ID for account retrieval.
+     * @param consentRetrievalResponse                  The response object to be populated with account data.
+     * @throws Exception If an error occurs during the retrieval process.
+     */
     public static void retrieveAccountData(
             @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody,
-            JSONObject validationResponse) throws Exception {
+            JSONObject consentRetrievalResponse) throws JSONException {
         // If previous validation failed
-        if (validationResponse.has(FDXCommonConstants.STATUS)) {
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
+        if (consentRetrievalResponse.has(FDXCommonConstants.STATUS)) {
+            if (consentRetrievalResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
                 return;
             }
         } else {
-            validationResponse.put(FDXCommonConstants.STATUS,
+            consentRetrievalResponse.put(FDXCommonConstants.STATUS,
                     SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
         }
         String accountsURL = ConfigurableProperties.SHARABLE_ENDPOINT;
@@ -148,11 +181,12 @@ public class FDXConsentRetrievalUtils {
             parameters.put(FDXCommonConstants.USER_ID_KEY_NAME, userId);
             String accountData = getAccountsFromEndpoint(accountsURL, parameters, new HashMap<>());
 
-            if (accountData == null) {
-                throw new Exception("Exception occurred while getting accounts data");
-            } else if (accountData.isEmpty() && !validationResponse.has(FDXCommonConstants.CONSENT_DATA)) {
-                throw new Exception("Exception occurred while getting accounts data");
+            if (accountData == null || accountData.isEmpty()) {
+                handleBadRequests(consentRetrievalResponse,
+                        ResponseStatus.INTERNAL_SERVER_ERROR.getCode(),
+                        "Unable to load accounts data for the user: " + userId);
             }
+
             try {
                 JSONArray consumerDataObject = new JSONArray();
                 JSONObject jsonAccountData = new JSONObject(accountData);
@@ -177,17 +211,26 @@ public class FDXConsentRetrievalUtils {
 
                     consumerDataObject.put(accountObject);
                 }
-                validationResponse.put(FDXCommonConstants.CONSUMER_DATA, consumerDataObject);
+                consentRetrievalResponse.put(FDXCommonConstants.CONSUMER_DATA, consumerDataObject);
             } catch (JSONException e) {
                 log.error("Error occurred while parsing account data", e);
                 throw new JSONException(e.getMessage());
             }
         } else {
             log.error("Sharable accounts endpoint is not configured properly");
-            throw new Exception();
+            handleBadRequests(consentRetrievalResponse, ResponseStatus.INTERNAL_SERVER_ERROR.getCode(),
+                    "Accounts endpoint is not configured properly");
         }
     }
 
+    /**
+     * Retrieves account data from the specified endpoint.
+     *
+     * @param accountsURL The URL of the accounts endpoint.
+     * @param parameters  The parameters to be sent in the request.
+     * @param headers     The headers to be sent in the request.
+     * @return The response from the endpoint as a string.
+     */
     public static String getAccountsFromEndpoint(String accountsURL, Map<String, String> parameters,
                                                  Map<String, String> headers) {
 
@@ -249,18 +292,23 @@ public class FDXConsentRetrievalUtils {
         return baseURL.contains("?") ? baseURL + "&" + query : baseURL + "?" + query;
     }
 
-    public static void retrieveDataClusterData(JSONObject validationResponse) {
+    /**
+     * Retrieves data cluster data from the consent retrieval response.
+     *
+     * @param consentRetrievalResponse The consent retrieval response object.
+     */
+    public static void retrieveDataClusterData(JSONObject consentRetrievalResponse) {
 
         // If previous validation failed
-        if (validationResponse.has(FDXCommonConstants.STATUS)) {
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
+        if (consentRetrievalResponse.has(FDXCommonConstants.STATUS)) {
+            if (consentRetrievalResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
                 return;
             }
         } else {
-            validationResponse.put(FDXCommonConstants.STATUS,
+            consentRetrievalResponse.put(FDXCommonConstants.STATUS,
                     SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
         }
-        for (Object item : validationResponse.getJSONArray(FDXCommonConstants.CONSENT_DATA)) {
+        for (Object item : consentRetrievalResponse.getJSONArray(FDXCommonConstants.CONSENT_DATA)) {
             Map<String, Object> consentDataItem = ((JSONObject) item).toMap();
             Map<String, List<String>> dataClusterMapping = new HashMap<>();
 
@@ -292,6 +340,12 @@ public class FDXConsentRetrievalUtils {
         }
     }
 
+    /**
+     * Masks the account number based on its length.
+     *
+     * @param accountId The account ID to be masked.
+     * @return The masked account number.
+     */
     public static String getMaskedAccountNumber(String accountId) {
         int accountIdLength = accountId.length();
         if (accountIdLength > 1) {

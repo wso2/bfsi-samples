@@ -52,27 +52,24 @@ public class PopulateConsentAuthorizeScreenApi {
     public Response populateConsentAuthorizeScreenPost(
             @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody) {
         try {
-            JSONObject validationResponse = new JSONObject();
+            JSONObject consentRetrievalResponse =
+                    FDXConsentRetrievalUtils.retrieveConsentData(populateConsentAuthorizeScreenRequestBody);
 
-            FDXConsentRetrievalUtils.retrieveConsentData(populateConsentAuthorizeScreenRequestBody, validationResponse);
-            FDXConsentRetrievalUtils.retrieveDataClusterData(validationResponse);
-            FDXConsentRetrievalUtils.retrieveAccountData(populateConsentAuthorizeScreenRequestBody, validationResponse);
-
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
+            if (consentRetrievalResponse.get(FDXCommonConstants.STATUS) == FailedResponse.StatusEnum.ERROR) {
                 FailedResponse failedResponse = new FailedResponse();
                 failedResponse.setStatus(FailedResponse.StatusEnum.ERROR);
-                failedResponse.setErrorCode(validationResponse.getInt(FDXCommonConstants.RESPONSE_STATUS));
-                failedResponse.setData(validationResponse.get(FDXCommonConstants.DATA));
+                failedResponse.setErrorCode(consentRetrievalResponse.getInt(FDXCommonConstants.RESPONSE_STATUS));
+                failedResponse.setData(consentRetrievalResponse.get(FDXCommonConstants.DATA));
                 return Response.status(Response.Status.OK).entity(new JSONObject(failedResponse).toString()).build();
             } else {
                 SuccessResponsePopulateConsentAuthorizeScreen response =
                         new SuccessResponsePopulateConsentAuthorizeScreen();
                 response.setResponseId(populateConsentAuthorizeScreenRequestBody.getRequestId());
                 response.setStatus((SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum)
-                        validationResponse.get(FDXCommonConstants.STATUS));
+                        consentRetrievalResponse.get(FDXCommonConstants.STATUS));
                 response.setData(new SuccessResponsePopulateConsentAuthorizeScreenData()
-                        .consentData(validationResponse.get(FDXCommonConstants.CONSENT_DATA))
-                        .consumerData(validationResponse.get(FDXCommonConstants.CONSUMER_DATA)));
+                        .consentData(consentRetrievalResponse.get(FDXCommonConstants.CONSENT_DATA))
+                        .consumerData(consentRetrievalResponse.get(FDXCommonConstants.CONSUMER_DATA)));
                 return Response.status(Response.Status.OK).entity(new JSONObject(response).toString()).build();
             }
         } catch (JSONException e) {
@@ -80,14 +77,12 @@ public class PopulateConsentAuthorizeScreenApi {
             errorResponse.setStatus(ErrorResponse.StatusEnum.ERROR);
 
             JSONObject errorData = new JSONObject();
-            errorData.put("errorMessage", FDXCommonConstants.INVALID_REQUEST_MSG);
-            errorData.put("errorDescription", e.getMessage());
+            errorData.put(FDXCommonConstants.ERROR_MESSAGE, FDXCommonConstants.INVALID_REQUEST_MSG);
+            errorData.put(FDXCommonConstants.ERROR_DESCRIPTION, e.getMessage());
 
             errorResponse.setData(errorData);
             return Response.status(Response.Status.BAD_REQUEST).entity(new JSONObject(errorResponse).toString())
                     .build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
 }

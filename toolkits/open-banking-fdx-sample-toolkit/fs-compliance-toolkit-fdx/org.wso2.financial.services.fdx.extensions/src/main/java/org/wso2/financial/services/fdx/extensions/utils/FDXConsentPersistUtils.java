@@ -28,11 +28,18 @@ public class FDXConsentPersistUtils {
 
     private static final Log log = LogFactory.getLog(FDXConsentPersistUtils.class);
 
-    public static void persistFDXConsent(
-            @Valid @NotNull PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody,
-            Map<String, Object> validationResponse) {
+    /**
+     * Persists the FDX consent data.
+     *
+     * @param persistAuthorizedConsentRequestBody The request body containing the consent data to be persisted.
+     * @return A map containing the response of the persistence operation.
+     */
+    public static Map<String, Object> persistConsent(
+            @Valid @NotNull PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody) {
 
-        validationResponse.put(FDXCommonConstants.STATUS,
+        Map<String, Object> persistResponse = new HashMap<>();
+
+        persistResponse.put(FDXCommonConstants.STATUS,
                 SuccessResponsePersistAuthorizedConsent.StatusEnum.SUCCESS);
 
         // Get the consent data from the request body
@@ -61,6 +68,8 @@ public class FDXConsentPersistUtils {
 
             authorizationDetailsJSON.put(FDXCommonConstants.AUTHORIZATION_DETAILS, authorizationDetails);
 
+            // We are only considering the first authorization detail for now. Might need to handle multiple
+            // authroization details
             if (!(authorizationDetails.isEmpty())) {
                 JSONObject authorizationDetail = authorizationDetails.getJSONObject(0);
 
@@ -91,7 +100,6 @@ public class FDXConsentPersistUtils {
             throw new ConsentException(ResponseStatus.BAD_REQUEST, "Invalid or missing authorization details");
         }
 
-
         String commonAuthId = authorizedResources.getJSONObject(FDXCommonConstants.COOKIES)
                 .getString(FDXCommonConstants.COMMON_AUTH_ID);
         Map<String, String> attributes = new HashMap<>();
@@ -103,16 +111,25 @@ public class FDXConsentPersistUtils {
                 dataClustersString.toString()
         );
 
-        validationResponse.put(FDXCommonConstants.FDX_CONSENT_STATUS, FDXCommonConstants.FDX_CONSENT_AUTHORISED);
-        validationResponse.put(FDXCommonConstants.TYPE, FDXCommonConstants.FDX_TYPE);
-        validationResponse.put(FDXCommonConstants.RECEIPT, authorizationDetailsJSON);
-        validationResponse.put(FDXCommonConstants.IS_RECURRING, false);
-        validationResponse.put(FDXCommonConstants.DURATION_PERIOD, validityPeriod);
-        validationResponse.put(FDXCommonConstants.ATTRIBUTES, attributes);
-        validationResponse.put(FDXCommonConstants.AUTHORIZATION_RESOURCES_KEY, authorizations);
+        persistResponse.put(FDXCommonConstants.FDX_CONSENT_STATUS, FDXCommonConstants.FDX_CONSENT_AUTHORISED);
+        persistResponse.put(FDXCommonConstants.TYPE, FDXCommonConstants.FDX_TYPE);
+        persistResponse.put(FDXCommonConstants.RECEIPT, authorizationDetailsJSON);
+        persistResponse.put(FDXCommonConstants.IS_RECURRING, false);
+        persistResponse.put(FDXCommonConstants.DURATION_PERIOD, validityPeriod);
+        persistResponse.put(FDXCommonConstants.ATTRIBUTES, attributes);
+        persistResponse.put(FDXCommonConstants.AUTHORIZATION_RESOURCES_KEY, authorizations);
 
+        return persistResponse;
     }
 
+    /**
+     * Builds the authorization resource for the consent.
+     *
+     * @param userId        The user ID.
+     * @param accountIdList The list of account IDs.
+     * @param permissions   The permissions granted by the user.
+     * @return A list of Authorization objects representing the authorization resources.
+     */
     private static List<Authorization> buildAuthorizationResource(String userId, ArrayList<String> accountIdList,
                                                                   String permissions) {
         List<Resource> resources = new ArrayList<>();
@@ -133,7 +150,12 @@ public class FDXConsentPersistUtils {
         return authorizations;
     }
 
-
+    /**
+     * Retrieves the account ID list from the payload.
+     *
+     * @param payload The payload containing the account IDs.
+     * @return A list of account IDs.
+     */
     private static ArrayList<String> getAccountIdList(JSONObject payload) {
         if (payload.get(FDXCommonConstants.ACCOUNT_IDS) == null
                 || !(payload.get(FDXCommonConstants.ACCOUNT_IDS) instanceof JSONArray)) {

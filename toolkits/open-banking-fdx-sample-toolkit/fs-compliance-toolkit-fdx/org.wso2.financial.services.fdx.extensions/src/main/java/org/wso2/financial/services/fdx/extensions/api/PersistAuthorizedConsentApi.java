@@ -16,7 +16,6 @@ import org.wso2.financial.services.fdx.extensions.model.SuccessResponsePersistAu
 import org.wso2.financial.services.fdx.extensions.utils.FDXCommonConstants;
 import org.wso2.financial.services.fdx.extensions.utils.FDXConsentPersistUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -57,64 +56,51 @@ public class PersistAuthorizedConsentApi {
     public Response persistAuthorizedConsentPost(
             @Valid @NotNull PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody) {
         try {
-            Map<String, Object> validationResponse = new HashMap<>();
+            Map<String, Object> persistResponse =
+                    FDXConsentPersistUtils.persistConsent(persistAuthorizedConsentRequestBody);
 
-            // Consent persist step
-            FDXConsentPersistUtils.persistFDXConsent(persistAuthorizedConsentRequestBody, validationResponse);
-
-            if (validationResponse.get(FDXCommonConstants.STATUS) == FailedResponseInConsent.StatusEnum.ERROR) {
+            if (persistResponse.get(FDXCommonConstants.STATUS) == FailedResponseInConsent.StatusEnum.ERROR) {
                 FailedResponseInConsent failedResponseInConsent = new FailedResponseInConsent();
                 failedResponseInConsent.setStatus(FailedResponseInConsent.StatusEnum.ERROR);
                 failedResponseInConsent.setErrorCode(
-                        (Integer) validationResponse.get(FDXCommonConstants.RESPONSE_STATUS));
-                failedResponseInConsent.setData(validationResponse.get(FDXCommonConstants.DATA));
+                        (Integer) persistResponse.get(FDXCommonConstants.RESPONSE_STATUS));
+                failedResponseInConsent.setData(persistResponse.get(FDXCommonConstants.DATA));
                 return Response.status(Response.Status.OK).entity(new JSONObject(failedResponseInConsent).toString())
                         .build();
             } else {
                 SuccessResponsePersistAuthorizedConsent response = new SuccessResponsePersistAuthorizedConsent();
                 response.setResponseId(persistAuthorizedConsentRequestBody.getRequestId());
                 response.setStatus((SuccessResponsePersistAuthorizedConsent.StatusEnum)
-                        validationResponse.get(FDXCommonConstants.STATUS));
-
+                        persistResponse.get(FDXCommonConstants.STATUS));
 
                 response.setData(new SuccessResponsePersistAuthorizedConsentData()
                         .consentResource(new DetailedConsentResourceDataWithAmendments()
-                                .type((String) validationResponse.get(FDXCommonConstants.TYPE))
-                                .status((String) validationResponse.get(FDXCommonConstants.FDX_CONSENT_STATUS))
+                                .type((String) persistResponse.get(FDXCommonConstants.TYPE))
+                                .status((String) persistResponse.get(FDXCommonConstants.FDX_CONSENT_STATUS))
                                 .validityTime(
-                                        (Long) validationResponse.getOrDefault(FDXCommonConstants.DURATION_PERIOD, 0L))
+                                        (Long) persistResponse.getOrDefault(FDXCommonConstants.DURATION_PERIOD, 0L))
                                 .recurringIndicator(
-                                        (Boolean) validationResponse.getOrDefault(FDXCommonConstants.IS_RECURRING,
+                                        (Boolean) persistResponse.getOrDefault(FDXCommonConstants.IS_RECURRING,
                                                 false))
                                 .frequency(
-                                        (Integer) validationResponse.getOrDefault(FDXCommonConstants.FREQUENCY_SIMPLE,
+                                        (Integer) persistResponse.getOrDefault(FDXCommonConstants.FREQUENCY_SIMPLE,
                                                 0))
-                                .receipt((Object) validationResponse.get(FDXCommonConstants.RECEIPT))
-                                .attributes(validationResponse.get(FDXCommonConstants.ATTRIBUTES))
+                                .receipt((Object) persistResponse.get(FDXCommonConstants.RECEIPT))
+                                .attributes(persistResponse.get(FDXCommonConstants.ATTRIBUTES))
                                 .authorizations(
                                         (List<org.wso2.financial.services.fdx.extensions.model.Authorization>)
-                                                validationResponse.get(FDXCommonConstants.AUTHORIZATION_RESOURCES_KEY))
+                                                persistResponse.get(FDXCommonConstants.AUTHORIZATION_RESOURCES_KEY))
                         )
                 );
                 return Response.status(Response.Status.OK).entity(new JSONObject(response).toString()).build();
             }
-        } catch (ClassCastException | NullPointerException e) {
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setStatus(ErrorResponse.StatusEnum.ERROR);
-            JSONObject errorData = new JSONObject();
-            errorData.put("errorMessage", FDXCommonConstants.INVALID_REQUEST_MSG);
-            errorData.put("errorDescription", e.getMessage());
-
-            errorResponse.setData(errorData);
-            return Response.status(Response.Status.BAD_REQUEST).entity(new JSONObject(errorResponse).toString())
-                    .build();
-        } catch (Exception e) {
+        } catch (ConsentException e) {
             ErrorResponse errorResponse = new ErrorResponse();
             errorResponse.setStatus(ErrorResponse.StatusEnum.ERROR);
 
             JSONObject errorData = new JSONObject();
-            errorData.put("errorMessage", FDXCommonConstants.SERVER_ERROR_MSG);
-            errorData.put("errorDescription", e.getMessage());
+            errorData.put(FDXCommonConstants.ERROR_MESSAGE, FDXCommonConstants.SERVER_ERROR_MSG);
+            errorData.put(FDXCommonConstants.ERROR_DESCRIPTION, e.getMessage());
             errorResponse.setData(errorData);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new JSONObject(errorResponse).toString()).build();

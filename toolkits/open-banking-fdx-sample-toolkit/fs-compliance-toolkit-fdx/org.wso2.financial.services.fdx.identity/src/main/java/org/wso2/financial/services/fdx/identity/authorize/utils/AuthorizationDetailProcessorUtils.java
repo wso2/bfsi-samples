@@ -19,12 +19,28 @@ import java.util.List;
  */
 public class AuthorizationDetailProcessorUtils {
 
+    /**
+     * Retrieves the application resource ID associated with the given client ID and tenant domain.
+     *
+     * @param clientId      The client ID of the application.
+     * @param tenantDomain  The tenant domain of the application.
+     * @return The application resource ID.
+     * @throws IdentityOAuth2Exception If an error occurs while retrieving the application resource ID.
+     */
     public static String getApplicationResourceIdByClientId(String clientId, String tenantDomain)
             throws IdentityOAuth2Exception {
         ServiceProvider serviceProvider = OAuth2Util.getServiceProvider(clientId, tenantDomain);
         return serviceProvider.getApplicationResourceId();
     }
 
+    /**
+     * Retrieves the authorized scopes associated with the given application ID and tenant domain.
+     *
+     * @param appId        The application ID.
+     * @param tenantDomain  The tenant domain of the application.
+     * @return A list of authorized scopes.
+     * @throws IdentityApplicationManagementException If an error occurs while retrieving the authorized scopes.
+     */
     public static List<AuthorizedScopes> getAuthorizedScopesByAppId(String appId, String tenantDomain)
             throws IdentityApplicationManagementException {
         AuthorizedAPIManagementServiceImpl authorizedAPIManagementService =

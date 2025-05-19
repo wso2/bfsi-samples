@@ -52,16 +52,22 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
         return returnMaps;
     }
 
+    /**
+     * Reads the expiry date and duration period from the JSON object.
+     *
+     * @param dataSet The JSON object containing the data.
+     * @return A map containing the duration period and expiry date.
+     */
     public Map<String, String> readExpiryDate(JSONObject dataSet) {
         Map<String, String> expiryDateMap = new HashMap<>();
 
         JSONArray consentDataArray = dataSet.getJSONArray(FDXConsentExtensionConstants.CONSENT_DATA);
-        JSONObject consentDataItem = consentDataArray.getJSONObject(0); // Assuming first object
+        JSONObject consentDataItem = consentDataArray.getJSONObject(0);
 
         JSONArray authorizationDetailsArray =
                 consentDataItem.getJSONArray(FDXConsentExtensionConstants.AUTHORIZATION_DETAILS);
-        JSONObject authorizationDetails = authorizationDetailsArray.getJSONObject(0); // Assuming first object inside
-        // authorization_details
+        // We have ignored the case where there are multiple authorization details with different expiry dates
+        JSONObject authorizationDetails = authorizationDetailsArray.getJSONObject(0);
 
         int durationPeriod = authorizationDetails.getInt(FDXConsentExtensionConstants.DURATION_PERIOD);
         String expiryDateTimeStr = authorizationDetails.getString(FDXConsentExtensionConstants.EXPIRATION_DATE_TIME);
@@ -76,7 +82,12 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
         return expiryDateMap;
     }
 
-
+    /**
+     * Converts the "accounts" field from the JSON object to a list of maps.
+     *
+     * @param dataSet The JSON object containing the data.
+     * @return A list of maps where each map represents an account.
+     */
     public Object addAccountList(JSONObject dataSet) {
         // add accounts data to a list
         List<Map<String, String>> accountData = new ArrayList<>();
@@ -95,6 +106,12 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
         return accountData;
     }
 
+    /**
+     * Extracts the "data_requested" field from the JSON object and converts it to a Map.
+     *
+     * @param dataSet The JSON object containing the data.
+     * @return A Map where the keys are the keys from "data_requested" and the values are lists of strings.
+     */
     public Map<String, List<String>> getDataRequested(JSONObject dataSet) {
         Map<String, List<String>> dataRequestedJsonArray = new HashMap<>();
 
@@ -131,10 +148,8 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
                 }
             }
         }
-
         return dataRequestedJsonArray;
     }
-
 
     @Override
     public Map<String, Object> updateSessionAttribute(HttpServletRequest request, JSONObject dataSet,

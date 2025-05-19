@@ -17,19 +17,19 @@ public class FDXCommonConstants {
     public static final String CONSENT_DATA = "consentData";
     public static final String CONSUMER_DATA = "consumerData";
     public static final String DATA = "data";
-
+    public static final String CONSENT_REQUEST = "consentRequest";
     public static final String RESPONSE_STATUS = "responseStatus";
     public static final String INVALID_REQUEST_MSG = "invalid_request";
     public static final String USER_ID_KEY_NAME = "userId";
     public static final String ACCOUNT_ID = "account_id";
-
+    public static final String ONE_TIME_CONSENT = "ONE_TIME";
     public static final String ACCOUNT_TYPE = "type";
     public static final String ACCOUNT_ID_DISPLAYABLE = "accountIdToDisplay";
     public static final String AUTHORIZATION_DETAILS = "authorization_details";
     public static final String DURATION_PERIOD = "durationPeriod";
     public static final String EXPIRATION_DATE_TIME = "expiryDate";
     public static final String RESOURCES = "resources";
-
+    public static final String RESOURCE_TYPE = "resourceType";
     public static final Map<String, Map<String, List<String>>> DATA_CLUSTERS;
     public static final String REDIRECT_URL = "redirect_uri";
     public static final String DATA_REQUESTED = "data_requested";
@@ -39,10 +39,8 @@ public class FDXCommonConstants {
     public static final String AUTHORIZATION_RESOURCES_KEY = "authorizationResources";
     public static final String SERVER_ERROR_MSG = "server_error";
     public static final String DURATION_TYPE = "durationType";
-    public static final String CONSENT_REQUEST = "consentRequest";
     public static final String FDX_TYPE = "FDX_ACCOUNTS";
     public static final String FREQUENCY_SIMPLE = "frequency";
-    public static final String ONE_TIME = "ONE_TIME";
     public static final String COOKIES = "cookies";
     public static final String ATTRIBUTES = "commonAuthId";
     public static final String DATA_CLUSTERS_TITLE = "dataClusters";
@@ -50,6 +48,8 @@ public class FDXCommonConstants {
     public static final String FDX_CONSENT_STATUS = "consentStatus";
     public static final String ERROR = "error";
     public static final Integer BAD_REQUEST = 400;
+    public static final String ERROR_MESSAGE = "errorMessage";
+    public static final String ERROR_DESCRIPTION = "errorDescription";
 
     static {
         Map<String, Map<String, List<String>>> dataCluster = new HashMap<>();
