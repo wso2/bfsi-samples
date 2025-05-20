@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.financial.services.accelerator.common.util.HTTPClientUtils;
-import org.wso2.financial.services.accelerator.consent.mgt.extensions.common.ResponseStatus;
 import org.wso2.financial.services.fdx.extensions.configurations.ConfigurableProperties;
 import org.wso2.financial.services.fdx.extensions.model.FailedResponse;
 import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorizeScreenData;
@@ -136,11 +135,18 @@ public class FDXConsentRetrievalUtils {
         }
     }
 
-    private static void handleBadRequests(JSONObject response, Integer statusCode, String errorMessage) {
+    /**
+     * Handles bad requests by populating the response object with error details.
+     *
+     * @param response    The response object to be populated with error details.
+     * @param statusCode  The HTTP status code for the error.
+     * @param errorMessage The error message to be included in the response.
+     */
+    public static void handleBadRequests(JSONObject response, Integer statusCode, String errorMessage) {
         response.clear();
         response.put(FDXCommonConstants.STATUS, FailedResponse.StatusEnum.ERROR);
         response.put(FDXCommonConstants.RESPONSE_STATUS, statusCode);
-        response.put(FDXCommonConstants.DATA, new JSONObject().put(errorMessage));
+        response.put(FDXCommonConstants.DATA, new JSONObject().put(FDXCommonConstants.DATA, errorMessage));
     }
 
     /**
@@ -183,7 +189,7 @@ public class FDXConsentRetrievalUtils {
 
             if (accountData == null || accountData.isEmpty()) {
                 handleBadRequests(consentRetrievalResponse,
-                        ResponseStatus.INTERNAL_SERVER_ERROR.getCode(),
+                        FDXCommonConstants.INTERNAL_SERVER_ERROR,
                         "Unable to load accounts data for the user: " + userId);
             }
 
@@ -218,7 +224,7 @@ public class FDXConsentRetrievalUtils {
             }
         } else {
             log.error("Sharable accounts endpoint is not configured properly");
-            handleBadRequests(consentRetrievalResponse, ResponseStatus.INTERNAL_SERVER_ERROR.getCode(),
+            handleBadRequests(consentRetrievalResponse, FDXCommonConstants.INTERNAL_SERVER_ERROR,
                     "Accounts endpoint is not configured properly");
         }
     }

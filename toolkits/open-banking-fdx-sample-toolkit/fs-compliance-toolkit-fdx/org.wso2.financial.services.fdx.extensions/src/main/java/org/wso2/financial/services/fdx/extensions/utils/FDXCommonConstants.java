@@ -50,6 +50,7 @@ public class FDXCommonConstants {
     public static final Integer BAD_REQUEST = 400;
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String ERROR_DESCRIPTION = "errorDescription";
+    public static final Integer INTERNAL_SERVER_ERROR = 500;
 
     static {
         Map<String, Map<String, List<String>>> dataCluster = new HashMap<>();

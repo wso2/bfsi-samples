@@ -55,19 +55,56 @@ public class FDXConsentPersistUtilsTests {
         consentData.setUserGrantedData(userGrantedData);
         requestBody.setData(consentData);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        Map<String, Object> persistResponse = FDXConsentPersistUtils.persistConsent(requestBody);
 
         // Assert
-        Assert.assertEquals(validationResponse.get("status").toString(), "SUCCESS");
-        Assert.assertEquals(validationResponse.get("consentStatus").toString(), "Authorised");
-        Assert.assertEquals(validationResponse.get("type").toString(), "FDX_ACCOUNTS");
-        Assert.assertEquals(validationResponse.get("isRecurring"), false);
-        Assert.assertEquals(validationResponse.get("durationPeriod"), 30L);
-        Assert.assertNotNull(validationResponse.get("receipt"));
-        Assert.assertNotNull(validationResponse.get("authorizationResources"));
+        Assert.assertEquals(persistResponse.get("status").toString(), "SUCCESS");
+        Assert.assertEquals(persistResponse.get("consentStatus").toString(), "Authorised");
+        Assert.assertEquals(persistResponse.get("type").toString(), "FDX_ACCOUNTS");
+        Assert.assertEquals(persistResponse.get("isRecurring"), false);
+        Assert.assertEquals(persistResponse.get("durationPeriod"), 30L);
+        Assert.assertNotNull(persistResponse.get("receipt"));
+        Assert.assertNotNull(persistResponse.get("authorizationResources"));
+    }
+
+    @Test
+    public void testPersistFDXConsentWithOneTimeConsent() {
+        // Arrange
+        PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
+        PersistAuthorizedConsent consentData = new PersistAuthorizedConsent();
+        UserGrantedData userGrantedData = new UserGrantedData();
+
+        // Authorized Resources (includes accountIds and cookies)
+        JSONObject authorizedResources = new JSONObject();
+        authorizedResources.put("accountIds", new JSONArray().put("1234567890"));
+        authorizedResources.put("cookies", new JSONObject().put("commonAuthId", "common-auth-id-123"));
+
+        // Request Parameters (includes authorizationDetails with consentRequest)
+        JSONObject consentRequest = new JSONObject();
+        consentRequest.put("durationType", "ONE_TIME");
+        consentRequest.put("durationPeriod", 30);
+        JSONArray dataClusters = new JSONArray().put("transactions").put("balances");
+        JSONObject resource = new JSONObject().put("dataClusters", dataClusters);
+        consentRequest.put("resources", new JSONArray().put(resource));
+
+        JSONObject authorizationDetail = new JSONObject().put("consentRequest", consentRequest);
+        JSONArray authorizationDetails = new JSONArray().put(authorizationDetail);
+        JSONObject requestParameters = new JSONObject().put("authorization_details", authorizationDetails);
+
+        // Set data to userGrantedData
+        userGrantedData.setAuthorizedResources(authorizedResources.toMap());
+        userGrantedData.setRequestParameters(requestParameters.toMap());
+        userGrantedData.setUserId("user-123");
+
+        consentData.setUserGrantedData(userGrantedData);
+        requestBody.setData(consentData);
+
+        // Act
+        Map<String, Object> persistResponse = FDXConsentPersistUtils.persistConsent(requestBody);
+
+        // Assert
+        Assert.assertEquals(persistResponse.get("durationPeriod"), 0L);
     }
 
     @Test(expectedExceptions = ConsentException.class)
@@ -76,10 +113,8 @@ public class FDXConsentPersistUtilsTests {
         PersistAuthorizedConsentRequestBody requestBody = new PersistAuthorizedConsentRequestBody();
         requestBody.setData(null);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistConsent(requestBody);
     }
 
     @Test(expectedExceptions = ConsentException.class)
@@ -114,10 +149,8 @@ public class FDXConsentPersistUtilsTests {
         consentData.setUserGrantedData(userGrantedData);
         requestBody.setData(consentData);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistConsent(requestBody);
     }
 
     @Test(expectedExceptions = ConsentException.class)
@@ -152,10 +185,8 @@ public class FDXConsentPersistUtilsTests {
         consentData.setUserGrantedData(userGrantedData);
         requestBody.setData(consentData);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistConsent(requestBody);
     }
 
     @Test(expectedExceptions = ConsentException.class)
@@ -190,10 +221,8 @@ public class FDXConsentPersistUtilsTests {
         consentData.setUserGrantedData(userGrantedData);
         requestBody.setData(consentData);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistConsent(requestBody);
     }
 
     @Test(expectedExceptions = ConsentException.class)
@@ -220,10 +249,8 @@ public class FDXConsentPersistUtilsTests {
         consentData.setUserGrantedData(userGrantedData);
         requestBody.setData(consentData);
 
-        Map<String, Object> validationResponse = new HashMap<>();
-
         // Act - should throw ConsentException
-        FDXConsentPersistUtils.persistFDXConsent(requestBody, validationResponse);
+        FDXConsentPersistUtils.persistConsent(requestBody);
 
         // If no exception, fail the test
         Assert.fail("Expected ConsentException due to empty authorizationDetails");

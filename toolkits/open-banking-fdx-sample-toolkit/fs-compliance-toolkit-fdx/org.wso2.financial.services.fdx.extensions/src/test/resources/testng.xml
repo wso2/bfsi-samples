@@ -5,6 +5,7 @@
             <class name="org.wso2.financial.services.fdx.extensions.api.PopulateConsentAuthorizeScreenApiTests"/>
             <class name="org.wso2.financial.services.fdx.extensions.api.PersistAuthorizedConsentApiTests"/>
             <class name="org.wso2.financial.services.fdx.extensions.utils.FDXConsentRetrievalUtilsTests"/>
+            <class name="org.wso2.financial.services.fdx.extensions.utils.FDXConsentPersistUtilsTests"/>
         </classes>
     </test>
 </suite>

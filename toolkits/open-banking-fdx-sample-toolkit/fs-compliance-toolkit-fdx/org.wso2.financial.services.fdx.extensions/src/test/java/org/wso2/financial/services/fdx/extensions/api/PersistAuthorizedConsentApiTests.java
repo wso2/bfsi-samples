@@ -61,6 +61,7 @@ public class PersistAuthorizedConsentApiTests {
         persistResponse.put(FDXCommonConstants.STATUS, FailedResponseInConsent.StatusEnum.ERROR);
         persistResponse.put(FDXCommonConstants.RESPONSE_STATUS, 400);
         persistResponse.put(FDXCommonConstants.DATA, "mockErrorData");
+
         try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
             // Mock the behavior of persistFDXConsent
             mockedUtils.when(() -> FDXConsentPersistUtils.persistConsent(Mockito.any()))
@@ -79,25 +80,25 @@ public class PersistAuthorizedConsentApiTests {
         }
     }
 
-//    @Test
-//    void testPersistAuthorizedConsentPost_Exception() {
-//        try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
-//            // Mock the behavior of persistFDXConsent to throw an exception
-//            mockedUtils.when(() -> FDXConsentPersistUtils.persistConsent(Mockito.any()))
-//                    .thenThrow(new ConsentException(ResponseStatus.BAD_REQUEST, AuthErrorCode.SERVER_ERROR.name(),
-//                            "Consent data is not available"));
-//
-//            // Mock request body
-//            PersistAuthorizedConsentRequestBody requestBody = Mockito.mock(PersistAuthorizedConsentRequestBody.class);
-//
-//            // Call the method under test and expect an exception
-//            Response response = api.persistAuthorizedConsentPost(requestBody);
-//
-//            // Assert the response
-//            Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-//            JSONObject responseBody = new JSONObject(response.getEntity().toString());
-//            Assert.assertEquals(responseBody.getString("status"), "ERROR");
-//        }
-//    }
+    @Test
+    void testPersistAuthorizedConsentPostConsentException() {
+        try (MockedStatic<FDXConsentPersistUtils> mockedUtils = Mockito.mockStatic(FDXConsentPersistUtils.class)) {
+            // Mock the behavior of persistFDXConsent to throw an exception
+            mockedUtils.when(() -> FDXConsentPersistUtils.persistConsent(Mockito.any()))
+                    .thenThrow(new ConsentException(ResponseStatus.BAD_REQUEST, AuthErrorCode.SERVER_ERROR.name(),
+                            "Consent data is not available"));
+
+            // Mock request body
+            PersistAuthorizedConsentRequestBody requestBody = Mockito.mock(PersistAuthorizedConsentRequestBody.class);
+
+            // Call the method under test and expect an exception
+            Response response = api.persistAuthorizedConsentPost(requestBody);
+
+            // Assert the response
+            Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+            JSONObject responseBody = new JSONObject(response.getEntity().toString());
+            Assert.assertEquals(responseBody.getString("status"), "ERROR");
+        }
+    }
 }
 

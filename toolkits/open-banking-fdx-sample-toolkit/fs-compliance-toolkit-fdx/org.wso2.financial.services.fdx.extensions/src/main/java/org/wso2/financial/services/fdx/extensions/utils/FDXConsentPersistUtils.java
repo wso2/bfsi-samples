@@ -77,7 +77,7 @@ public class FDXConsentPersistUtils {
                     JSONObject consentRequest = authorizationDetail.getJSONObject(FDXCommonConstants.CONSENT_REQUEST);
                     if (consentRequest.has(FDXCommonConstants.DURATION_TYPE) && !
                             consentRequest.getString(FDXCommonConstants.DURATION_TYPE)
-                                    .equals(FDXCommonConstants.ONE_TIME)) {
+                                    .equals(FDXCommonConstants.ONE_TIME_CONSENT)) {
                         if (consentRequest.has(FDXCommonConstants.DURATION_PERIOD)) {
                             validityPeriod = consentRequest.getLong(FDXCommonConstants.DURATION_PERIOD);
                         }

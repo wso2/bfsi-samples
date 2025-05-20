@@ -1,10 +1,12 @@
 package org.wso2.financial.services.fdx.extensions.utils;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -17,6 +19,10 @@ import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorize
 import org.wso2.financial.services.fdx.extensions.model.PopulateConsentAuthorizeScreenRequestBody;
 import org.wso2.financial.services.fdx.extensions.model.SuccessResponsePopulateConsentAuthorizeScreen;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -26,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -33,41 +40,82 @@ public class FDXConsentRetrievalUtilsTests {
 
     private PopulateConsentAuthorizeScreenRequestBody requestBody;
     private PopulateConsentAuthorizeScreenData requestData;
-    private JSONObject validationResponse;
+    private JSONObject retrievalResponse;
 
     @BeforeMethod
     void setUp() {
         requestBody = mock(PopulateConsentAuthorizeScreenRequestBody.class);
         requestData = mock(PopulateConsentAuthorizeScreenData.class);
-        validationResponse = new JSONObject();
+        retrievalResponse = new JSONObject();
 
         when(requestBody.getData()).thenReturn(requestData);
     }
 
     @Test
-    void testRetrieveConsentDataSuccess() {
-        // Mock input
+    public void testRetrieveConsentDataWithValidInput() throws IOException {
+        // Mocking request parameters
         Map<String, Object> requestParams = new HashMap<>();
-        JSONArray authDetails = new JSONArray();
-        JSONObject consentRequest = new JSONObject()
-                .put("durationType", "RECURRING")
-                .put("durationPeriod", "30")
-                .put("resources", new JSONArray().put(new JSONObject()
-                        .put("resourceType", "ACCOUNTS")
-                        .put("dataClusters", new JSONArray().put("TRANSACTIONS").put("BALANCES"))
-                ));
-        authDetails.put(new JSONObject().put("consentRequest", consentRequest));
+        Map<String, Object> authorizationDetail = new HashMap<>();
+        Map<String, Object> consentRequest = new HashMap<>();
+
+        consentRequest.put("durationType", "PERSISTENT");
+        consentRequest.put("durationPeriod", "30");
+
+        List<Map<String, Object>> resources = new ArrayList<>();
+        Map<String, Object> resourceItem = new HashMap<>();
+        resourceItem.put("resourceType", "ACCOUNT");
+        resourceItem.put("dataClusters", Arrays.asList("TRANSACTIONS", "BALANCE"));
+        resources.add(resourceItem);
+
+        consentRequest.put("resources", resources);
+        authorizationDetail.put("consentRequest", consentRequest);
+
+        List<Map<String, Object>> authDetails = new ArrayList<>();
+        authDetails.add(authorizationDetail);
+
         requestParams.put("authorization_details", authDetails);
         requestParams.put("redirect_uri", "https://callback");
 
-        when(requestData.getRequestParameters()).thenReturn(requestParams);
+        // Mocking inner data class
+        PopulateConsentAuthorizeScreenData dataMock = Mockito.mock(PopulateConsentAuthorizeScreenData.class);
+        Mockito.when(dataMock.getRequestParameters()).thenReturn(requestParams);
+        Mockito.when(dataMock.getUserId()).thenReturn("user123");
 
-        // Execute
-        FDXConsentRetrievalUtils.retrieveConsentData(requestBody, validationResponse);
+        // Mocking outer request body
+        PopulateConsentAuthorizeScreenRequestBody requestBodyMock =
+                Mockito.mock(PopulateConsentAuthorizeScreenRequestBody.class);
+        Mockito.when(requestBodyMock.getData()).thenReturn(dataMock);
 
-        // Assert
-        Assert.assertEquals(validationResponse.get("status").toString(), "SUCCESS");
-        Assert.assertTrue(validationResponse.has("consentData"));
+        // Mock HttpClient
+        CloseableHttpClient mockClient = Mockito.mock(CloseableHttpClient.class);
+        CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
+        Mockito.when(mockClient.execute(Mockito.any(HttpGet.class))).thenReturn(mockResponse);
+        StatusLine mockStatusLine = Mockito.mock(StatusLine.class);
+
+        // Mock behavior
+        Mockito.when(mockStatusLine.getStatusCode()).thenReturn(200); // simulate not found
+        Mockito.when(mockResponse.getStatusLine()).thenReturn(mockStatusLine);
+
+        // Inject the mock into your utility if possible (assumes HTTPClientUtils is mockable)
+        try (MockedStatic<HTTPClientUtils> mockStatic = Mockito.mockStatic(HTTPClientUtils.class)) {
+            mockStatic.when(HTTPClientUtils::getHttpsClient).thenReturn(mockClient);
+
+            // Mock HttpEntity
+            HttpEntity mockEntity = Mockito.mock(HttpEntity.class);
+            Mockito.when(mockResponse.getEntity()).thenReturn(mockEntity);
+
+            // Mock InputStream
+            String mockContent = "{\"data\" : [{\"account_id\": \"12345\", \"type\": \"saving\"}]}";
+            InputStream mockInputStream = new ByteArrayInputStream(mockContent.getBytes(StandardCharsets.UTF_8));
+            Mockito.when(mockEntity.getContent()).thenReturn(mockInputStream);
+
+            JSONObject response = FDXConsentRetrievalUtils.retrieveConsentData(requestBodyMock);
+
+            // Validate response
+            Assert.assertNotNull(response);
+            Assert.assertEquals(response.get("status").toString(), "SUCCESS");
+            Assert.assertTrue(response.has("consentData"));
+        }
     }
 
     @Test
@@ -77,11 +125,11 @@ public class FDXConsentRetrievalUtilsTests {
         when(requestData.getRequestParameters()).thenReturn(requestParams);
 
         // Execute
-        FDXConsentRetrievalUtils.retrieveConsentData(requestBody, validationResponse);
+        retrievalResponse = FDXConsentRetrievalUtils.retrieveConsentData(requestBody);
 
         // Assert
-        Assert.assertEquals(validationResponse.get("status").toString(), "ERROR");
-        Assert.assertEquals(validationResponse.get("responseStatus"), 400);
+        Assert.assertEquals(retrievalResponse.get("status").toString(), "ERROR");
+        Assert.assertEquals(retrievalResponse.get("responseStatus"), 400);
     }
 
     @Test
@@ -99,22 +147,20 @@ public class FDXConsentRetrievalUtilsTests {
         // Mock the HTTP call
         try (MockedStatic<FDXConsentRetrievalUtils> mockedStatic = Mockito.mockStatic(FDXConsentRetrievalUtils.class)) {
             mockedStatic.when(
-                            () -> FDXConsentRetrievalUtils.getAccountsFromEndpoint(Mockito.anyString(),
+                            () -> FDXConsentRetrievalUtils.getAccountsFromEndpoint(anyString(),
                                     Mockito.anyMap(),
                                     Mockito.anyMap()))
                     .thenReturn(mockAccountResponse);
 
-            JSONObject validationResponse = new JSONObject();
-
             // Execute
-            mockedStatic.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(requestBody, validationResponse))
+            mockedStatic.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse))
                     .thenCallRealMethod();
-            FDXConsentRetrievalUtils.retrieveAccountData(requestBody, validationResponse);
+            FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse);
 
             // Assert
-            Assert.assertEquals(validationResponse.get("status").toString(), "SUCCESS");
-            Assert.assertTrue(validationResponse.has("consumerData"));
-            JSONArray consumerData = validationResponse.getJSONArray("consumerData");
+            Assert.assertEquals(retrievalResponse.get("status").toString(), "SUCCESS");
+            Assert.assertTrue(retrievalResponse.has("consumerData"));
+            JSONArray consumerData = retrievalResponse.getJSONArray("consumerData");
             Assert.assertEquals(consumerData.length(), 1);
             Assert.assertEquals(consumerData.getJSONObject(0).getString("account_id"), "123456789");
             Assert.assertEquals(consumerData.getJSONObject(0).getString("type"), "CHECKING");
@@ -130,22 +176,41 @@ public class FDXConsentRetrievalUtilsTests {
         // Mock the HTTP call to return an empty response
         try (MockedStatic<FDXConsentRetrievalUtils> mockedStatic = Mockito.mockStatic(FDXConsentRetrievalUtils.class)) {
             mockedStatic.when(
-                            () -> FDXConsentRetrievalUtils.getAccountsFromEndpoint(Mockito.anyString(),
+                            () -> FDXConsentRetrievalUtils.getAccountsFromEndpoint(anyString(),
                                     Mockito.anyMap(),
                                     Mockito.anyMap()))
                     .thenReturn(new JSONObject().put("data", new JSONArray()).toString());
 
-            JSONObject validationResponse = new JSONObject();
-
             // Execute
-            mockedStatic.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(requestBody, validationResponse))
+            mockedStatic.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse))
                     .thenCallRealMethod();
-            FDXConsentRetrievalUtils.retrieveAccountData(requestBody, validationResponse);
+            FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse);
 
             // Assert
-            Assert.assertEquals(validationResponse.get("status").toString(), "SUCCESS");
-            Assert.assertTrue(validationResponse.has("consumerData"));
-            Assert.assertEquals(validationResponse.getJSONArray("consumerData").length(), 0);
+            Assert.assertEquals(retrievalResponse.get("status").toString(), "SUCCESS");
+            Assert.assertTrue(retrievalResponse.has("consumerData"));
+            Assert.assertEquals(retrievalResponse.getJSONArray("consumerData").length(), 0);
+        }
+    }
+
+    @Test(expectedExceptions = JSONException.class)
+    void testRetrieveAccountDataWithJSONException() throws Exception {
+        // Mock input
+        when(requestData.getUserId()).thenReturn("user123");
+        when(requestBody.getData()).thenReturn(requestData);
+
+        // Mock the HTTP call to return an empty response
+        try (MockedStatic<FDXConsentRetrievalUtils> mockedStatic = Mockito.mockStatic(FDXConsentRetrievalUtils.class)) {
+            mockedStatic.when(
+                            () -> FDXConsentRetrievalUtils.getAccountsFromEndpoint(anyString(),
+                                    Mockito.anyMap(),
+                                    Mockito.anyMap()))
+                    .thenReturn("data");
+
+            // Execute
+            mockedStatic.when(() -> FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse))
+                    .thenCallRealMethod();
+            FDXConsentRetrievalUtils.retrieveAccountData(requestBody, retrievalResponse);
         }
     }
 
@@ -164,7 +229,17 @@ public class FDXConsentRetrievalUtilsTests {
     }
 
     @Test
-    public void testGetAccountsFromEndpoint_Non200Response() throws Exception {
+    public void testHandleBadRequests() {
+        JSONObject response = new JSONObject();
+        FDXConsentRetrievalUtils.handleBadRequests(response, 400, "Bad Request");
+        Assert.assertEquals(response.get("status").toString(), "ERROR");
+        Assert.assertEquals(response.getInt("responseStatus"), 400);
+        Assert.assertTrue(response.getJSONObject("data").getString("data").contains("Bad Request"));
+    }
+
+
+    @Test
+    public void testGetAccountsFromEndpointWithNon200Response() throws Exception {
         // Mock URL
         String url = ConfigurableProperties.SHARABLE_ENDPOINT;
 
@@ -209,23 +284,22 @@ public class FDXConsentRetrievalUtilsTests {
 
         JSONObject consentDataJson = new JSONObject(consentDataItem);
 
-        // Wrap in validationResponse
-        JSONObject validationResponse = new JSONObject();
-        validationResponse.put(FDXCommonConstants.STATUS,
+        // Wrap in retrievalResponse
+        retrievalResponse.put(FDXCommonConstants.STATUS,
                 SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS);
-        validationResponse.put(FDXCommonConstants.CONSENT_DATA, new JSONArray().put(consentDataJson));
+        retrievalResponse.put(FDXCommonConstants.CONSENT_DATA, new JSONArray().put(consentDataJson));
 
         // Execute
-        FDXConsentRetrievalUtils.retrieveDataClusterData(validationResponse);
+        FDXConsentRetrievalUtils.retrieveDataClusterData(retrievalResponse);
 
         // Assert status unchanged
         Assert.assertEquals(
-                validationResponse.get(FDXCommonConstants.STATUS),
+                retrievalResponse.get(FDXCommonConstants.STATUS),
                 SuccessResponsePopulateConsentAuthorizeScreen.StatusEnum.SUCCESS
         );
 
         // Assert data requested has been populated
-        JSONObject updatedConsentItem = validationResponse
+        JSONObject updatedConsentItem = retrievalResponse
                 .getJSONArray(FDXCommonConstants.CONSENT_DATA)
                 .getJSONObject(0);
 
