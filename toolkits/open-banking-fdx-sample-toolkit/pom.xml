@@ -381,6 +381,27 @@
                 <version>${swagger.parser.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-annotations-api</artifactId>
+                <version>${tomcat-annotations-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json-path.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.io.swagger.v3</groupId>
+                <artifactId>swagger-parser</artifactId>
+                <version>${swagger-wso2-parser.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>2.2.30</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>${javax.ws.rs-api.version}</version>
@@ -471,18 +492,95 @@
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger-annotations.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger.model.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${jersey-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <version>${org-glassfish-jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-common</artifactId>
+                <version>${org-glassfish-jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wso2.orbit.com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${org-glassfish-jersey.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-bundle</artifactId>
+                <version>${cxf-bundle.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
                 <artifactId>jsr311-api</artifactId>
                 <version>${javax.ws.rs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson-datatype-jsr310.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                <artifactId>jackson-jaxrs-json-provider</artifactId>
+                <version>${jackson-jaxrs-json-provider.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.application.common</artifactId>
+                <version>7.8.146</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${jakarta.annotation-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.validation</groupId>
@@ -530,6 +628,26 @@
                 <groupId>org.wso2.carbon.identity.framework</groupId>
                 <artifactId>org.wso2.carbon.identity.application.mgt.stub</artifactId>
                 <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.scr</artifactId>
+                <version>${org.apache.felix.scr.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-classic.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit-jupiter-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.service.component.annotations</artifactId>
+                <version>${org.osgi.service.component.annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.wso2.carbon.apimgt</groupId>
@@ -581,8 +699,7 @@
             <dependency>
                 <groupId>org.wso2.eclipse.equinox</groupId>
                 <artifactId>org.eclipse.equinox.common</artifactId>
-                <version>3.8.0.v20160509-1230</version>
-                <scope>compile</scope>
+                <version>${org.eclipse.equinox.common.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -603,7 +720,7 @@
         <apache.synapse.version>4.0.0-wso2v219</apache.synapse.version>
         <mockito.version>5.14.2</mockito.version>
         <org.testng.version>7.10.1</org.testng.version>
-        <carbon.identity.framework.version>7.0.75</carbon.identity.framework.version>
+        <carbon.identity.framework.version>7.8.146</carbon.identity.framework.version>
         <carbon.identity.version>7.0.75</carbon.identity.version>
         <identity.inbound.auth.oauth.version>7.0.259</identity.inbound.auth.oauth.version>
         <carbon.identity.clientauth.mutualtls.version>2.5.8</carbon.identity.clientauth.mutualtls.version>
@@ -612,7 +729,7 @@
         <jackson.databinding.version>2.16.1</jackson.databinding.version>
         <cxf-bundle-package.version>2.7.18</cxf-bundle-package.version>
         <swagger-jaxrs.version>1.6.1</swagger-jaxrs.version>
-        <swagger-annotations.version>2.2.28</swagger-annotations.version>
+        <swagger-annotations.version>2.2.30</swagger-annotations.version>
         <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
@@ -660,5 +777,26 @@
         <financial.services.accelerator.version>4.0.0-alpha-SNAPSHOT</financial.services.accelerator.version>
         <!-- FDX Toolkit Version-->
         <openbanking.fdx.version>1.0.0</openbanking.fdx.version>
+        <swagger-wso2-parser.version>2.1.22.wso2v1</swagger-wso2-parser.version>
+        <tomcat-annotations-api.version>9.0.98</tomcat-annotations-api.version>
+        <json-path.version>2.9.0.wso2v1</json-path.version>
+        <jersey-server.version>2.39</jersey-server.version>
+        <org-glassfish-jersey.version>2.39</org-glassfish-jersey.version>
+        <jackson-annotations.version>2.18.2</jackson-annotations.version>
+        <nimbus-jose-jwt.version>7.9.0.wso2v1</nimbus-jose-jwt.version>
+        <cxf-bundle.version>3.0.0-milestone2</cxf-bundle.version>
+        <jackson-datatype-jsr310.version>2.18.2</jackson-datatype-jsr310.version>
+        <jackson-jaxrs-json-provider.version>2.18.2</jackson-jaxrs-json-provider.version>
+        <joda-time.version>2.12.7</joda-time.version>
+        <json.version>20240303</json.version>
+        <jakarta.annotation-api.version>2.1.1</jakarta.annotation-api.version>
+        <jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+        <org.apache.felix.scr.version>1.8.2</org.apache.felix.scr.version>
+        <logback-classic.version>1.5.16</logback-classic.version>
+        <junit-jupiter-api.version>5.10.1</junit-jupiter-api.version>
+        <org.osgi.service.component.annotations.version>1.5.1</org.osgi.service.component.annotations.version>
+        <org.eclipse.equinox.common.version>3.8.0.v20160509-1230</org.eclipse.equinox.common.version>
     </properties>
 </project>
