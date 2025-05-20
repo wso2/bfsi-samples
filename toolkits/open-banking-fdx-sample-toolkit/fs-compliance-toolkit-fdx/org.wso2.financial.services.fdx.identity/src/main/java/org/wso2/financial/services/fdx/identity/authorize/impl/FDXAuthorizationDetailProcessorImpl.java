@@ -38,6 +38,13 @@ import java.util.Set;
 public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetailsProcessor {
     private static final Log log = LogFactory.getLog(FDXAuthorizationDetailProcessorImpl.class);
 
+    /**
+     * Validates the authorization details provided in the authorization request.
+     *
+     * @param authorizationDetailsContext The context containing the authorization details and client information.
+     * @return A {@code ValidationResult} indicating whether the validation was successful or not.
+     * @throws AuthorizationDetailsProcessingException If an error occurs during validation.
+     */
     @Override
     public ValidationResult validate(AuthorizationDetailsContext authorizationDetailsContext)
             throws AuthorizationDetailsProcessingException {
@@ -149,16 +156,32 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
         return dataClusters;
     }
 
+    /**
+     * Returns the type of the authorization detail processor.
+     *
+     * @return The type of the authorization detail processor.
+     */
     @Override
     public String getType() {
         return "fdx_v1.0";
     }
 
+    /**
+     * Returns the supported authorization detail types.
+     *
+     * @return An array of supported authorization detail types.
+     */
     @Override
     public boolean isEqualOrSubset(AuthorizationDetail authorizationDetail, AuthorizationDetails authorizationDetails) {
         return false;
     }
 
+    /**
+     * Enriches the authorization details.
+     *
+     * @param authorizationDetailsContext The context containing the authorization details and client information.
+     * @return The enriched authorization detail.
+     */
     @Override
     public AuthorizationDetail enrich(AuthorizationDetailsContext authorizationDetailsContext) {
         return null;

@@ -34,7 +34,12 @@ public class ScopeDataClusterMappings {
         FDX_DATA_CLUSTER = Collections.unmodifiableMap(map);
     }
 
-    // Utility method to get the data cluster from a scope
+    /**
+     * Get the data cluster for a given scope.
+     *
+     * @param value The scope to look up.
+     * @return The data cluster associated with the scope, or null if not found.
+     */
     public static Set<String> getScopeByDataCluster(String value) {
         Set<String> keys = new HashSet<>();
         for (Map.Entry<String, String> entry : FDX_DATA_CLUSTER.entrySet()) {

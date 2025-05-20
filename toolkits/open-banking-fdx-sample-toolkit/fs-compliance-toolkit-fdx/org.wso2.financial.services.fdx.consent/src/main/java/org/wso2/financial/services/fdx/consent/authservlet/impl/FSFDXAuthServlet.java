@@ -23,6 +23,14 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class FSFDXAuthServlet implements FSAuthServletInterface {
 
+    /**
+     * Updates the request attributes with the data from the JSON object.
+     *
+     * @param request       The HTTP request object.
+     * @param dataSet       The JSON object containing the data.
+     * @param resourceBundle The resource bundle for localization.
+     * @return A map containing the updated attributes.
+     */
     @Override
     public Map<String, Object> updateRequestAttribute(HttpServletRequest request, JSONObject dataSet,
                                                       ResourceBundle resourceBundle) {
@@ -151,12 +159,26 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
         return dataRequestedJsonArray;
     }
 
+    /**
+     * Updates the session attributes with the data from the JSON object.
+     *
+     * @param request       The HTTP request object.
+     * @param dataSet       The JSON object containing the data.
+     * @param resourceBundle The resource bundle for localization.
+     * @return A map containing the updated session attributes.
+     */
     @Override
     public Map<String, Object> updateSessionAttribute(HttpServletRequest request, JSONObject dataSet,
                                                       ResourceBundle resourceBundle) {
         return Collections.emptyMap();
     }
 
+    /**
+     * Updates the consent data with the data from the JSON object.
+     *
+     * @param httpServletRequest The HTTP request object.
+     * @return A map containing the updated consent data.
+     */
     @Override
     public Map<String, Object> updateConsentData(HttpServletRequest httpServletRequest) {
         Map<String, Object> returnMaps = new HashMap<>();
@@ -167,12 +189,23 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
         return returnMaps;
     }
 
+    /**
+     * Updates the consent metadata with the data from the JSON object.
+     *
+     * @param request The HTTP request object.
+     * @return A map containing the updated consent metadata.
+     */
     @Override
     public Map<String, String> updateConsentMetaData(HttpServletRequest request) {
         // Implementation here
         return null;
     }
 
+    /**
+     * Returns the path to the JSP file.
+     *
+     * @return The path to the JSP file.
+     */
     @Override
     public String getJSPPath() {
         return "/fs_fdx.jsp";

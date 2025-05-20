@@ -237,7 +237,6 @@ public class FDXConsentRetrievalUtilsTests {
         Assert.assertTrue(response.getJSONObject("data").getString("data").contains("Bad Request"));
     }
 
-
     @Test
     public void testGetAccountsFromEndpointWithNon200Response() throws Exception {
         // Mock URL
