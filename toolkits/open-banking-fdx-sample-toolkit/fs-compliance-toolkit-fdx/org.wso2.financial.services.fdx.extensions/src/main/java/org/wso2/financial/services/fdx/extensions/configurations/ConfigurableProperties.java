@@ -22,7 +22,7 @@ package org.wso2.financial.services.fdx.extensions.configurations;
  * This class contains configurable properties for the FDX extension.
  */
 public class ConfigurableProperties {
-    // TODO: Add the properties to a config.properties file.
+    // TODO: Add the properties to a config.properties file. https://github.com/wso2/bfsi-samples/issues/12
     public static final String SHARABLE_ENDPOINT =
             "http://localhost:9766/api/openbanking/uk/backend/services/bankaccounts/bankaccountservice/sharable" +
                     "-accounts";
