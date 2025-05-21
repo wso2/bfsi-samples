@@ -21,7 +21,6 @@ package org.wso2.financial.services.fdx.consent.common;
 /**
  * Constants for FDX Consent Extension.
  */
-
 public class FDXConsentExtensionConstants {
     public static final String CONSENT_DATA = "consentData";
     public static final String ACCOUNT_ID = "account_id";

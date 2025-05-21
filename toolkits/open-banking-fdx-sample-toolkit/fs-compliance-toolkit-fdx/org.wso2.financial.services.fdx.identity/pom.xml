@@ -34,8 +34,8 @@
     <packaging>bundle</packaging>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -136,6 +136,7 @@
                         <!--Excluding them in coverage reports-->
                         <exclude>**/*Constants.class</exclude>
                         <exclude>**/model/*.class</exclude>
+                        <exclude>**/*Holder.class</exclude>
                         <exclude>**/commons/*.class</exclude>
                     </excludes>
                 </configuration>
@@ -230,7 +231,8 @@
                         <Export-Package>
                             org.wso2.financial.services.fdx.identity.authorize.impl,
                             org.wso2.financial.services.fdx.identity.authorize.commons,
-                            org.wso2.financial.services.fdx.identity.authorize.utils
+                            org.wso2.financial.services.fdx.identity.authorize.utils,
+                            org.wso2.financial.services.fdx.identity.authorize.model
                         </Export-Package>
                         <Import-Package>
                             org.wso2.carbon.identity.application.common.model,

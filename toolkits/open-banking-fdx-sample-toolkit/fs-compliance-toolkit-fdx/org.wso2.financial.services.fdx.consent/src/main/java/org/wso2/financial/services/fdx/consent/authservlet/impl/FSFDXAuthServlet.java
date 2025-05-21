@@ -216,7 +216,7 @@ public class FSFDXAuthServlet implements FSAuthServletInterface {
     @Override
     public Map<String, String> updateConsentMetaData(HttpServletRequest request) {
         // Implementation here
-        return null;
+        return Collections.emptyMap();
     }
 
     /**

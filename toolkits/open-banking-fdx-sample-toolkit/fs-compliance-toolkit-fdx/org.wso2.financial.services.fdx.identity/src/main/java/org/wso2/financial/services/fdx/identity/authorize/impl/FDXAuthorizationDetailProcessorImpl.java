@@ -18,6 +18,7 @@
 
 package org.wso2.financial.services.fdx.identity.authorize.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.service.component.annotations.Component;
@@ -31,14 +32,13 @@ import org.wso2.carbon.identity.oauth.rar.model.ValidationResult;
 import org.wso2.carbon.identity.oauth2.IdentityOAuth2Exception;
 import org.wso2.carbon.identity.oauth2.rar.core.AuthorizationDetailsProcessor;
 import org.wso2.carbon.identity.oauth2.rar.model.AuthorizationDetailsContext;
-import org.wso2.financial.services.fdx.identity.authorize.commons.FDXIdentityCommonConstants;
 import org.wso2.financial.services.fdx.identity.authorize.commons.ScopeDataClusterMappings;
+import org.wso2.financial.services.fdx.identity.authorize.model.FDXAuthorizationDetails;
 import org.wso2.financial.services.fdx.identity.authorize.utils.AuthorizationDetailProcessorUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,7 +69,7 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
             AuthorizationDetail authorizationDetail = authorizationDetailsContext.getAuthorizationDetail();
             List<List<String>> dataClusters = getDataClusters(authorizationDetail);
             String clientId = authorizationDetailsContext.getOAuthAppDO().getOauthConsumerKey();
-            if (clientId != null) {
+            if (StringUtils.isNotEmpty(clientId)) {
                 String tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
                 String appId =
                         AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(clientId, tenantDomain);
@@ -121,53 +121,17 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
      */
     public List<List<String>> getDataClusters(AuthorizationDetail authorizationDetails) {
         List<List<String>> dataClusters = new ArrayList<>();
+        FDXAuthorizationDetails fdxDetails =
+                FDXAuthorizationDetails.parseFDXAuthorizationDetails(authorizationDetails);
 
-        // Get details map
-        Map<String, Object> details = authorizationDetails.getDetails();
-        if (details == null || !details.containsKey(FDXIdentityCommonConstants.CONSENT_REQUEST)) {
-            return dataClusters; // Return empty list if no consentRequest
+        if (fdxDetails == null || fdxDetails.getConsentRequest() == null) {
+            return dataClusters;
         }
 
-        // Get consentRequest
-        Object consentRequestObj = details.get(FDXIdentityCommonConstants.CONSENT_REQUEST);
-        if (!(consentRequestObj instanceof Map)) {
-            return dataClusters; // Return empty list if not a Map
-        }
-
-        Map<String, Object> consentRequest = (Map<String, Object>) consentRequestObj;
-        if (!consentRequest.containsKey(FDXIdentityCommonConstants.RESOURCES)) {
-            return dataClusters;  // Return empty list if no resources
-        }
-
-        // Get resources list
-        Object resourcesObj = consentRequest.get(FDXIdentityCommonConstants.RESOURCES);
-        if (!(resourcesObj instanceof List)) {
-            return dataClusters; // Return empty list if not a List
-        }
-
-        List<?> resources = (List<?>) resourcesObj;
-        for (Object resourceObj : resources) {
-            if (resourceObj instanceof Map) {
-                Map<String, Object> resource = (Map<String, Object>) resourceObj;
-                if (!resource.containsKey(FDXIdentityCommonConstants.DATA_CLUSTERS)) {
-                    continue; // Skip if no dataClusters
-                }
-
-                Object dataClustersObj = resource.get(FDXIdentityCommonConstants.DATA_CLUSTERS);
-                if (dataClustersObj instanceof List) {
-                    List<?> clusterList = (List<?>) dataClustersObj;
-                    List<String> extractedClusters = new ArrayList<>();
-
-                    for (Object cluster : clusterList) {
-                        if (cluster instanceof String) {
-                            extractedClusters.add((String) cluster);
-                        }
-                    }
-
-                    if (!extractedClusters.isEmpty()) {
-                        dataClusters.add(extractedClusters);
-                    }
-                }
+        for (FDXAuthorizationDetails.Resource resource :
+                fdxDetails.getConsentRequest().getResources()) {
+            if (resource.getDataClusters() != null && !resource.getDataClusters().isEmpty()) {
+                dataClusters.add(resource.getDataClusters());
             }
         }
         return dataClusters;

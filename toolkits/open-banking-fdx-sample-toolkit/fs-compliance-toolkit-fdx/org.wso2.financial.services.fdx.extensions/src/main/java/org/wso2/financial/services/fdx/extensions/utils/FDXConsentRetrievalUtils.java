@@ -48,7 +48,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
 
 /**
  * Utility class for FDX consent retrieval.
@@ -63,7 +62,7 @@ public class FDXConsentRetrievalUtils {
      * @throws Exception If an error occurs during the retrieval process.
      */
     public static JSONObject retrieveConsentData(
-            @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody) {
+            PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody) {
 
         JSONObject consentRetrievalResponse = new JSONObject();
 
@@ -186,7 +185,7 @@ public class FDXConsentRetrievalUtils {
      * @throws Exception If an error occurs during the retrieval process.
      */
     public static void retrieveAccountData(
-            @Valid PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody,
+            PopulateConsentAuthorizeScreenRequestBody populateConsentAuthorizeScreenRequestBody,
             JSONObject consentRetrievalResponse) throws JSONException {
         // If previous validation failed
         if (consentRetrievalResponse.has(FDXCommonConstants.STATUS)) {

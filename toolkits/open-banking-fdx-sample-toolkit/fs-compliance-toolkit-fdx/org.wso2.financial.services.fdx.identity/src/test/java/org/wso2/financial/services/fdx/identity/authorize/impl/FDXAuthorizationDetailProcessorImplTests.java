@@ -38,6 +38,7 @@ import org.wso2.carbon.identity.oauth.rar.model.ValidationResult;
 import org.wso2.carbon.identity.oauth2.internal.OAuth2ServiceComponentHolder;
 import org.wso2.carbon.identity.oauth2.rar.model.AuthorizationDetailsContext;
 import org.wso2.financial.services.fdx.identity.authorize.utils.AuthorizationDetailProcessorUtils;
+import org.wso2.financial.services.fdx.identity.authorize.utils.IdentityDataHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,10 +89,14 @@ public class FDXAuthorizationDetailProcessorImplTests {
 
     private AuthorizationDetail mockAuthorizationDetail(Map<String, Object> dataClusters) {
         AuthorizationDetail authorizationDetail = mock(AuthorizationDetail.class);
+        authorizationDetail.setType("fdx_v1.0");
         Map<String, Object> details = new HashMap<>();
         Map<String, Object> consentRequest = new HashMap<>();
         ArrayList<Object> resources = new ArrayList<>();
         resources.add(dataClusters);
+        consentRequest.put("durationType", "DURATION_TYPE");
+        consentRequest.put("durationPeriod", 1);
+        consentRequest.put("lookbackPeriod", 1);
         consentRequest.put("resources", resources);
         details.put("consentRequest", consentRequest);
         when(authorizationDetail.getDetails()).thenReturn(details);
@@ -105,6 +110,9 @@ public class FDXAuthorizationDetailProcessorImplTests {
         dataClusters.put("dataClusters", Arrays.asList("TRANSACTIONS", "INVESTMENTS"));
         AuthorizationDetail authorizationDetail = mockAuthorizationDetail(dataClusters);
 
+        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
+                Arrays.asList("fdx:transactions:read", "fdx:investments:read")));
+
         // Mock AuthorizationDetailsContext
         AuthorizationDetailsContext context = mock(AuthorizationDetailsContext.class);
         when(context.getAuthorizationDetail()).thenReturn(authorizationDetail);
@@ -123,35 +131,39 @@ public class FDXAuthorizationDetailProcessorImplTests {
                     setCache(appInfoCache, mockOAuthAppDO);
                     doReturn(serviceProvider).when(applicationManagementService)
                             .getServiceProviderByClientId(anyString(), anyString(), anyString());
+                    try (MockedStatic<IdentityDataHolder> holderMockedStatic = Mockito
+                            .mockStatic(
+                                    IdentityDataHolder.class)) {
+                        IdentityDataHolder mockIdentityDataHolder = mock(IdentityDataHolder.class);
+                        holderMockedStatic.when(IdentityDataHolder::getInstance)
+                                .thenReturn(mockIdentityDataHolder);
+                        when(mockIdentityDataHolder.getAuthorizedAPIManagementService())
+                                .thenReturn(authorizedAPIManagementService);
 
-                    try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
-                            AuthorizationDetailProcessorUtils.class)) {
-                        utilsMockedStatic.when(
-                                        () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
-                                                clientId,
-                                                tenantDomain))
-                                .thenReturn("app123");
+                        try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
+                                AuthorizationDetailProcessorUtils.class)) {
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
+                                                    clientId,
+                                                    tenantDomain))
+                                    .thenReturn("app123");
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getAuthorizedScopesByAppId(
+                                                    "app123",
+                                                    tenantDomain))
+                                    .thenReturn(mockScopes);
 
-                        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
-                                Arrays.asList("fdx:transactions:read", "fdx:investments:read")));
-                        when(authorizedAPIManagementService
-                                .getAuthorizedScopes("app123", tenantDomain))
-                                .thenReturn(mockScopes);
-                        utilsMockedStatic.when(() -> AuthorizationDetailProcessorUtils
-                                        .getAuthorizedScopesByAppId(anyString(), anyString()))
-                                .thenReturn(mockScopes);
+                            // Run validation
+                            ValidationResult result = processor.validate(context);
 
-                        // Run validation
-                        ValidationResult result = processor.validate(context);
-
-                        // Assert
-                        Assert.assertTrue(result.isValid());
+                            // Assert
+                            Assert.assertTrue(result.isValid());
+                        }
                     }
                 }
             }
         }
     }
-
 
     @Test
     public void testValidateInvalidDataCluster() throws Exception {
@@ -159,6 +171,10 @@ public class FDXAuthorizationDetailProcessorImplTests {
         Map<String, Object> dataClusters = new HashMap<>();
         dataClusters.put("dataClusters", Arrays.asList("INVALID_CLUSTER1", "INVALID_CLUSTER2"));
         AuthorizationDetail authorizationDetail = mockAuthorizationDetail(dataClusters);
+        when(authorizationDetail.getType()).thenReturn("fdx_v1.0");
+
+        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
+                Arrays.asList("fdx:transactions:read", "fdx:investments:read")));
 
         // Mock AuthorizationDetailsContext
         AuthorizationDetailsContext context = mock(AuthorizationDetailsContext.class);
@@ -178,32 +194,38 @@ public class FDXAuthorizationDetailProcessorImplTests {
                     setCache(appInfoCache, mockOAuthAppDO);
                     doReturn(serviceProvider).when(applicationManagementService)
                             .getServiceProviderByClientId(anyString(), anyString(), anyString());
+                    try (MockedStatic<IdentityDataHolder> holderMockedStatic = Mockito
+                            .mockStatic(
+                                    IdentityDataHolder.class)) {
+                        IdentityDataHolder mockIdentityDataHolder = mock(IdentityDataHolder.class);
+                        holderMockedStatic.when(IdentityDataHolder::getInstance)
+                                .thenReturn(mockIdentityDataHolder);
+                        when(mockIdentityDataHolder.getAuthorizedAPIManagementService())
+                                .thenReturn(authorizedAPIManagementService);
 
-                    try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
-                            AuthorizationDetailProcessorUtils.class)) {
-                        utilsMockedStatic.when(
-                                        () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
-                                                clientId,
-                                                tenantDomain))
-                                .thenReturn("app123");
+                        try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
+                                AuthorizationDetailProcessorUtils.class)) {
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
+                                                    clientId,
+                                                    tenantDomain))
+                                    .thenReturn("app123");
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getAuthorizedScopesByAppId(
+                                                    "app123",
+                                                    tenantDomain))
+                                    .thenReturn(mockScopes);
 
-                        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
-                                Arrays.asList("fdx:transactions:read", "fdx:investments:read")));
-                        when(authorizedAPIManagementService
-                                .getAuthorizedScopes("app123", tenantDomain))
-                                .thenReturn(mockScopes);
-                        utilsMockedStatic.when(() -> AuthorizationDetailProcessorUtils
-                                        .getAuthorizedScopesByAppId(anyString(), anyString()))
-                                .thenReturn(mockScopes);
-
-                        // Execute and Assert
-                        Assert.assertThrows(AuthorizationDetailsProcessingException.class,
-                                () -> processor.validate(context));
+                            // Execute and Assert
+                            Assert.assertThrows(AuthorizationDetailsProcessingException.class,
+                                    () -> processor.validate(context));
+                        }
                     }
                 }
             }
         }
     }
+
 
     @Test
     public void testValidateInvalidScope() throws Exception {
@@ -211,6 +233,10 @@ public class FDXAuthorizationDetailProcessorImplTests {
         Map<String, Object> dataClusters = new HashMap<>();
         dataClusters.put("dataClusters", Arrays.asList("TRANSACTIONS", "INVESTMENTS"));
         AuthorizationDetail authorizationDetail = mockAuthorizationDetail(dataClusters);
+        when(authorizationDetail.getType()).thenReturn("fdx_v1.0");
+
+        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
+                Arrays.asList("fdx:transactions:read", "fdx:images:read")));
 
         // Mock AuthorizationDetailsContext
         AuthorizationDetailsContext context = mock(AuthorizationDetailsContext.class);
@@ -231,26 +257,32 @@ public class FDXAuthorizationDetailProcessorImplTests {
                     doReturn(serviceProvider).when(applicationManagementService)
                             .getServiceProviderByClientId(anyString(), anyString(), anyString());
 
-                    try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
-                            AuthorizationDetailProcessorUtils.class)) {
-                        utilsMockedStatic.when(
-                                        () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
-                                                clientId,
-                                                tenantDomain))
-                                .thenReturn("app123");
+                    try (MockedStatic<IdentityDataHolder> holderMockedStatic = Mockito
+                            .mockStatic(
+                                    IdentityDataHolder.class)) {
+                        IdentityDataHolder mockIdentityDataHolder = mock(IdentityDataHolder.class);
+                        holderMockedStatic.when(IdentityDataHolder::getInstance)
+                                .thenReturn(mockIdentityDataHolder);
+                        when(mockIdentityDataHolder.getAuthorizedAPIManagementService())
+                                .thenReturn(authorizedAPIManagementService);
 
-                        List<AuthorizedScopes> mockScopes = Arrays.asList(new AuthorizedScopes("policy-1",
-                                Arrays.asList("fdx:transactions:read", "fdx:images:read")));
-                        when(authorizedAPIManagementService
-                                .getAuthorizedScopes("app123", tenantDomain))
-                                .thenReturn(mockScopes);
-                        utilsMockedStatic.when(() -> AuthorizationDetailProcessorUtils
-                                        .getAuthorizedScopesByAppId(anyString(), anyString()))
-                                .thenReturn(mockScopes);
+                        try (MockedStatic<AuthorizationDetailProcessorUtils> utilsMockedStatic = Mockito.mockStatic(
+                                AuthorizationDetailProcessorUtils.class)) {
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getApplicationResourceIdByClientId(
+                                                    clientId,
+                                                    tenantDomain))
+                                    .thenReturn("app123");
+                            utilsMockedStatic.when(
+                                            () -> AuthorizationDetailProcessorUtils.getAuthorizedScopesByAppId(
+                                                    "app123",
+                                                    tenantDomain))
+                                    .thenReturn(mockScopes);
 
-                        // Execute and Assert
-                        Assert.assertThrows(AuthorizationDetailsProcessingException.class,
-                                () -> processor.validate(context));
+                            // Execute and Assert
+                            Assert.assertThrows(AuthorizationDetailsProcessingException.class,
+                                    () -> processor.validate(context));
+                        }
                     }
                 }
             }
@@ -287,9 +319,13 @@ public class FDXAuthorizationDetailProcessorImplTests {
         Map<String, Object> dataClusters = new HashMap<>();
         dataClusters.put("dataClusters", Arrays.asList("NOTIFICATIONS"));
         resources.add(dataClusters);
+        consentRequest.put("durationType", "DURATION_TYPE");
+        consentRequest.put("durationPeriod", 1);
+        consentRequest.put("lookbackPeriod", 1);
         consentRequest.put("resources", resources);
         details.put("consentRequest", consentRequest);
         when(authorizationDetail.getDetails()).thenReturn(details);
+        when(authorizationDetail.getType()).thenReturn("fdx_v1.0");
 
         // Execute
         List<List<String>> actualDataClusters = processor.getDataClusters(authorizationDetail);

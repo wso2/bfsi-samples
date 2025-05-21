@@ -25,4 +25,8 @@ public class FDXIdentityCommonConstants {
     public static final String CONSENT_REQUEST = "consentRequest";
     public static final String DATA_CLUSTERS = "dataClusters";
     public static final String RESOURCES = "resources";
+    public static final String DURATION_TYPE = "durationType";
+    public static final String DURATION_PERIOD =  "durationPeriod";
+    public static final String LOOKBACK_PERIOD = "lookbackPeriod";
+    public static final String RESOURCE_TYPE = "resourceType";
 }

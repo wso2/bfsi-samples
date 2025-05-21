@@ -36,8 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * Utility class for persisting FDX consent.
@@ -53,7 +51,7 @@ public class FDXConsentPersistUtils {
      * @return A map containing the response of the persistence operation.
      */
     public static Map<String, Object> persistConsent(
-            @Valid @NotNull PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody) {
+            PersistAuthorizedConsentRequestBody persistAuthorizedConsentRequestBody) {
 
         Map<String, Object> persistResponse = new HashMap<>();
 

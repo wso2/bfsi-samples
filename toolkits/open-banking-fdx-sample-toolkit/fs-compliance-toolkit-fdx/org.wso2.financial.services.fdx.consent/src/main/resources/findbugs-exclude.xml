@@ -17,7 +17,7 @@
  ~ under the License.
  -->
 
-    <FindBugsFilter>
+<FindBugsFilter>
     <Match>
     </Match>
 </FindBugsFilter>
