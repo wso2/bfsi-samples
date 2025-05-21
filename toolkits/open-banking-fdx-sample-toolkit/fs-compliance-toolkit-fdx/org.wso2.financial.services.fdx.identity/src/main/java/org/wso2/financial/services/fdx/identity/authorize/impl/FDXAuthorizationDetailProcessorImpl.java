@@ -109,7 +109,8 @@ public class FDXAuthorizationDetailProcessorImpl implements AuthorizationDetails
             }
 
         } catch (IdentityOAuth2Exception | IdentityApplicationManagementException ex) {
-            throw new RuntimeException(ex);
+            log.debug(ex.getMessage());
+            throw new AuthorizationDetailsProcessingException(ex.getMessage());
         }
     }
 
