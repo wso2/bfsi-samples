@@ -16,6 +16,7 @@
 
 import React from 'react';
 import { MessageCountsProps } from './types';
+import './MessageCounts.scss';
 import './commonStyles.scss';
 
 const MessageCounts: React.FC<MessageCountsProps> = ({ successCount, failCount, timeSpecificData, direction }) => {

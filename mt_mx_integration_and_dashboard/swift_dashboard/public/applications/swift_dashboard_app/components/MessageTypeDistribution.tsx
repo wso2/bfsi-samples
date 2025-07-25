@@ -88,9 +88,9 @@ const MessageTypeDistribution: React.FC<MessageTypeDistributionProps> = ({ title
     return `${timeFrame}`;
   };
 
-  const allColor = '#6c6c6b'; // grey
-  const inwardColor = '#52524f'; // dark grey
-  const outwardColor = '#868686'; // light grey
+  const allColor = '#3792de'; // blue
+  const inwardColor = '#2078c2'; // dark blue
+  const outwardColor = '#6eb0e7'; // light blue
   let generalColors: string;
 
   // Generate appropriate color scheme for the chart

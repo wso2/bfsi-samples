@@ -24,7 +24,7 @@
   
   /* Total count item styling */
   .count-item.total {
-    background-color: #353434;
+    background-color: #2078C2;
     margin-bottom: 0.75rem;
     margin-left: 3.6rem;
     padding: 0.5rem;
@@ -37,11 +37,11 @@
   }
   
   .count-item.total.Inward {
-    background-color: #52524f;
+    background-color: #3792de;
   }
   
   .count-item.total.Outward {
-    background-color: #868686;
+    background-color: #316ea1;
   }
   
   .count-item.total .count-header {
@@ -84,20 +84,20 @@
   
   /* Direction-specific items */
   .count-item.inward {
-    background-color: #52524f;
+    background-color: #3792de;
   }
   
   .count-item.outward {
-    background-color: #868686;
+    background-color: #6EB0E7;
   }
   
   /* Status-specific items */
   .count-item.success {
-    background-color: #00d157;
+    background-color: #6BAE92;
   }
   
   .count-item.fail {
-    background-color: #ff513d;
+    background-color: #D7796B;
   }
   
   /* Header within count items */

@@ -142,23 +142,23 @@ h2::after {
   }
   
   .applyFiltersBtn {
-    background-color: #090909;
+    background-color: #2078C2;
     color: white;
     border: none;
   }
   
   .applyFiltersBtn:hover:not(:disabled) {
-    background-color: #2a2b2c;
+    background-color: #185990;
   }
   
   .clearFiltersBtn {
-    background-color: #090909;
+    background-color: #2078C2;
     color: #ffffff;
     border: none;
   }
   
   .clearFiltersBtn:hover:not(:disabled) {
-    background-color: #2a2b2c;
+    background-color: #185990;
   }
   
   .applyFiltersBtn:disabled, .clearFiltersBtn:disabled {

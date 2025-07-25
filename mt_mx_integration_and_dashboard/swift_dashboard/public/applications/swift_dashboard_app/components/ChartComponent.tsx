@@ -75,6 +75,13 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
     return undefined; // For 'All'
   };
 
+  const truncateDate = (date: string): string => {
+    if (date.startsWith("Week")) {
+      return date;
+    }
+    const parts = date.split(' ');
+    return `${parts[0].substring(0, 3)} ${parts[1]}`;
+  }
   /**
    * Aggregates data for chart rendering based on current filters
    */
@@ -92,7 +99,7 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
     // Format labels based on time period
     const timeLabels = chartData.map(item => {
       if (item.displayDate) {
-        return item.displayDate;
+        return truncateDate(item.displayDate);
       }
       
       if (period === 'Daily') {
@@ -167,7 +174,7 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
         label: 'Inward',
         data: data.inwardData,
         borderRadius: 3,
-        backgroundColor: '#52524f',
+        backgroundColor: '#3792de',
       });
     }
     
@@ -176,7 +183,7 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
         label: 'Outward',
         data: data.outwardData,
         borderRadius: 3,
-        backgroundColor: '#868686',
+        backgroundColor: '#6EB0E7',
       });
     }
     
@@ -212,7 +219,7 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
         {
           label: 'Messages',
           data: [timeSpecificData?.successCount || 0, timeSpecificData?.failCount || 0],
-          backgroundColor: ['#00d157', '#ff513d'],
+          backgroundColor: ['#6BAE92', '#D7796B'],
           cutout: '70%',
           radius: '95%',
         },
@@ -230,7 +237,7 @@ const ChartComponent = ({ type, period, direction }: ChartComponentProps): React
         {
           label: 'Messages',
           data: [timeSpecificData?.inwardCount || 0, timeSpecificData?.outwardCount || 0],
-          backgroundColor: ['#52524f', '#868686'],
+          backgroundColor: ['#3792de', '#6EB0E7'],
           cutout: '80%',
         },
       ],

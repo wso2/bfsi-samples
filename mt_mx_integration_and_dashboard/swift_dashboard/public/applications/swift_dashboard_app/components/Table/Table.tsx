@@ -176,6 +176,7 @@ const Table: React.FC<TableProps> = ({
                         </th>
                         <th>
                             <div className='msgType'>DateTime</div>
+                            <tr>
                             {!disableFilters && (
                                 <div className='dateRangeFilter'>
                                     <input 
@@ -186,6 +187,7 @@ const Table: React.FC<TableProps> = ({
                                         className={filters.dateFrom ? 'activeFilter' : ''}
                                         placeholder="From"
                                         title="From date"
+                                        style={{ paddingBottom: '1px', paddingTop: '1px', marginTop: '3px'  }}
                                     />
                                     <input 
                                         type="date" 
@@ -195,9 +197,11 @@ const Table: React.FC<TableProps> = ({
                                         className={filters.dateTo ? 'activeFilter' : ''}
                                         placeholder="To"
                                         title="To date"
+                                        style={{ paddingBottom: '1px', paddingTop: '1px', marginTop: '0'  }}
                                     />
                                 </div>
                             )}
+                            </tr>
                         </th>
                         <th>
                             <div className='msgType'>Status</div>

@@ -14,50 +14,85 @@
 // specific language governing permissions and limitations
 // under the License.
 
-.recent-activity-table {
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
+.recent-activity-table-container {
+}
+
+/* Styles for the actual <table> element */
+.recent-activity-actual-table {
+    width: 100%; /* Make the table take up the full width */
+    border-collapse: collapse; /* Merges adjacent cell borders into a single border */
+    table-layout: fixed; /* VERY IMPORTANT: Forces columns to respect defined widths */
+}
+
+/* Styles for all table cells (header and data) */
+.recent-activity-actual-table th,
+.recent-activity-actual-table td {
+    padding: 0.625rem; /* Consistent padding for all cells */
+    font-size: 0.75rem; /* Consistent font size */
+    text-align: left; /* Default text alignment */
+    border-bottom: 0.0625rem solid #e0e0e0; /* Lighter border for rows */
+    overflow: hidden; /* Hide content that exceeds cell width */
+    text-overflow: ellipsis; /* Show "..." for overflowed text */
+    white-space: nowrap; /* Prevent text from wrapping within cells */
   }
   
-  .recent-activity-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.625rem;
-    border-bottom: 0.0625rem solid #8b8d90;
-    transition: background-color 0.3s ease;
+/* Styles for table headers */
+.recent-activity-actual-table th {
+    background-color: #f9f9f9; /* Light background for headers */
+    font-weight: bold;
+    color: #333;
+    /* Optional: position: sticky; top: 0; z-index: 1; for sticky headers if table scrolls */
+}
+
+/* No bottom border for the last row's cells to prevent double border with container if applicable */
+.recent-activity-actual-table tbody tr:last-child td {
+    border-bottom: none;
   }
   
+/* Row hover effect */
   .recent-activity-row:hover {
-    background-color: #cdcfd1;
+    background-color: #cdcfd1; /* Existing hover style, but applied to the native tr */
+    cursor: pointer; /* Indicates it's clickable */
+}
+
+.col-id, .recent-activity-id {
+    width: 35%; /* Example width for ID */
+}
+
+.col-time, .recent-activity-time {
+    width: 25%; /* Example width for Time (it's long) */
   }
   
-  .recent-activity-time,
-  .recent-activity-type,
-  .recent-activity-direction,
-  .recent-activity-amount,
-  .recent-activity-status {
-    font-size: 0.75rem;
+.col-type, .recent-activity-type {
+    width: 20%; /* Example width for Type */
+}
+
+.col-direction, .recent-activity-direction {
+    width: 15%; /* Example width for Direction */
+    text-align: center; /* Center the "Inward"/"Outward" text */
   }
 
-  .recent-activity-direction {
-    flex-shrink: 0;
-    width: 1.5rem;
+.col-status, .recent-activity-status {
+    width: 25%; /* Example width for Status */
+    text-align: center; /* Center the status pill */
   }
   
-  .recent-activity-status.successful {
-    color: #000000;
-    background-color: #00d157;
+.recent-activity-status.successful {
+    color: #ffffff;
+    background-color: #6BAE92;
     padding: 0.125rem 0.5rem;
     border-radius: 0.75rem;
-  }
-  
-  .recent-activity-status.failed {
-    color: #000000;
-    background-color: #ff513d;
-    padding: 0.125rem 1.3125rem;
+    display: inline-block; /* Crucial for padding/border-radius to apply correctly */
+    min-width: 5rem; /* Ensure consistent width for status pills if "Failed" is wider */
+}
+
+.recent-activity-status.failed {
+    color: #ffffff;
+    background-color: #bd3412b0;
+    padding: 0.125rem 1.3125rem; /* This padding makes "Failed" wider */
     border-radius: 0.75rem;
+    display: inline-block; /* Crucial for padding/border-radius to apply correctly */
+    min-width: 5rem; /* Match successful width, or adjust as needed */
   }
 
   .no-data-message-activity {
@@ -74,7 +109,7 @@
   }
   
   .viewAllButton {
-    background-color: #090909;
+    background-color: #2078C2;
     color: white;
     border: none;
     padding: 0.25rem 0.5625rem;
@@ -85,7 +120,7 @@
   }
 
   .viewAllButton:hover {
-    background-color: #414243;;
+    background-color: #185990;;
   }
 
 .loading-indicator-activity {

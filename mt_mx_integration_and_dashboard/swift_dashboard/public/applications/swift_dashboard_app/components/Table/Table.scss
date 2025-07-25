@@ -38,7 +38,7 @@
 }
 
 .table thead {
-    background: linear-gradient(to left, #4c4b4b, #000000); /* Gradient background for the entire header row */
+    background: linear-gradient(to left, #2078C2, #1A639F); /* Gradient background for the entire header row */
 }
 
 .table th {
@@ -89,12 +89,12 @@
 }
 
 .table tbody tr:nth-child(even):hover {
-    background: linear-gradient(to left, #434343, #000000); 
+    background: linear-gradient(to left, #2078C2, #1A639F);
     color: #fff;
 }
 
 .table tbody tr:nth-child(odd):hover {
-    background: linear-gradient(to left, #434343, #000000);
+    background: linear-gradient(to left, #2078C2, #1A639F);
     color: #fff;
 }
 
@@ -151,6 +151,7 @@
   border-radius: 0.5rem;
   height: 0.1rem;
   font-size: 0.7rem;
+  flex: content;
 }
 
 .dateRangeFilter input:focus {
@@ -160,7 +161,6 @@
 
 /* Adjust the active filter style for date inputs */
 .dateRangeFilter input.activeFilter {
-  border-color: #0e0e0e;
   background-color: rgb(246, 246, 246);
 }
 
