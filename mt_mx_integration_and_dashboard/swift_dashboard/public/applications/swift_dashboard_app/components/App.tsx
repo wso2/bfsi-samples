@@ -21,6 +21,7 @@ import { AppPluginStartDependencies } from '../../../types';
 import Header from './Header';
 import OverviewPage from './OverviewPage';
 import MessagesPage from './MessagesPage';
+import LogsPage from './LogsPage';
 
 interface AppProps {
   coreStart: CoreStart;
@@ -39,6 +40,7 @@ const App: React.FC<AppProps> = ({ coreStart, plugins }) => {
       <div className="app-container">
         <Switch>
           <Route path="/messages" component={MessagesPage} />
+          <Route path="/logs" component={LogsPage} />
           <Route path="/" component={OverviewPage} />
         </Switch>
       </div>

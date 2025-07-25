@@ -15,7 +15,7 @@
 // under the License.
 
 import axios from 'axios';
-import { MessageData, MessageChartData} from '../applications/swift_dashboard_app/components/types';
+import { MessageData, MessageChartData, LogData} from '../applications/swift_dashboard_app/components/types';
 
 // Use environment variable if available, otherwise fallback to hardcoded URL
 const API_BASE_URL = process.env.REACT_APP_API_URL || '/api/swift-dashboard';
@@ -104,6 +104,36 @@ getAllMessages: async (
       throw error;
     }
   },
+
+/**
+ * Fetch logs
+ * @returns Array of logs matching the criteria
+ */
+getAllLogs: async (
+  dateFrom?: string,
+  dateTo?: string
+  ): Promise<LogData[]> => {
+    try {
+
+      // Build query parameters
+      const params: Record<string, string> = {};
+      if (dateFrom) params.dateFrom = dateFrom;
+      if (dateTo) params.dateTo = dateTo;
+      
+      // Make API request with query parameters
+      const response = await apiClient.get('/log-list', { params });
+      
+      if (response.data && response.data.logs) {
+        return response.data.logs;
+      }
+      
+      return Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      throw error;
+    }
+  },
+
+
 
   /**
    * Fetch message details by ID

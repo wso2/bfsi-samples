@@ -71,6 +71,13 @@ export interface MessageDocument {
   otherError: string;
 }
 
+export interface LogDocument {
+  time: string;
+  level: string;
+  module: string;
+  message: string;
+}
+
 // For services that use the OpenSearch client
 export interface OpenSearchServiceOptions {
   index?: string;

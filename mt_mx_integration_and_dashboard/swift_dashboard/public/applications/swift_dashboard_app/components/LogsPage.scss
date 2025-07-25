@@ -1,0 +1,169 @@
+// Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+//
+// WSO2 LLC. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+// Variables (Optional but highly recommended for consistency)
+$primary-font: Arial, sans-serif;
+$background-color-light: #f9f9f9;
+$container-bg: #fff;
+$shadow-light: 0 4px 12px rgba(0, 0, 0, 0.05);
+$shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.04);
+$text-color-dark: #333;
+$text-color-medium: #555;
+$border-color-light: #e0e0e0;
+$border-color-medium: #ddd;
+$border-color-dark: #ccc;
+$table-row-even-bg: #f6f6f6;
+$table-row-hover-bg: #eef;
+$button-primary: #007bff;
+$button-primary-hover: #0056b3;
+$button-disabled: #cccccc;
+
+.log-table-container {
+  font-family: $primary-font;
+  padding: 20px;
+  width: 1300px;
+  margin: 20px auto;
+  background-color: $background-color-light;
+  border-radius: 8px;
+  box-shadow: $shadow-light;
+
+  h1 {
+    text-align: center;
+    color: $text-color-dark;
+    margin-bottom: 30px;
+  }
+
+  .global-search-input {
+    width: calc(100% - 20px);
+    padding: 12px 10px;
+    margin-bottom: 25px;
+    border: 1px solid $border-color-medium;
+    border-radius: 6px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    border: 1px solid $border-color-light;
+    border-radius: 8px;
+    background-color: $container-bg;
+    box-shadow: $shadow-medium;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+
+      th,
+      td {
+        border: 1px solid $border-color-light;
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 14px;
+        vertical-align: top;
+      }
+
+      th {
+        background-color: #f2f2f2; // Specific for th, kept as is
+        font-weight: bold;
+        color: $text-color-medium;
+        position: relative;
+
+        .column-filter {
+          // Nested inside th
+          margin-top: 8px;
+
+          .column-filter-input,
+          .column-filter-select {
+            /* Add this class for dropdown */
+            width: calc(100% - 10px);
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+            background-color: white; /* Ensure select has a white background */
+          }
+        }
+      }
+
+      tr {
+        &:nth-child(even) {
+          // Nested using & for parent reference
+          background-color: $table-row-even-bg;
+        }
+
+        &:hover {
+          // Nested using & for parent reference
+          background-color: $table-row-hover-bg;
+        }
+      }
+    }
+  }
+
+  .pagination-controls {
+    // Nested inside .log-table-container
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 15px;
+    font-size: 15px;
+
+    button {
+      padding: 8px 15px;
+      border: 1px solid $button-primary;
+      border-radius: 5px;
+      background-color: $button-primary;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+
+      &:disabled {
+        // Nested for button disabled state
+        background-color: $button-disabled;
+        border-color: $button-disabled;
+        cursor: not-allowed;
+      }
+
+      &:hover:not(:disabled) {
+        // Nested for button hover state
+        background-color: $button-primary-hover;
+        border-color: darken(
+          $button-primary-hover,
+          10%
+        ); // Example of a Sass function
+      }
+    }
+
+    select {
+      padding: 8px;
+      border: 1px solid $border-color-medium;
+      border-radius: 5px;
+      background-color: $container-bg;
+      font-size: 15px;
+    }
+  }
+}
+
+.timestamp {
+  width: 8rem;
+}
+.level {
+  width: 7rem;
+}

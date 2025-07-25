@@ -25,6 +25,7 @@ const Header: React.FC = () => {
       <nav>
         <Link to="/">Overview</Link>
         <Link to="/messages">Messages</Link>
+        <Link to="/logs">Logs</Link>
       </nav>
     </header>
   );

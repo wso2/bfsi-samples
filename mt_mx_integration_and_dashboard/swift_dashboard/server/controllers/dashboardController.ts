@@ -89,6 +89,30 @@ export class DashboardController {
       throw error;
     }
   }
+
+  /**
+   * Fetch log data
+   */
+  public async fetchLogData(context: RequestHandlerContext, request: OpenSearchDashboardsRequest) {
+    try {
+      const query = request.query as Record<string, string | string[]>;
+      const dateFrom = query.dateFrom as string;
+      const dateTo = query.dateTo as string;
+      this.context.logger.debug(`Fetching log data`);
+      
+      // Pass parameters to the service method
+      const data = await this.openSearchService.getLogData(
+        context.core.opensearch.client.asCurrentUser,
+        dateFrom,
+        dateTo
+      );
+
+      return data;
+    } catch (error) {
+      this.context.logger.error(`Error in fetchLogData: ${error}`);
+      throw error;
+    }
+  }
   
   /**
    * Fetch chart data

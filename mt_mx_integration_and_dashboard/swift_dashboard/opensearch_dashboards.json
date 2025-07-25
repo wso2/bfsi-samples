@@ -1,5 +1,5 @@
 {
-  "id": "swift-dashboard",
+  "id": "swiftDashboard",
   "version": "1.0.0",
   "opensearchDashboardsVersion": "2.19.0",
   "server": true,

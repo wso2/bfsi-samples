@@ -33,6 +33,13 @@ export interface MessageData {
   
   }
 
+  export interface LogData {
+    time: string;
+    level: string;
+    module: string;
+    message: string;
+  }
+
 // Message chart data interface
 export interface MessageChartData {
     date: string;

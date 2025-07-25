@@ -54,6 +54,34 @@ export function registerRoutes(router: IRouter, context: PluginContext) {
     }
   );
 
+  // Log list
+  router.get(
+    {
+      path: `${API_BASE}/log-list`,
+      validate: {
+        query: schema.object({
+          dateFrom: schema.maybe(schema.string()),
+          dateTo: schema.maybe(schema.string())
+        })
+      }
+    },
+    async (context: RequestHandlerContext, request, response) => {
+      try {
+        const result = await dashboardController.fetchLogData(context, request);
+        return response.ok({ body: result });
+      } catch (error) {
+        logger.error(`Error fetching logs: ${error}`);
+        return response.customError({
+          statusCode: 500,
+          body: {
+            message: 'Failed to fetch logs'
+          }
+        });
+      }
+    }
+  );
+
+
   // Message specific endpoint
   router.get(
     {
