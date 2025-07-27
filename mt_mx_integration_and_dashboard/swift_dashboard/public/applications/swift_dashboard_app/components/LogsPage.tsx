@@ -54,15 +54,9 @@ function DateRangeFilter({ column, onFilterChange }) {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        gap: "4px",
-        fontSize: "13px",
-      }}
+    <div className="date-range-filter"
     >
-      <label style={{ display: "flex", flexDirection: "column" }}>
+      <label>
         From
         <input
           type="date"
@@ -71,15 +65,9 @@ function DateRangeFilter({ column, onFilterChange }) {
           onChange={handleFilterChange}
           className={filters.dateFrom ? "activeFilter" : ""}
           title="From date"
-          style={{
-            padding: "1px",
-            marginTop: "3px",
-            width: "4.2rem",
-            fontSize: "9px",
-          }}
         />
       </label>
-      <label style={{ display: "flex", flexDirection: "column" }}>
+      <label>
         To
         <input
           type="date"
@@ -88,12 +76,6 @@ function DateRangeFilter({ column, onFilterChange }) {
           onChange={handleFilterChange}
           className={filters.dateTo ? "activeFilter" : ""}
           title="To date"
-          style={{
-            padding: "1px",
-            marginTop: "3px",
-            width: "4.2rem",
-            fontSize: "9px",
-          }}
         />
       </label>
     </div>
@@ -117,21 +99,19 @@ function DefaultColumnFilter({ column, onFilterChange }) {
 function LevelFilter({ column, levels, onFilterChange }) {
   const filterValue = column.getFilterValue();
   const selectedValue =
-    filterValue === undefined || filterValue === null
-      ? "INFO"
-      : String(filterValue); //set log level to info by default
+    filterValue === undefined || filterValue === null ? "ALL" : String(filterValue);  
 
   return (
     <select
       value={selectedValue}
       onChange={(e) => {
         const newValue = e.target.value;
-        const filterToSet = newValue === "" ? "INFO" : newValue;
+        const filterToSet = newValue === "ALL" ? undefined : newValue;
         onFilterChange(column.id, filterToSet);
       }}
       className="column-filter-select"
     >
-      <option value="">All Levels</option>
+      <option value="ALL">All Levels</option>
       {levels.map((level) => (
         <option key={level} value={level}>
           {level}
@@ -151,11 +131,15 @@ const LogsPage: React.FC<{ location?: any }> = ({ location }) => {
 
   // Function to handle filter changes and update the state
   const onFilterChange = React.useCallback((id, value) => {
-    setColumnFilters((old) =>
-      old
-        .filter((f) => f.id !== id)
-        .concat(value === undefined ? [] : [{ id, value }])
-    );
+    setColumnFilters((old) => {
+    // Filter out the old filter for this ID
+    const newFilters = old.filter((f) => f.id !== id);
+    // Add the new filter only if its value is not undefined (or null)
+    if (value !== undefined && value !== null) {
+      newFilters.push({ id, value });
+    }
+    return newFilters;
+  });
   }, []);
 
   // Fetch all logs when component mounts
@@ -163,14 +147,12 @@ const LogsPage: React.FC<{ location?: any }> = ({ location }) => {
     const fetchLogs = async () => {
       try {
         setLoading(true);
-        const dateFilter = columnFilters.find((f) => f.id === "timestamp");
-        const dateFrom = dateFilter
-          ? dateFilter.value?.dateFrom
-          : month.startDateStr;
+        const dateFilter = columnFilters.find((f) => f.id === 'timestamp');
+        const dateFrom = dateFilter ? dateFilter.value?.dateFrom : month.startDateStr;
         const dateTo = dateFilter ? dateFilter.value?.dateTo : today.endDateStr;
-        const data = await apiService.getAllLogs(dateFrom, dateTo);
+        const logData = await apiService.getAllLogs(dateFrom, dateTo);
 
-        setData(data);
+        setData(logData);
         setError(null);
       } catch (err) {
         setError("Failed to fetch logs. Please try again later.");

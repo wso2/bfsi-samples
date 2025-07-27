@@ -191,7 +191,7 @@ class OpenSearchService {
       }
 
       // Build the query with date range filter
-      const query = !dateFrom
+      const query = (!dateFrom || !dateTo)
         ? { match_all: {} }
         : {
             bool: {
@@ -397,20 +397,7 @@ class OpenSearchService {
         const key = `${monthYear}-${String(month).padStart(2, "0")}`;
 
         // Get month name for display
-        const monthNames = [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December",
-        ];
+        const monthNames = monthDate.toLocaleString('default', { month: 'long' });
 
         // Create a readable display format (Mon YYYY)
         const displayDate = `${monthNames[month - 1]} ${monthYear}`;

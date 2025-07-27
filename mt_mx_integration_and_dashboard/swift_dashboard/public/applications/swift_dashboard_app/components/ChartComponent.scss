@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+@import "commonStyles.scss";
+
 /* Single-line legend style */
   .single-line-legend {
     display: flex;
@@ -48,19 +50,19 @@
   }
 
   .legend-color.outer.inward {
-    background-color: #3792de;
+    background-color: $inward-color;
   }
 
   .legend-color.outer.outward {
-    background-color: #6EB0E7;
+    background-color: $outward-color;
   }
 
   .legend-color.inner.success {
-    background-color: #6BAE92;
+    background-color: $success-color;
   }
 
   .legend-color.inner.failure {
-    background-color: #D7796B;
+    background-color: $failure-color;
   }
 
 .spinner-chart {
@@ -90,7 +92,7 @@
   }
 
   .error-message-chart {
-    color: #e74c3c;
+    color: $failure-color;
     text-align: center;
     margin-top: 7rem;
   }

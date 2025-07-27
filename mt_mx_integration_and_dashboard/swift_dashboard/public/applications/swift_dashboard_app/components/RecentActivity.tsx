@@ -22,8 +22,8 @@ import apiService from '../../../services';
 
 interface RecentActivityProps {
   title: string;
-  direction: string
-  period: string
+  direction: string;
+  period: string;
 }
 
 interface RecentMessage {
@@ -132,17 +132,17 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ title, direction, perio
       ) : (
         <div className="recent-activity-table-container"> {/* A container div for overall styling */}
             <table className="recent-activity-actual-table"> {/* This will be your actual table */}
-            <thead>
-              <tr>
-                        {/* Column Headers - Essential for semantic structure and setting widths */}
-                        <th className="col-id">ID</th>
-                        <th className="col-time">Time</th>
-                        <th className="col-type">Type</th>
-                        <th className="col-direction">Direction</th>
-                        <th className="col-status">Status</th>
-              </tr>
-          </thead>
-            <tbody>
+              <thead>
+                <tr>
+                  {/* Column Headers - Essential for semantic structure and setting widths */}
+                  <th className="col-id">ID</th>
+                  <th className="col-time">Time</th>
+                  <th className="col-type">Type</th>
+                  <th className="col-direction">Direction</th>
+                  <th className="col-status">Status</th>
+                </tr>
+              </thead>
+              <tbody>
               {activities.map((activity, index) => (
                 <tr key={index} className="recent-activity-row" onClick={() => handleRowClick(activity.id)}>
                   <td className="recent-activity-id">{activity.id}</td>
@@ -154,8 +154,8 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ title, direction, perio
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
         </div>
       )}
     </div>

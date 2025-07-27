@@ -176,7 +176,7 @@ const Table: React.FC<TableProps> = ({
                         </th>
                         <th>
                             <div className='msgType'>DateTime</div>
-                            <tr>
+                            <div>
                             {!disableFilters && (
                                 <div className='dateRangeFilter'>
                                     <input 
@@ -201,7 +201,7 @@ const Table: React.FC<TableProps> = ({
                                     />
                                 </div>
                             )}
-                            </tr>
+                            </div>
                         </th>
                         <th>
                             <div className='msgType'>Status</div>

@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+@import './commonStyles.scss';
+
 // Variables (Optional but highly recommended for consistency)
 $primary-font: Arial, sans-serif;
 $background-color-light: #f9f9f9;
@@ -27,8 +29,6 @@ $border-color-medium: #ddd;
 $border-color-dark: #ccc;
 $table-row-even-bg: #f6f6f6;
 $table-row-hover-bg: #eef;
-$button-primary: #007bff;
-$button-primary-hover: #0056b3;
 $button-disabled: #cccccc;
 
 .log-table-container {
@@ -78,37 +78,33 @@ $button-disabled: #cccccc;
       }
 
       th {
-        background-color: #f2f2f2; // Specific for th, kept as is
+        background-color: #f2f2f2;
         font-weight: bold;
         color: $text-color-medium;
         position: relative;
 
         .column-filter {
-          // Nested inside th
           margin-top: 8px;
 
           .column-filter-input,
           .column-filter-select {
-            /* Add this class for dropdown */
             width: calc(100% - 10px);
             padding: 6px;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 13px;
             box-sizing: border-box;
-            background-color: white; /* Ensure select has a white background */
+            background-color: white; 
           }
         }
       }
 
       tr {
         &:nth-child(even) {
-          // Nested using & for parent reference
           background-color: $table-row-even-bg;
         }
 
         &:hover {
-          // Nested using & for parent reference
           background-color: $table-row-hover-bg;
         }
       }
@@ -116,7 +112,6 @@ $button-disabled: #cccccc;
   }
 
   .pagination-controls {
-    // Nested inside .log-table-container
     display: flex;
     justify-content: center;
     align-items: center;
@@ -126,28 +121,26 @@ $button-disabled: #cccccc;
 
     button {
       padding: 8px 15px;
-      border: 1px solid $button-primary;
+      border: 1px solid $btn-color;
       border-radius: 5px;
-      background-color: $button-primary;
+      background-color: $btn-color;
       color: white;
       cursor: pointer;
       font-size: 15px;
       transition: background-color 0.2s ease, border-color 0.2s ease;
 
       &:disabled {
-        // Nested for button disabled state
         background-color: $button-disabled;
         border-color: $button-disabled;
         cursor: not-allowed;
       }
 
       &:hover:not(:disabled) {
-        // Nested for button hover state
-        background-color: $button-primary-hover;
+        background-color: $btn-hover-color;
         border-color: darken(
-          $button-primary-hover,
+          $btn-hover-color,
           10%
-        ); // Example of a Sass function
+        );
       }
     }
 
@@ -166,4 +159,23 @@ $button-disabled: #cccccc;
 }
 .level {
   width: 7rem;
+}
+
+.date-range-filter {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  font-size: 13px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input[type="date"] {
+    padding: 1px;
+    margin-top: 3px;
+    width: 4.2rem;
+    font-size: 9px;
+  }
 }
