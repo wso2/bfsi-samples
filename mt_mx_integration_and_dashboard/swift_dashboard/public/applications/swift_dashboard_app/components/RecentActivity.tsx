@@ -143,7 +143,7 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ title, direction, perio
                 </tr>
               </thead>
               <tbody>
-              {activities.map((activity, index) => (
+              {activities.length > 0 && activities.map((activity, index) => (
                 <tr key={index} className="recent-activity-row" onClick={() => handleRowClick(activity.id)}>
                   <td className="recent-activity-id">{activity.id}</td>
                   <td className="recent-activity-time">{activity.time}</td>
