@@ -109,7 +109,7 @@ export class DashboardController {
 
       return data;
     } catch (error) {
-      this.context.logger.error(`Error in fetchLogData: ${error}`);
+      this.context.logger.error(`Error in fetching log data`);
       throw error;
     }
   }

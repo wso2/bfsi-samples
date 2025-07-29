@@ -131,31 +131,31 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ title, direction, perio
         </div>
       ) : (
         <div className="recent-activity-table-container"> {/* A container div for overall styling */}
-            <table className="recent-activity-actual-table"> {/* This will be your actual table */}
-              <thead>
-                <tr>
-                  {/* Column Headers - Essential for semantic structure and setting widths */}
-                  <th className="col-id">ID</th>
-                  <th className="col-time">Time</th>
-                  <th className="col-type">Type</th>
-                  <th className="col-direction">Direction</th>
-                  <th className="col-status">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-              {activities.length > 0 && activities.map((activity, index) => (
-                <tr key={index} className="recent-activity-row" onClick={() => handleRowClick(activity.id)}>
-                  <td className="recent-activity-id">{activity.id}</td>
-                  <td className="recent-activity-time">{activity.time}</td>
-                  <td className="recent-activity-type">{activity.mtMessageType}</td>
-                  <td className={`recent-activity-direction ${activity.direction.toLowerCase()}`}>{activity.direction}</td>
-                  <td className={`recent-activity-status ${activity.status.toLowerCase()}`}>
-                    {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                  </td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
+          <table className="recent-activity-actual-table"> {/* This will be your actual table */}
+            <thead>
+              <tr>
+                {/* Column Headers - Essential for semantic structure and setting widths */}
+                <th className="col-id">ID</th>
+                <th className="col-time">Time</th>
+                <th className="col-type">Type</th>
+                <th className="col-direction">Direction</th>
+                <th className="col-status">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+            {activities.length > 0 && activities.map((activity, index) => (
+              <tr key={index} className="recent-activity-row" onClick={() => handleRowClick(activity.id)}>
+                <td className="recent-activity-id">{activity.id}</td>
+                <td className="recent-activity-time">{activity.time}</td>
+                <td className="recent-activity-type">{activity.mtMessageType}</td>
+                <td className={`recent-activity-direction ${activity.direction.toLowerCase()}`}>{activity.direction}</td>
+                <td className={`recent-activity-status ${activity.status.toLowerCase()}`}>
+                  {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
+                </td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

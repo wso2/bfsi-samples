@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+@import "../commonStyles.scss";
+
 .messagePanel {
     width: 46%;
     background-color: #fff;
@@ -51,7 +53,7 @@
   }
   
   .messageButton, .xmlButton {
-    background-color: #2078c2;
+    background-color: $btn-color;
     color: #f2f1f1;
     border: none;
     border-radius: 0.25rem;
@@ -62,7 +64,7 @@
   }
   
   .messageButton:hover, .xmlButton:hover {
-    background-color: #185990;
+    background-color: $btn-hover-color;
   }
 
   .messageWrapper {

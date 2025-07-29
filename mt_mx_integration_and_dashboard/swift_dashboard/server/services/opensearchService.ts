@@ -172,74 +172,70 @@ class OpenSearchService {
   ): Promise<LogDocument[]> {
     const now = Date.now();
 
-    try {
-      const count = await this.getDocumentCount(client);
+    const count = await this.getDocumentCount(client);
 
-      // Build the range query dynamically
-      const rangeQuery: any = {};
-      if (dateFrom) {
-        // gte: start of the selected 'dateFrom' day
-        rangeQuery.gte = `${dateFrom}T00:00:00.000Z`; // Force UTC midnight for start
-      }
-      if (dateTo) {
-        // lt: start of the day *after* the selected 'dateTo' day
-        // This ensures all logs within the 'dateTo' day are included.
-        const nextDay = new Date(dateTo);
-        nextDay.setDate(nextDay.getDate() + 1);
-        const nextDayISO = nextDay.toISOString().split("T")[0]; // Get YYYY-MM-DD for the next day
-        rangeQuery.lt = `${nextDayISO}T00:00:00.000Z`; // Force UTC midnight for next day
-      }
+    // Build the range query dynamically
+    const rangeQuery: any = {};
+    if (dateFrom) {
+      // gte: start of the selected 'dateFrom' day
+      rangeQuery.gte = `${dateFrom}T00:00:00.000Z`; // Force UTC midnight for start
+    }
+    if (dateTo) {
+      // lt: start of the day *after* the selected 'dateTo' day
+      // This ensures all logs within the 'dateTo' day are included.
+      const nextDay = new Date(dateTo);
+      nextDay.setDate(nextDay.getDate() + 1);
+      const nextDayISO = nextDay.toISOString().split("T")[0]; // Get YYYY-MM-DD for the next day
+      rangeQuery.lt = `${nextDayISO}T00:00:00.000Z`; // Force UTC midnight for next day
+    }
 
-      // Build the query with date range filter
-      const query = (!dateFrom || !dateTo)
-        ? { match_all: {} }
-        : {
-            bool: {
-              must: [
-                {
-                  range: {
-                    timestamp: {
-                      gte: dateFrom,
-                      lte: dateTo,
-                    },
+    // Build the query with date range filter
+    const query = (!dateFrom || !dateTo)
+      ? { match_all: {} }
+      : {
+          bool: {
+            must: [
+              {
+                range: {
+                  time: {
+                    gte: dateFrom,
+                    lte: dateTo,
                   },
                 },
-              ],
-            },
-          };
-      const response = await client.search({
-        index: "ballerina_log",
-        body: {
-          size: count,
-          query: query,
-          sort: [
-            {
-              timestamp: {
-                order: "desc", // Sort by timestamp in descending order (newest first)
               },
-            },
-          ],
-        },
-      });
-
-      const logs = response.body.hits.hits.map((hit: any) => {
-        const source = hit._source || {};
-        return {
-          timestamp: source.timestamp || "",
-          level: source.level || "",
-          module: source.module || "",
-          message: source.message || "",
+            ],
+          },
         };
-      });
+    const response = await client.search({
+      index: "ballerina_log",
+      body: {
+        size: count,
+        query: query,
+        sort: [
+          {
+            time: {
+              order: "desc"
+            }
+          }
+        ],
+      },
+    });
 
-      // Cache the results
-      this.cachedLogs = logs;
-      this.lastCacheTime = now;
+    const logs = response.body.hits.hits.map((hit: any) => {
+      const source = hit._source || {};
+      return {
+        timestamp: source.timestamp || "",
+        level: source.level || "",
+        module: source.module || "",
+        message: source.message || "",
+      };
+    });
 
-      return logs;
-    } catch (error) {
-      throw error;
-    }
+    // Cache the results
+    this.cachedLogs = logs;
+    this.lastCacheTime = now;
+
+    return logs;
   }
 
   /**
