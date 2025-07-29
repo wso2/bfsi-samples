@@ -224,7 +224,7 @@ class OpenSearchService {
     const logs = response.body.hits.hits.map((hit: any) => {
       const source = hit._source || {};
       return {
-        timestamp: source.timestamp || "",
+        timestamp: source.time || "",
         level: source.level || "",
         module: source.module || "",
         message: source.message || "",
