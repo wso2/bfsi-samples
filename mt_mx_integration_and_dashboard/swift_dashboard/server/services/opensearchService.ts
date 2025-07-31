@@ -393,7 +393,7 @@ class OpenSearchService {
         const key = `${monthYear}-${String(month).padStart(2, "0")}`;
 
         // Get month name for display
-         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", 
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", 
           "October", "November", "December"];
 
         // Create a readable display format (Mon YYYY)
