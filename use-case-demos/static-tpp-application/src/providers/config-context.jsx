@@ -17,6 +17,7 @@
  */
 
 import {createContext, useEffect, useState} from "react";
+import {api} from "../api.js";
 
 const ConfigContext = createContext();
 
@@ -36,9 +37,8 @@ export const ConfigProvider = ({children}) => {
     useEffect(() => {
         const getConfig = async () => {
             try {
-                const response = await fetch("/configurations/config.json");
-                const data = await response.json();
-                setConfig(data.configurations);
+                const response = await api.get("config.json");
+                setConfig(response.configurations);
             } catch (e) {
                 console.log(e.message);
             } finally {

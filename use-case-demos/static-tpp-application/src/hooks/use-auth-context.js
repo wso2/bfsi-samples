@@ -17,6 +17,7 @@
  */
 
 import {useEffect, useRef, useState} from "react";
+import {api} from "../api.js";
 
 /**
  * A custom React hook that fetches and manages user information.
@@ -39,9 +40,8 @@ const useAuthContext = () => {
         const fetchData = async () => {
 
             try {
-                const response = await fetch("/configurations/config.json");
-                const data = await response.json();
-                setUser(data.user);
+                const response = await api.get("config.json");
+                setUser(response.user);
             } catch (e) {
                 console.error(e.message);
             }
@@ -51,8 +51,10 @@ const useAuthContext = () => {
 
     }, [])
 
-    return user? user : {"name": "John Smith",
-        "image": "/resources/assets/images/profile/dp_image.webp"};
+    return user ? user : {
+        "name": "John Smith",
+        "image": "/resources/assets/images/profile/dp_image.webp"
+    };
 };
 
 export default useAuthContext;
