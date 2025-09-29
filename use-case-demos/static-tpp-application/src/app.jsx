@@ -17,30 +17,60 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-import {ConfigProvider} from "./providers/config-context.jsx";
 import OxygenThemeProvider from "./providers/oxygen-theme-provider.jsx";
 import Home from "./pages/home-page/home.jsx";
-import AccountsCentral from "./layouts/accounts-central.jsx";
+import {useEffect, useState} from "react";
+import {api} from "./api.js";
 
 /**
- * The main application component that sets up the core routing and
- * provides necessary contexts for the 'Accounts Central' product section.
- * It defines a base layout with a header and a content area, and uses
- * nested routes to render specific product pages like 'Home'.
+ * The root component of the application, responsible for initial setup,
+ * fetching global theme configurations, managing the loading state, and
+ * defining the top-level routing structure.
+ *
+ * It uses a `useEffect` hook to fetch theme configurations once on mount
+ * via the `api.get` utility. While loading or if configurations are unavailable,
+ * it displays a loading screen.
+ *
+ * Once loaded, it renders the primary route for the '/accounts-central/*' path,
+ * wrapping the rest of the application's routes and components with the
+ * `OxygenThemeProvider` to apply dynamic styling based on the fetched configurations.
  */
 function App() {
 
-    return (<>
+    const [themeConfigs, setThemeConfigs] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchThemeConfigs = async () => {
+            try {
+                const response = await api.get("config.json");
+                setThemeConfigs(response.configurations);
+                console.log(response);
+            } catch (e) {
+                console.log(e.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchThemeConfigs();
+    }, [])
+
+    if (isLoading || !themeConfigs) {
+        return <div>Loading Application...</div>;
+    }
+    return (
+        <>
             <Routes>
-                <Route path="/accounts-central/*" element={<ConfigProvider>
-                    <OxygenThemeProvider>
+                <Route path="/accounts-central/*" element={
+                    <OxygenThemeProvider configs={themeConfigs}>
                         <Routes>
                             <Route path="/home" element={<Home/>}/>
                         </Routes>
                     </OxygenThemeProvider>
-                </ConfigProvider>}/>
+                }/>
             </Routes>
-        </>)
+        </>
+    )
 }
 
 export default App

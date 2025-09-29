@@ -15,28 +15,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import {useEffect, useState} from "react";
+import {api} from "../api.js";
 
-import QuickActions from "./quick-actions.jsx";
-import useAuthContext from "../../hooks/use-auth-context.js";
-import AccountsCentral from "../../layouts/accounts-central.jsx";
+const useConfigContext = () => {
+    const [registeredBanks, setRegisteredBanks] = useState([]);
 
-/**
- * The main component for the product's home page.
- * It fetches user information using the `useAuthContext` custom hook and
- * passes this data to the `QuickActions` component to display user-specific content.
- */
-const Home = () => {
-    const userInfo = useAuthContext();
+    useEffect(async () => {
+        try {
+            const response = await api.get("config.json")
+            setRegisteredBanks(response.banks)
+        }catch (e) {
+            console.log(e.message);
+        }
+    }, []);
 
-
-    return (
-        <>
-            <AccountsCentral>
-                <QuickActions userInfo={userInfo}/>
-            </AccountsCentral>
-        </>
-    )
 }
-
-export default Home;
 
