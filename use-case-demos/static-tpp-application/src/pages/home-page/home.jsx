@@ -19,6 +19,9 @@
 import QuickActions from "./quick-actions.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
 import AccountsCentral from "../../layouts/accounts-central.jsx";
+import useConfigContext from "../../hooks/use-config-context.js";
+import './home.css'
+import InfographicsSummery from "./infographics-summery.jsx";
 
 /**
  * The main component for the product's home page.
@@ -28,11 +31,17 @@ import AccountsCentral from "../../layouts/accounts-central.jsx";
 const Home = () => {
     const userInfo = useAuthContext();
 
+    const {registeredBanks} = useConfigContext();
 
     return (
         <>
             <AccountsCentral>
                 <QuickActions userInfo={userInfo}/>
+                <div className="home-content-outer-container">
+                    <div className="home-content-inner-container">
+                        <InfographicsSummery/>
+                    </div>
+                </div>
             </AccountsCentral>
         </>
     )

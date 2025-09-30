@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import React, {useContext} from 'react';
 import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
 
 /**
