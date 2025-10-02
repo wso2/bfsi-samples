@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import QuickActions from "./quick-actions.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
 import AccountsCentral from "../../layouts/accounts-central.jsx";
+import InfographicsSummery from "./infographics-summery.jsx";
+import HeroSection from "./hero-section.jsx";
+import useConfigContext from "../../hooks/use-config-context.js";
 
 /**
  * The main component for the product's home page.
