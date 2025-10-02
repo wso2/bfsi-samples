@@ -19,6 +19,8 @@
 import HeroSection from "./hero-section.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
 import ApplicationLayout from "../../layouts/application-layout.jsx";
+import './home.css'
+import InfographicsSummery from "./infographics-summery.jsx";
 
 /**
  * The main component for the product's home page.
@@ -33,6 +35,11 @@ const Home = ({configurations}) => {
         <>
             <ApplicationLayout configurations={configurations}>
                 <HeroSection userInfo={userInfo}/>
+                <div className="home-content-outer-container">
+                    <div className="home-content-inner-container">
+                        <InfographicsSummery/>
+                    </div>
+                </div>
             </ApplicationLayout>
         </>
     )
