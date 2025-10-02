@@ -16,27 +16,21 @@
  * under the License.
  */
 
-import "./button.css"
+import "./quick-action-button.css"
 
 /**
- * A versatile, reusable button component that can function as either a
- * Quick Action Button (with icon and text/children) or an Icon Button
- * (with only an icon).
- *
- * It determines its style and content based on the presence of `children`.
- *
- * @param {object} props - The component props.
+ * A reusable component designed to function as a Quick Action Button.
+ * * It renders an interactive button displaying a primary icon and a text label
+ * (passed as `children`). It applies a fixed style intended for quick action lists.
+ * * @param {object} props - The component props.
  * @param {React.ReactNode} props.icon - The JSX or component for the button's icon.
- * @param {React.ReactNode} [props.children] - The text or content to display next to the icon (makes it a Quick Action Button).
- * @param {function} props.onClick - The function to call when the button is clicked.
+ * @param {React.ReactNode} props.children - The text label or content displayed below the icon.
+ * @param {function} props.onClick - The function to be executed when the button is clicked.
  */
-export const Button = ({icon, children, onClick, isQuickActionButton}) => {
-
-    const quickActionClasses = 'quick-action-button-outer';
-    const iconButtonClasses = 'product-header-user-icon-button-outer product-header-user-icon-button-content';
+export const QuickActionButton = ({icon, children, onClick}) => {
 
     return (
-        <div className={`${isQuickActionButton ? quickActionClasses : iconButtonClasses}`}>
+        <div className='quick-action-button-outer'>
             <button onClick={onClick}>
                 {icon}
                 <p>{children}</p>

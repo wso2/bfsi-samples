@@ -21,17 +21,23 @@ import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './app.jsx'
 import {BrowserRouter} from "react-router-dom";
+import {ConfigProvider} from "./providers/config-context.jsx";
 
 /**
- * The entry point of the React application.
- * It creates a new React root for the DOM element with the ID 'root',
- * and renders the main App component wrapped in StrictMode and BrowserRouter
- * for development checks and client-side routing.
+ * The main entry point for the React application.
+ * It initializes the React root, wrapping the entire application in:
+ * 1. `StrictMode` for development-time checks.
+ * 2. `BrowserRouter` to enable client-side routing.
+ * 3. `ConfigProvider` to make global configurations accessible throughout the app.
+ *
+ * It finally renders the top-level `App` component.
  */
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <BrowserRouter>
+            <ConfigProvider>
             <App/>
+            </ConfigProvider>
         </BrowserRouter>
     </StrictMode>,
 )

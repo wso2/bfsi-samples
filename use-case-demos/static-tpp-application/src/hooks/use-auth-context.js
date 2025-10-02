@@ -20,13 +20,17 @@ import {useEffect, useRef, useState} from "react";
 import {api} from "../api.js";
 
 /**
- * A custom React hook that fetches and manages user information.
- * It uses `useEffect` to asynchronously fetch user data from the
- * '/configurations/config.json' endpoint and returns the `user` object
- * from the response.
- * @returns {object|null} The user information object, or `null` while loading.
+ * A temporary custom React hook designed to mock or retrieve a static user object
+ * for authentication context purposes.
+ *
+ * It uses `useEffect` and a `useRef` flag to ensure the user data is fetched only once
+ * from the `/configurations/config.json` endpoint upon initial component mount.
+ *
+ * @returns {object} The fetched user information object (containing `name` and `image`),
+ * or a static **default user object** if the fetch fails or no user data is present.
+ *
+ * // TODO: This hook is temporary and will be replaced by the Asgardeo SDK for production authentication.
  */
-//TODO: this hook will remove after installing Asgardeo SDK for authentication in future development
 const useAuthContext = () => {
 
     const [user, setUser] = useState({});

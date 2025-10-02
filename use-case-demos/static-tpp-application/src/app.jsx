@@ -58,19 +58,20 @@ function App() {
     if (isLoading || !themeConfigs) {
         return <div>Loading Application...</div>;
     }
-    return (
-        <>
+
+    const context = ("accounts-central");
+
+    return (<>
+        <AppThemeProvider>
             <Routes>
-                <Route path="/accounts-central/*" element={
-                    <OxygenThemeProvider configs={themeConfigs}>
-                        <Routes>
-                            <Route path="/home" element={<Home/>}/>
-                        </Routes>
-                    </OxygenThemeProvider>
+                <Route path={`/${context}/*`} element={
+                    <Routes>
+                        <Route path="home" element={<Home/>}/>
+                    </Routes>
                 }/>
             </Routes>
-        </>
-    )
+        </AppThemeProvider>
+    </>)
 }
 
 export default App

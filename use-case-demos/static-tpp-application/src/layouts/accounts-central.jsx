@@ -17,26 +17,35 @@
  */
 
 import "./accounts-central.css"
-import {Button} from "../components/forms/button.jsx";
-import Logout from "/public/resources/assets/images/icons/logout_icon.svg?react"
+import {useContext} from "react";
+import ConfigContext from "../providers/config-context.jsx";
+import {IconButton} from "@oxygen-ui/react";
+import {ArrowRightFromBracketIcon} from "@oxygen-ui/react-icons";
 
 /**
  * A layout component that establishes the standard structure for the 'Accounts Central' product view.
  *
- * It renders a fixed product header containing the title "Accounts Central" and a
- * logout/user icon button using the reusable `CommonButton`. The main content area
- * for the page is rendered by the `children` prop.
+ * It consumes the **`ConfigContext`** to dynamically display the application's name
+ * (from `context.routerName.applicationName`) in the header.
+ * The fixed product header also includes an **`IconButton`** from Oxygen UI
+ * with a logout icon (`ArrowRightFromBracketIcon`).
+ * The main content area is populated by the **`children`** prop.
  *
  * @param {object} props - The component props.
  * @param {React.ReactNode} props.children - The content (usually nested routes or components) to be rendered in the main product content area.
+ * @returns {JSX.Element} The rendered layout with dynamic header and content area.
  */
 export const AccountsCentral = ({children}) => {
+
+    const context = useContext(ConfigContext);
+
     return (
         <>
             <div className="product-header-outer">
-                <p>Accounts Central</p>
-                <Button icon={<Logout/>} onClick={() => {
-                }} isQuickActionButton={false}/>
+                <p>{context.routerName.applicationName}</p>
+                <IconButton style={{color:'white'}}>
+                    <ArrowRightFromBracketIcon size={'1.5rem'}/>
+                </IconButton>
             </div>
 
             <div className="product-content-outer">

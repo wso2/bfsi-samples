@@ -19,31 +19,35 @@
 import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
 
 /**
- * A theme provider component that wraps the Material UI ThemeProvider to apply
- * a dynamic theme based on the `ConfigContext`.
- * @param configs
- * @param {React.ReactNode} children - The child components to be rendered within the theme provider.
- * @returns {JSX.Element} The ThemeProvider component with a dynamically created theme.
+ * A root theme provider component that wraps the Oxygen UI ThemeProvider from `@oxygen-ui/react`
+ * to apply a custom, statically defined theme across the application.
+ *
+ * It uses `extendTheme` to configure:
+ * - Typography with the 'Inter' font family.
+ * - Light and dark color schemes, setting specific hardcoded values for the primary color palette.
+ *
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components to be rendered within the theme provider's scope.
+ * @returns {JSX.Element} The ThemeProvider component with the defined theme applied.
  */
-const OxygenThemeProvider = ({configs,children}) => {
+const AppThemeProvider = ({children}) => {
 
-    // const {configs} = useContext(ConfigContext);
     const theme = extendTheme({
         typography: {
-            fontFamily: configs.theme_font,
+            fontFamily: 'Inter',
         },
         colorSchemes: {
             light: {
                 palette: {
                     primary: {
-                        main: configs.theme_primary_color,
+                        main: '#FF5499',
                     },
                 },
             },
             dark: {
                 palette: {
                     primary: {
-                        main: configs.theme_secondary_color,
+                        main: '#FF5456',
                     },
                 },
             },
@@ -53,5 +57,5 @@ const OxygenThemeProvider = ({configs,children}) => {
     return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 };
 
-export default OxygenThemeProvider;
+export default AppThemeProvider;
 
