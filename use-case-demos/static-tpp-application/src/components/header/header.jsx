@@ -32,10 +32,10 @@ import './header.css'
  * @param {object} props.context - The configuration context object (from `ConfigContext`) containing application details like `routerName.applicationName`.
  * @returns {JSX.Element} The rendered header bar.
  */
-const Header = ({context}) => {
+const Header = ({name}) => {
     return(
         <div className="product-header-outer">
-            <p>{context.routerName.applicationName}</p>
+            <p>{name}</p>
             <IconButton style={{color:'white'}}>
                 <ArrowRightFromBracketIcon size={'1.5rem'}/>
             </IconButton>

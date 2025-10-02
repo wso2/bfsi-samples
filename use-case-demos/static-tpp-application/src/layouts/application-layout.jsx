@@ -17,8 +17,6 @@
  */
 
 import "./application-layout.css"
-import {useContext} from "react";
-import ConfigContext from "../providers/config-context.jsx";
 import Header from "../components/header/header.jsx";
 
 /**
@@ -35,13 +33,10 @@ import Header from "../components/header/header.jsx";
  * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
  * @returns {JSX.Element} The rendered application shell with header and content area.
  */
-export const ApplicationLayout = ({children}) => {
-
-    const context = useContext(ConfigContext);
-
+export const ApplicationLayout = ({configurations, children}) => {
     return (
         <>
-            <Header context={context}/>
+            <Header name={configurations.name.applicationName}/>
             <div className="product-content-outer">
                 {children}
             </div>

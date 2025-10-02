@@ -18,7 +18,7 @@
 
 import HeroSection from "./hero-section.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
-import AccountsCentral from "../../layouts/accounts-central.jsx";
+import ApplicationLayout from "../../layouts/application-layout.jsx";
 
 /**
  * The main component for the product's home page.
@@ -27,14 +27,13 @@ import AccountsCentral from "../../layouts/accounts-central.jsx";
  * * The component uses the **`AccountsCentral`** layout wrapper to provide the standard
  * product header and content structure.
  */
-const Home = () => {
+const Home = ({configurations}) => {
     const userInfo = useAuthContext();
     return (
         <>
-            <AccountsCentral configuration={configurations}>
-            <ApplicationLayout>
+            <ApplicationLayout configurations={configurations}>
                 <HeroSection userInfo={userInfo}/>
-            </AccountsCentral>
+            </ApplicationLayout>
         </>
     )
 }

@@ -84,7 +84,7 @@ const HeroSection = ({userInfo}) => {
                         const iconProps = {
                             ...(action.size && {size: action.size}), ...(action.color && {color: action.color})
                         };
-                        return (<QuickActionButton ey={index} onClick={action.onClick}>
+                        return (<QuickActionButton key={index} onClick={action.onClick}>
                                 <IconComponent {...iconProps} />
                                 {action.name}
                             </QuickActionButton>)

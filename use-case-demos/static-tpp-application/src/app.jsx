@@ -44,8 +44,6 @@ function App() {
         return <div>Loading Application Configuration...</div>;
     }
 
-    console.log(configurations);
-
     return (<>
         <AppThemeProvider>
             <Routes>
