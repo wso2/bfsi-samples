@@ -37,7 +37,7 @@ const Header = ({name}) => {
         <div className="product-header-outer">
             <p>{name}</p>
             <IconButton style={{color:'white'}}>
-                <ArrowRightFromBracketIcon size={'1.5rem'}/>
+                <ArrowRightFromBracketIcon size={24}/>
             </IconButton>
         </div>
     );

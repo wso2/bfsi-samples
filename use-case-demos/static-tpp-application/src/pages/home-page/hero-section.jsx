@@ -30,11 +30,11 @@ const quickActionsButtons = [{
     icon: PayBillsIcon,
     name: "Payments",
     onClick: onclickAction
-}, {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: "48"}, {
+}, {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: "48", width: 24}, {
     icon: ScheduleIcon,
     name: "Schedule",
     onClick: onclickAction
-}, {icon: UserGroupIcon, name: "Payees", onClick: onclickAction, size: "48"}];
+}, {icon: UserGroupIcon, name: "Payees", onClick: onclickAction, size: "48", width: 24}];
 
 /**
  * Renders the primary header or "hero" content for a product page.
@@ -82,7 +82,7 @@ const HeroSection = ({userInfo}) => {
                     {quickActionsButtons.map((action, index) => {
                         const IconComponent = action.icon;
                         const iconProps = {
-                            ...(action.size && {size: action.size}), ...(action.color && {color: action.color})
+                            ...(action.size && {size: action.size}), ...(action.width && {width: action.width})
                         };
                         return (<QuickActionButton key={index} onClick={action.onClick}>
                                 <IconComponent {...iconProps} />
