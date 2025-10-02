@@ -19,20 +19,20 @@ import {useEffect, useState} from "react";
 import {api} from "../api.js";
 
 const useConfigContext = () => {
-    const [registeredBanks, setRegisteredBanks] = useState([]);
+    const [config, setLoadedConfig] = useState(null);
 
     useEffect( () => {
         const fetchData = async () => {
             try {
                 const response = await api.get("config.json")
-                setRegisteredBanks(response.banks)
+                setLoadedConfig(response)
             }catch (e) {
                 console.log(e.message);
             }
         }
         fetchData();
     }, []);
-    return {registeredBanks};
+    return {config};
 }
 
 export default useConfigContext;

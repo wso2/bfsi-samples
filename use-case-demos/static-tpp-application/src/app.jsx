@@ -17,10 +17,11 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-import OxygenThemeProvider from "./providers/oxygen-theme-provider.jsx";
 import Home from "./pages/home-page/home.jsx";
 import {useEffect, useState} from "react";
 import {api} from "./api.js";
+import AppThemeProvider from "./providers/app-theme-provider.jsx";
+import useConfigContext from "./hooks/use-config-context.js";
 
 /**
  * The root component of the application, responsible for initial setup,
@@ -37,36 +38,20 @@ import {api} from "./api.js";
  */
 function App() {
 
-    const [themeConfigs, setThemeConfigs] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const {config:configurations} = useConfigContext()
 
-    useEffect(() => {
-        const fetchThemeConfigs = async () => {
-            try {
-                const response = await api.get("config.json");
-                setThemeConfigs(response.configurations);
-                console.log(response);
-            } catch (e) {
-                console.log(e.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-        fetchThemeConfigs();
-    }, [])
-
-    if (isLoading || !themeConfigs) {
-        return <div>Loading Application...</div>;
+    if (!configurations) {
+        return <div>Loading Application Configuration...</div>;
     }
 
-    const context = ("accounts-central");
+    console.log(configurations);
 
     return (<>
         <AppThemeProvider>
             <Routes>
-                <Route path={`/${context}/*`} element={
+                <Route path={`/${configurations.name.route}/*`} element={
                     <Routes>
-                        <Route path="home" element={<Home/>}/>
+                        <Route path="home" element={<Home configurations={configurations} />}/>
                     </Routes>
                 }/>
             </Routes>

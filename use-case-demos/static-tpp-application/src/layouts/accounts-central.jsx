@@ -17,8 +17,6 @@
  */
 
 import "./accounts-central.css"
-import {useContext} from "react";
-import ConfigContext from "../providers/config-context.jsx";
 import {IconButton} from "@oxygen-ui/react";
 import {ArrowRightFromBracketIcon} from "@oxygen-ui/react-icons";
 
@@ -35,14 +33,12 @@ import {ArrowRightFromBracketIcon} from "@oxygen-ui/react-icons";
  * @param {React.ReactNode} props.children - The content (usually nested routes or components) to be rendered in the main product content area.
  * @returns {JSX.Element} The rendered layout with dynamic header and content area.
  */
-export const AccountsCentral = ({children}) => {
-
-    const context = useContext(ConfigContext);
+export const AccountsCentral = ({configuration, children}) => {
 
     return (
         <>
             <div className="product-header-outer">
-                <p>{context.routerName.applicationName}</p>
+                <p>{configuration.name.applicationName}</p>
                 <IconButton style={{color:'white'}}>
                     <ArrowRightFromBracketIcon size={'1.5rem'}/>
                 </IconButton>

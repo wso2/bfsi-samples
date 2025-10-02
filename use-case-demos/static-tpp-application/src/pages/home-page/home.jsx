@@ -20,21 +20,19 @@ import useAuthContext from "../../hooks/use-auth-context.js";
 import AccountsCentral from "../../layouts/accounts-central.jsx";
 import InfographicsSummery from "./infographics-summery.jsx";
 import HeroSection from "./hero-section.jsx";
-import useConfigContext from "../../hooks/use-config-context.js";
+import './home.css'
 
 /**
  * The main component for the product's home page.
  * It fetches user information using the `useAuthContext` custom hook and
  * passes this data to the `QuickActions` component to display user-specific content.
  */
-const Home = () => {
+const Home = ({configurations}) => {
     const userInfo = useAuthContext();
-
-    const {registeredBanks} = useConfigContext();
 
     return (
         <>
-            <AccountsCentral>
+            <AccountsCentral configuration={configurations}>
                 <HeroSection userInfo={userInfo}/>
                 <div className="home-content-outer-container">
                     <div className="home-content-inner-container">
