@@ -29,6 +29,65 @@
       "color":"rgba(54, 162, 235, 0.6)",
       "border":"rgba(54, 162, 235, 1)"
     }
+  ],
+  "accounts": [
+    {
+      "id": "0006-1123-7724",
+      "bank": "Ascend Global Bank",
+      "name": "savings account",
+      "balance": 1350
+
+    },
+    {
+      "id": "0006-4435-9454",
+      "bank": "Ascend Global Bank",
+      "name": "Current account",
+      "balance": 450
+    },
+    {
+      "id": "0043-4435-9454",
+      "bank": "Global Asset Trust",
+      "name": "Current account",
+      "balance": 750
+    },
+    {
+      "id": "0054-4435-9454",
+      "bank": "Trust Union",
+      "name": "Current account",
+      "balance": 1265.20
+    }
+  ],
+  "payees": [
+    {
+      "name": "A.C.ME. Corporation",
+      "bank": "First National Bank",
+      "accountNumber": "1234567890"
+    },
+    {
+      "name": "John Smith",
+      "bank": "Ally Bank",
+      "accountNumber": "0987654321"
+    },
+    {
+      "name": "Jane Doe",
+      "bank": "TD Canada Trust",
+      "accountNumber": "1122334455"
+    },
+    {
+      "name": "Gas Company",
+      "bank": "Bank of America",
+      "accountNumber": "9988776655"
+    },
+    {
+      "name": "Internet Provider",
+      "bank": "Chase Bank",
+      "accountNumber": "5566778899"
+    },
+    {
+      "name": "Sarah Johnson",
+      "bank": "Wells Fargo",
+      "accountNumber": "4455667788"
+    }
   ]
 }
 

@@ -21,6 +21,7 @@ import useAuthContext from "../../hooks/use-auth-context.js";
 import ApplicationLayout from "../../layouts/application-layout.jsx";
 import './home.css'
 import InfographicsSummery from "./infographics-summery.jsx";
+import useConfigContext from "../../hooks/use-config-context.js";
 
 /**
  * The main component for the product's home page.
@@ -31,13 +32,19 @@ import InfographicsSummery from "./infographics-summery.jsx";
  */
 const Home = ({configurations}) => {
     const userInfo = useAuthContext();
+    const {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo} = useConfigContext();
+
+    if (isLoading) {
+        return <div>Loading configuration and bank data...</div>;
+    }
+
     return (
         <>
             <ApplicationLayout configurations={configurations}>
                 <HeroSection userInfo={userInfo}/>
                 <div className="home-content-outer-container">
                     <div className="home-content-inner-container">
-                        <InfographicsSummery/>
+                        <InfographicsSummery bankInfoWithTotals={bankInfoWithTotals} />
                     </div>
                 </div>
             </ApplicationLayout>

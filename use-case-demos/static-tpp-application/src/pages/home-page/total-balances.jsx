@@ -1,10 +1,10 @@
-const TotalBalances = ()=>{
+const TotalBalances = ({total})=>{
     return(
         <>
             <div className="total-balance-content">
                 <p>Total Balance</p>
                 <div className="total-amount">
-                    <p>GBP</p><span>12735.20</span>
+                    <p>GBP</p><span>{total}</span>
                 </div>
             </div>
         </>

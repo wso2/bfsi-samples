@@ -20,19 +20,47 @@ import {api} from "../api.js";
 
 const useConfigContext = () => {
     const [config, setLoadedConfig] = useState(null);
+    const [connectedBankDetails, setConnectedBankDetails] = useState(null);
+    const [bankInfoWithTotals, setBankInfoWithTotals] = useState(null);
+    const [accountInfoWithBankInfo, setAccountInfoWithBankInfo] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect( () => {
+
         const fetchData = async () => {
             try {
                 const response = await api.get("config.json")
                 setLoadedConfig(response)
+                setConnectedBankDetails(response.banks)
+
+                const banksWithTotal = response.banks.map((bank) => {
+                    const total = response.accounts.filter((account) => account.bank === bank.name).reduce((sum, account) => sum+account.balance,0);
+                    return{
+                        ...bank,
+                        totalBalance: total,
+                    }
+                })
+
+                setBankInfoWithTotals(banksWithTotal)
+
+                const accountWithBankInfo = response.accounts.map(account => {
+                    const bank = response.banks.find((b) => b.name === account.bank)
+                    return {
+                        ...account,
+                        ...bank,
+                    }
+                })
+
+                setAccountInfoWithBankInfo(accountWithBankInfo)
+
+                setIsLoading(false)
             }catch (e) {
                 console.log(e.message);
             }
         }
         fetchData();
     }, []);
-    return {config};
+    return {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo};
 }
 
 export default useConfigContext;

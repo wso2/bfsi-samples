@@ -20,12 +20,15 @@ import './infographics-summery.css'
 import {Card} from "@oxygen-ui/react";
 import TotalBalances from "./total-balances.jsx";
 
-const InfographicsSummery = () => {
+const InfographicsSummery = ({bankInfoWithTotals}) => {
+
+    const total = bankInfoWithTotals.reduce((acc, current) => {return acc+current.totalBalance},0)
+
     return (
         <>
             <div className="container-outer">
                 <Card className="total-card-outer infographic-container">
-                    <TotalBalances />
+                    <TotalBalances total={total} />
                 </Card>
                 <Card className="graph-card-outer infographic-container">
                     sdvsdvsfvfs
