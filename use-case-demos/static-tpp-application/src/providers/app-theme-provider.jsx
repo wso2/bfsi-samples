@@ -42,6 +42,12 @@ const AppThemeProvider = ({children}) => {
                     primary: {
                         main: '#FF5499',
                     },
+                    secondary: {
+                        main: '#FF7433',
+                    },
+                    white:{
+                        main: '#FFFFFF',
+                    }
                 },
             },
             dark: {

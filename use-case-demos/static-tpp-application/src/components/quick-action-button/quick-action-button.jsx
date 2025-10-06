@@ -17,6 +17,7 @@
  */
 
 import "./quick-action-button.css"
+import {Grid} from "@oxygen-ui/react";
 
 /**
  * A reusable component designed to function as a Quick Action Button.
@@ -27,15 +28,35 @@ import "./quick-action-button.css"
  * @param {React.ReactNode} props.children - The text label or content displayed below the icon.
  * @param {function} props.onClick - The function to be executed when the button is clicked.
  */
-export const QuickActionButton = ({icon, children, onClick}) => {
+export const QuickActionButton = ({children, onClick}) => {
+
+    const [iconElement, nameText] = children;
 
     return (
-        <div className='quick-action-button-outer'>
-            <button onClick={onClick}>
-                {icon}
-                <p>{children}</p>
-            </button>
-        </div>
+        <Grid
+            item={true}
+            xs={2} sm={1.5} md={1.2} lg={1.6}
+            sx={{height:{xs:"90%",sm:"100%",md:"90%",lg:"65%"},borderRadius:"10%", padding:"0.5rem"}}
+            className="action-button">
+            <div style={{ width: '100%', height: '100%',
+                cursor: 'pointer', border: 'none', background: 'transparent' }} >
+                <Grid
+                    container direction="column" alignItems="center" justifyContent="center"
+                    sx={{width:"100%", height:"100%"}} spacing={0}>
+                    <Grid item={true} lg={12} md={12} sm={12} xs={12}
+                          sx={{height:"75%", display: 'flex', alignItems: 'center',
+                              justifyContent: 'center', color: "secondary.main"}}>
+                        {iconElement}
+                    </Grid>
+                    <Grid
+                        item={true} md={12} lg={12} sm={12} xs={12}
+                        sx={{height:"25%",color: "secondary.main", display:"flex",
+                            justifyContent:"center",alignItems:"center"}}>
+                        {nameText}
+                    </Grid>
+                </Grid>
+            </div>
+        </Grid>
     );
 };
 

@@ -18,19 +18,21 @@
 
 .product-home-header-outer{
     width: 100%;
-    height: 14rem;
+    max-height: 20%;
     background: url("/resources/assets/images/background/bg_image.webp") lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat;
-    padding: 2rem 8rem;
+    padding: 4% 4%;
     display: flex;
 }
 
 .user-name-image-container{
-    width: 50%;
+    /*width: 48rem;*/
+    /*min-width: 42rem;*/
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: start;
     gap: 1rem;
+    background: #FF7433;
 }
 
 .user-image-container{
@@ -61,11 +63,15 @@
 }
 
 .product-quick-actions-container{
-    width: 50%;
-    height: 100%;
+    /*width: 100%;*/
+    height: inherit;
     display: flex;
-    gap: 3rem;
+    gap: 8%;
     align-items: end;
     justify-content: center;
 }
 
+
+.hero-section-outer{
+    background: url("/resources/assets/images/background/bg_image.webp") lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat;
+}

@@ -21,6 +21,7 @@ import {QuickActionButton} from "../../components/quick-action-button/quick-acti
 import PayBillsIcon from "/public/resources/assets/images/icons/pay_icon.svg?react"
 import ScheduleIcon from "/public/resources/assets/images/icons/schedule_icon.svg?react"
 import {ArrowLeftArrowRightIcon, UserGroupIcon} from '@oxygen-ui/react-icons'
+import {Grid} from "@oxygen-ui/react";
 
 const onclickAction = () => {
     console.log("Quick action action button clicked");
@@ -28,9 +29,9 @@ const onclickAction = () => {
 
 const quickActionsButtons = [
     {icon: PayBillsIcon, name: "Payments", onClick: onclickAction},
-    {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: "48", width: 24},
+    {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: 48},
     {icon: ScheduleIcon, name: "Schedule", onClick: onclickAction},
-    {icon: UserGroupIcon, name: "Payees", onClick: onclickAction, size: "48", width: 24}
+    {icon: UserGroupIcon, name: "Payees", onClick: onclickAction, size: 48}
 ];
 
 const greetingSelection = () => {
@@ -69,29 +70,64 @@ const HeroSection = ({userInfo}) => {
         return <div>Loading....</div>
     }
 
-    return (<>
-        <div className="product-home-header-outer">
-            <div className="user-name-image-container">
-                <div className="user-image-container" style={{backgroundImage: `url(${userInfo.image})`}}></div>
-                <div className="product-user-name-greeting-container">
-                    <p>Hello,</p>
-                    <p className="product-user-name-greeting-information-para">{userInfo.name}{greetingSelection()}</p>
-                </div>
-            </div>
-            <div className="product-quick-actions-container">
-                {quickActionsButtons.map((action, index) => {
-                    const IconComponent = action.icon;
-                    const iconProps = {
-                        ...(action.size && {size: action.size}), ...(action.width && {width: action.width})
-                    };
-                    return (<QuickActionButton key={index} onClick={action.onClick}>
-                        <IconComponent {...iconProps} />
-                        {action.name}
-                    </QuickActionButton>)
-                })}
-            </div>
-        </div>
-    </>)
+    return (
+        <>
+        <Grid
+            container={true}
+            sx={{height: { xs: "12rem", sm: "12rem", md: "14rem" }}}
+            direction={{xs:"column",sm:"column",md:"column",lg:"row"}}
+            display={"flex"}
+            className="hero-section-outer">
+                <Grid
+                    item={true}
+                    sx={{height: { xs: "40%", sm: "40%", md: "40%",lg:"100%" },
+                        display:"flex", alignItems:"center", justifyContent:{sm:"start",md:"start", lg:"center" },
+                        padding: { xs: "0 0 0 1rem",sm: "0 0 0 2rem",md: "0 0 0 2rem",lg:"0" }}}
+                    xs={12} sm={12} md={12} lg={6} alignItems={"center"} >
+                    <Grid
+                        container={true}
+                        alignItems={"center"} sx={{width: "80%", height: "fit-content"}} spacing={2}>
+                        <Grid
+                            item={true}
+                              sx={{width: {md:"4rem", lg:"8rem"},
+                                  height: {sm:"4rem",md:"4rem", lg:"8rem"}, display:{xs:"none",sm:"flex"}}} >
+                            <img src={userInfo.image} alt="profile-image"
+                                 style={{objectFit: "cover", width: "100%",height:"100%", borderRadius:"50%"}}/>
+                        </Grid>
+                        <Grid item={true}
+                              sx={{color:"white.main",fontSize:{xs:"1rem",sm:"1rem",md:"1rem",lg:"1.5rem"}}} >
+                            <p>Hello,</p>
+                            <p style={{fontWeight:"bold"}}>{userInfo.name}{greetingSelection()}</p>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid
+                    item={true}
+                    sx={{height: { xs: "60%", sm: "60%", md: "60%",lg:"100%" },
+                        padding:{xs:1,sm:2,md:2,lg:5} }} xs={12} sm={12} md={12} lg={6}
+                    alignItems={"center"} display={"flex"} justifyContent={"center"}>
+
+                    <Grid
+                        container={true}
+                        alignItems={"center"}
+                        sx={{width: "100%", height: "100%", display:"flex",
+                            justifyContent:"center",gap:{xs:"4%",sm:8, md:8,lg:4} }}>
+
+                        {quickActionsButtons.map((action, index) => {
+                            const IconComponent = action.icon;
+                            const iconProps = {
+                                ...(action.size && {size: action.size})
+                            };
+                            return (<QuickActionButton key={index} onClick={action.onClick}>
+                                <IconComponent {...iconProps} />
+                                {action.name}
+                            </QuickActionButton>)
+                        })}
+                    </Grid>
+                </Grid>
+        </Grid>
+    </>
+    )
 }
 
 export default HeroSection;
