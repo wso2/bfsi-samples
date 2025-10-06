@@ -17,8 +17,8 @@
  */
 
 import './infographics-summery.css'
-import {Card} from "@oxygen-ui/react";
-import TotalBalances from "./total-balances.jsx";
+import {Card, Grid} from "@oxygen-ui/react";
+import DoughnutChart from "./doughnut-chart.jsx";
 
 const InfographicsSummery = ({bankInfoWithTotals}) => {
 
@@ -26,16 +26,25 @@ const InfographicsSummery = ({bankInfoWithTotals}) => {
 
     return (
         <>
-            <div className="container-outer">
-                <Card className="total-card-outer infographic-container">
-                    <TotalBalances total={total} />
-                </Card>
-                <Card className="graph-card-outer infographic-container">
-                    sdvsdvsfvfs
-                </Card>
+            {/*<div className="container-outer">*/}
+            {/*    <Card className="total-card-outer infographic-container">*/}
+            {/*        <TotalBalances total={total} />*/}
+            {/*    </Card>*/}
+            {/*    <Card className="graph-card-outer infographic-container">*/}
+            {/*        sdvsdvsfvfs*/}
+            {/*    </Card>*/}
 
-            </div>
-
+            {/*</div>*/}
+                <Grid container={true} lg={12} md={12} sm={12} xs={12} sx={{background:"green", height:{lg:"16rem",md:"16rem",sm:"32rem",xs:"32rem"}}} spacing={2}>
+                    <Grid item={true} sx={{background:"yellow"}} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>
+                        <Card sx={{height: "100%"}}></Card>
+                    </Grid>
+                    <Grid item={true} sx={{background:"pink"}} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>
+                        <Card sx={{height: "100%"}}>
+                            <DoughnutChart bankInfoAndTotals={bankInfoWithTotals}/>
+                        </Card>
+                    </Grid>
+                </Grid>
         </>
     );
 }
