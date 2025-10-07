@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import './subtitle.css'
+import {Grid} from "@oxygen-ui/react";
 
 const Subtitle = ({title})=>{
     return (
         <>
-            <div className="title-outer">
+            <Grid container={true} sx={{marginTop: 4, fontSize:{sm:"1.5rem",xs:"1rem"}, fontWeight:"bold", marginBottom: 2}}>
                 <p>{title}</p>
-            </div>
+            </Grid>
         </>
     );
 }

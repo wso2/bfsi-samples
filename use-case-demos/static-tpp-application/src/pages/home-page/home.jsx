@@ -22,6 +22,7 @@ import ApplicationLayout from "../../layouts/application-layout.jsx";
 import './home.css'
 import InfographicsSummery from "./infographics-summery.jsx";
 import useConfigContext from "../../hooks/use-config-context.js";
+import Subtitle from "./subtitle.jsx";
 
 /**
  * The main component for the product's home page.
@@ -45,6 +46,7 @@ const Home = ({configurations}) => {
                 <div className="home-content-outer-container">
                     <div className="home-content-inner-container">
                         <InfographicsSummery bankInfoWithTotals={bankInfoWithTotals} />
+                        <Subtitle title={"Connected Banks"}/>
                     </div>
                 </div>
             </ApplicationLayout>
