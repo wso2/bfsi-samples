@@ -21,7 +21,8 @@ import {Grid} from "@oxygen-ui/react";
 const Subtitle = ({title})=>{
     return (
         <>
-            <Grid container={true} sx={{marginTop: 4, fontSize:{sm:"1.5rem",xs:"1rem"}, fontWeight:"bold", marginBottom: 2}}>
+            <Grid container={true}
+                  sx={{marginTop: 4, fontSize:{sm:"1.5rem",xs:"1rem"}, fontWeight:"bold", marginBottom: 2}}>
                 <p>{title}</p>
             </Grid>
         </>
