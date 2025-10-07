@@ -47,6 +47,9 @@ const AppThemeProvider = ({children}) => {
                     },
                     white:{
                         main: '#FFFFFF',
+                    },
+                    black: {
+                        main: '#000000',
                     }
                 },
             },

@@ -20,27 +20,37 @@ import './infographics-summery.css'
 import {Card, Grid} from "@oxygen-ui/react";
 import DoughnutChart from "./doughnut-chart.jsx";
 
+/**
+ * Renders a summary section displaying key financial infographics using a responsive `Grid` layout.
+ *
+ * This component:
+ * 1. Calculates the **total balance** across all bank accounts from the `bankInfoWithTotals` prop.
+ * 2. Uses the **Oxygen UI `Grid`** system to create a responsive, two-column layout (on large/medium screens).
+ * 3. The first column displays the calculated **"Total Balance"** inside an Oxygen UI `Card`.
+ * 4. The second column renders a **`DoughnutChart`** component inside another `Card`, which visualizes
+ * the balance distribution based on the provided bank data.
+ *
+ * @param {object} props - The component props.
+ * @param {Array<object>} props.bankInfoWithTotals - An array of bank account objects, each containing a `totalBalance` field used for calculation and charting.
+ * @returns {JSX.Element} The rendered summary section.
+ */
 const InfographicsSummery = ({bankInfoWithTotals}) => {
 
     const total = bankInfoWithTotals.reduce((acc, current) => {return acc+current.totalBalance},0)
 
     return (
         <>
-            {/*<div className="container-outer">*/}
-            {/*    <Card className="total-card-outer infographic-container">*/}
-            {/*        <TotalBalances total={total} />*/}
-            {/*    </Card>*/}
-            {/*    <Card className="graph-card-outer infographic-container">*/}
-            {/*        sdvsdvsfvfs*/}
-            {/*    </Card>*/}
-
-            {/*</div>*/}
-                <Grid container={true} lg={12} md={12} sm={12} xs={12} sx={{background:"green", height:{lg:"16rem",md:"16rem",sm:"32rem",xs:"32rem"}}} spacing={2}>
-                    <Grid item={true} sx={{background:"yellow"}} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>
-                        <Card sx={{height: "100%"}}></Card>
+                <Grid container={true} lg={12} md={12} sm={12} xs={12} sx={{height:"fit-content"}} spacing={2}>
+                    <Grid item={true} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}} >
+                        <Card sx={{height: "100%",display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", gap:"1.5rem"}} className={"shadow"}>
+                            <p style={{fontSize:"1.5rem",fontWeight:"bold"}}>Total Balance</p>
+                            <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem"}}>
+                                <p>GBP</p><span style={{fontSize:"2rem",fontWeight:"bold"}}>{total}</span>
+                            </div>
+                        </Card>
                     </Grid>
-                    <Grid item={true} sx={{background:"pink"}} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>
-                        <Card sx={{height: "100%"}}>
+                    <Grid item={true} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>
+                        <Card className={"shadow"}>
                             <DoughnutChart bankInfoAndTotals={bankInfoWithTotals}/>
                         </Card>
                     </Grid>
