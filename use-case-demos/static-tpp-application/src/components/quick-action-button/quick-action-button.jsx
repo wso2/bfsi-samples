@@ -56,7 +56,7 @@ export const QuickActionButton = ({children, onClick}) => {
                     <Grid
                         item={true} md={12} lg={12} sm={12} xs={12}
                         sx={{height:"25%",color: "secondary.main", display:"flex",
-                            justifyContent:"center",alignItems:"center"}}>
+                            justifyContent:"center",alignItems:"center", fontSize:{lg:"1rem",md:"1rem",sm:"0.8rem",xs:"0.7rem"}}}>
                         {nameText}
                     </Grid>
                 </Grid>

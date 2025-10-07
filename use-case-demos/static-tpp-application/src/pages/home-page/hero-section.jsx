@@ -20,7 +20,7 @@ import "./hero-section.css"
 import {QuickActionButton} from "../../components/quick-action-button/quick-action-button.jsx";
 import PayBillsIcon from "/public/resources/assets/images/icons/pay_icon.svg?react"
 import ScheduleIcon from "/public/resources/assets/images/icons/schedule_icon.svg?react"
-import {ArrowLeftArrowRightIcon, UserGroupIcon} from '@oxygen-ui/react-icons'
+import {ArrowLeftArrowRightIcon, UserGroupIcon, ClockAsteriskIcon, BoltIcon} from '@oxygen-ui/react-icons'
 import {Grid} from "@oxygen-ui/react";
 
 const onclickAction = () => {
@@ -28,10 +28,10 @@ const onclickAction = () => {
 }
 
 const quickActionsButtons = [
-    {icon: PayBillsIcon, name: "Payments", onClick: onclickAction},
-    {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: 48},
-    {icon: ScheduleIcon, name: "Schedule", onClick: onclickAction},
-    {icon: UserGroupIcon, name: "Payees", onClick: onclickAction, size: 48}
+    {icon: BoltIcon, name: "Payments", onClick: onclickAction,size: { xs: 24, sm: 32, md: 36, lg: 36 }},
+    {icon: ArrowLeftArrowRightIcon, name: "Transfer", onClick: onclickAction, size: { xs: 24, sm: 32, md: 36, lg: 36 }},
+    {icon: ClockAsteriskIcon, name: "Schedule", onClick: onclickAction,size: { xs: 24, sm: 32, md: 36, lg: 36 }},
+    {icon: UserGroupIcon, name: "Payees", onClick: onclickAction,size: { xs: 24, sm: 32, md: 36, lg: 36 }}
 ];
 
 const greetingSelection = () => {
