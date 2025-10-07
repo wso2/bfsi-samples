@@ -49,20 +49,20 @@ const greetingSelection = () => {
 }
 
 /**
- * Renders the primary header or "hero" content for a product page.
+ * Renders the primary header or "hero" content for a product page using a responsive `Grid` layout.
  *
  * This component:
- * 1. Displays a **personalized greeting** ("Good Morning!", "Good Afternoon!", etc.)
- * calculated based on the current time of day (5 AM to 12 PM, 12 PM to 6 PM, or 6 PM to 5 AM).
- * 2. Shows the user's **name and profile image**.
- * 3. Renders a static set of **quick action buttons** defined in `quickActionsButtons`.
- * It dynamically passes icon properties like `size` and `width` from the action object
- * to the rendered icon component.
- * 4. Displays a "Loading...." message while the `userInfo` prop is falsy.
+ * 1. Implements a responsive two-part layout: the user info section and the quick actions section.
+ * 2. Displays a **personalized greeting** by calling the external **`greetingSelection`** utility function,
+ * which calculates the appropriate greeting based on the current time of day.
+ * 3. Shows the user's **name and profile image** with responsive sizing.
+ * 4. Renders a static set of **quick action buttons** defined in `quickActionsButtons`.
+ * It dynamically renders the icon for each action, passing properties like `size` to the icon component.
+ * 5. Displays a "Loading Application...." message while the `userInfo` prop is unavailable.
  *
  * @param {Object} props - The component props.
  * @param {Object} props.userInfo - The user information object, expected to contain `name` and `image` URL.
- * @returns {JSX.Element} The rendered hero section or a loading state.
+ * @returns {JSX.Element} The rendered hero section, structured with Oxygen UI's Grid system.
  */
 const HeroSection = ({userInfo}) => {
 

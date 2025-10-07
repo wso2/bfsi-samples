@@ -20,13 +20,18 @@ import "./quick-action-button.css"
 import {Grid} from "@oxygen-ui/react";
 
 /**
- * A reusable component designed to function as a Quick Action Button.
- * * It renders an interactive button displaying a primary icon and a text label
- * (passed as `children`). It applies a fixed style intended for quick action lists.
- * * @param {object} props - The component props.
- * @param {React.ReactNode} props.icon - The JSX or component for the button's icon.
- * @param {React.ReactNode} props.children - The text label or content displayed below the icon.
- * @param {function} props.onClick - The function to be executed when the button is clicked.
+ * A highly reusable and responsive button component specifically designed for a quick action list.
+ *
+ * It utilizes the **Oxygen UI Grid** system to manage a compact, clickable layout.
+ * The component expects the **`children`** prop to be an array containing exactly two elements:
+ * 1. The **icon** element (`iconElement`).
+ * 2. The **text label** element (`nameText`).
+ *
+ * This structure allows for precise, responsive alignment of the icon (top) and label (bottom).
+ *
+ * @param {object} props - The component props.
+ * @param {Array<React.ReactNode>} props.children - An array where the first element is the icon component and the second is the name text/label.
+ * @param {function} props.onClick - The function to be executed when the button's surrounding `div` is clicked.
  */
 export const QuickActionButton = ({children, onClick}) => {
 
