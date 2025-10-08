@@ -48,7 +48,7 @@ const Home = ({configurations}) => {
                     <div className="home-content-inner-container">
                         <InfographicsSummery bankInfoWithTotals={bankInfoWithTotals} />
                         <Subtitle title={"Connected Banks"}/>
-                        <ConnectedBanks/>
+                        <ConnectedBanks banksInformationWithTotals={bankInfoWithTotals} />
                     </div>
                 </div>
             </ApplicationLayout>

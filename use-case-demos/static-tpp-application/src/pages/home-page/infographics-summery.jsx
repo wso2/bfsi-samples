@@ -19,6 +19,7 @@
 import './infographics-summery.css'
 import {Card, Grid} from "@oxygen-ui/react";
 import DoughnutChart from "./doughnut-chart.jsx";
+import {formatCurrency} from "../../hooks/utility.js";
 
 /**
  * Renders a summary section displaying key financial infographics using a responsive `Grid` layout.
@@ -45,7 +46,7 @@ const InfographicsSummery = ({bankInfoWithTotals}) => {
                         <Card sx={{height: "100%",display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", gap:"1.5rem"}} className={"shadow"}>
                             <p style={{fontSize:"1.5rem",fontWeight:"bold"}}>Total Balance</p>
                             <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem"}}>
-                                <p>GBP</p><span style={{fontSize:"2rem",fontWeight:"bold"}}>{total}</span>
+                                <p>GBP</p><span style={{fontSize:"2rem",fontWeight:"bold"}}>{formatCurrency(total)}</span>
                             </div>
                         </Card>
                     </Grid>
