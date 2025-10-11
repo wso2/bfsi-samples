@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^5.10.16",
     "@mui/lab": "5.0.0-alpha.110",
     "@mui/material": "^5.10.16",
@@ -31,6 +31,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
+    "sass": "^1.93.2",
     "vite": "^7.1.7",
     "vite-plugin-svgr": "^4.5.0"
   }

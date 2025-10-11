@@ -16,7 +16,9 @@
  * under the License.
  */
 
-.action-button{
-    box-shadow: 4.5px 4.5px 5.625px -2.25px var(--color-primary);
-    background: var(--color-fonts-white);
+.profile-image{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 }

@@ -19,8 +19,8 @@
 .product-header-outer {
     width: 100%;
     height: 3.5rem;
-    background: var(--header-gradient);
-    color: var(--color-fonts-white);
+    background: linear-gradient(90deg, var(--oxygen-palette-secondary-main) 0.06%, var(--oxygen-palette-secondary-yellow) 139.7%);
+    color: var(--oxygen-palette-fontColor-main);
     display: flex;
     justify-content: space-between;
     align-items: center;

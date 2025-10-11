@@ -18,7 +18,7 @@
 
 import {IconButton} from "@oxygen-ui/react";
 import {ArrowRightFromBracketIcon} from "@oxygen-ui/react-icons";
-import './header.css'
+import './header.scss'
 
 /**
  * A dedicated component for rendering the application's top header bar.
@@ -44,4 +44,3 @@ const Header = ({name}) => {
 }
 
 export default Header;
-
