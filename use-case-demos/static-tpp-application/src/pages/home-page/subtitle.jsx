@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import './subtitle.css'
+import './subtitle.scss'
 
 const Subtitle = ({title})=>{
     return (

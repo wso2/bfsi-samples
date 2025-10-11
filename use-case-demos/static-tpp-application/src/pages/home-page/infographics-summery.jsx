@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import './infographics-summery.css'
+import './infographics-summery.scss'
 import {Card, Grid} from "@oxygen-ui/react";
 import DoughnutChart from "./doughnut-chart.jsx";
 
