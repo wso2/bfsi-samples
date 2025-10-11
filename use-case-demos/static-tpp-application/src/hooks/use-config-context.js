@@ -23,18 +23,35 @@ const useConfigContext = () => {
     const [connectedBankDetails, setConnectedBankDetails] = useState(null);
     const [bankInfoWithTotals, setBankInfoWithTotals] = useState(null);
     const [accountInfoWithBankInfo, setAccountInfoWithBankInfo] = useState(null);
+    const [chartData, setChartData] = useState(null);
+    const [total, setTotal] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect( () => {
 
         const fetchData = async () => {
+
+            const bankNames = [];
+            const totals = [];
+            const fillColors = [];
+            const borderColors = [];
+
             try {
                 const response = await api.get("config.json")
-                setLoadedConfig(response)
+                setLoadedConfig(response.name)
                 setConnectedBankDetails(response.banks)
+
+                const totalBalance = response.accounts.reduce((acc, current) => {return acc+current.balance},0)
+                setTotal(totalBalance)
 
                 const banksWithTotal = response.banks.map((bank) => {
                     const total = response.accounts.filter((account) => account.bank === bank.name).reduce((sum, account) => sum+account.balance,0);
+
+                    bankNames.push(bank.name);
+                    totals.push(total);
+                    fillColors.push(bank.color);
+                    borderColors.push(bank.border);
+
                     return{
                         ...bank,
                         totalBalance: total,
@@ -53,6 +70,21 @@ const useConfigContext = () => {
 
                 setAccountInfoWithBankInfo(accountWithBankInfo)
 
+                const chartInfo = {
+                    labels: bankNames,
+                    datasets: [
+                        {
+                            label: 'Total Balance',
+                            data: totals,
+                            backgroundColor: fillColors,
+                            borderColor: borderColors,
+                            borderWidth: 2,
+                            cutout: '35%',
+                        },
+                    ],
+                };
+                setChartData(chartInfo);
+
                 setIsLoading(false)
             }catch (e) {
                 console.log(e.message);
@@ -60,7 +92,7 @@ const useConfigContext = () => {
         }
         fetchData();
     }, []);
-    return {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo};
+    return {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo, chartData, total};
 }
 
 export default useConfigContext;

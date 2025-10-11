@@ -17,9 +17,10 @@
  */
 
 import "./application-layout.scss"
-import {useContext} from "react";
-import ConfigContext from "../providers/config-context.jsx";
-import Header from "../components/header/header.jsx";
+import Header from "../../components/header/header.jsx";
+
+import HeroSection from "../../pages/home-page/hero-section/hero-section.jsx";
+
 
 /**
  * A standard application layout component that establishes a persistent header
@@ -35,16 +36,12 @@ import Header from "../components/header/header.jsx";
  * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
  * @returns {JSX.Element} The rendered application shell with header and content area.
  */
-export const ApplicationLayout = ({children}) => {
-
-    const context = useContext(ConfigContext);
+export const ApplicationLayout = ({children,appInfo}) => {
 
     return (
         <>
-            <Header context={context}/>
-            <div className="product-content-outer">
-                {children}
-            </div>
+            <Header name={appInfo.applicationName}/>
+            {children}
         </>
     );
 }

@@ -17,7 +17,7 @@
  */
 
 import styled from "@emotion/styled";
-import {Box, Grid} from "@oxygen-ui/react";
+import {Box, Card, Grid} from "@oxygen-ui/react";
 
 /**
  * A styled component derived from the Oxygen UI `Grid` component, serving as the
@@ -62,7 +62,7 @@ export const HeroOuterContainer = styled(Grid)(({ theme }) => ({
  * @param {string} props.boxWidth - The width to apply to the container.
  * @param {string} props.justify - The CSS `justify-content` value for horizontal alignment.
  */
-export const HeroInnerContainer = styled(Grid)(({ boxWidth , justify }) => ({
+export const HeroInnerContainer = styled(Grid)(({ theme,boxWidth , justify }) => ({
     height: '100%',
     width: boxWidth,
     display: "flex",
@@ -156,5 +156,40 @@ export const UserInformationContainer = styled(Box)(({theme}) => ({
 
     [theme.breakpoints.down('sm')]: {
         fontSize: '1rem',
+    }
+}))
+
+export const ContentOuterContainer = styled(Grid)(({theme}) => ({
+    padding: '2rem 4rem',
+    display: 'flex',
+    flexDirection: 'column',
+
+    [theme.breakpoints.down('sm')]: {
+        padding: '1rem 2rem',
+    }
+}))
+
+export const ContentInnerSectionContainer = styled(Grid)(({theme}) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: "center",
+    gap: '1rem',
+
+    [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+    }
+}))
+
+export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
+    width: '100%',
+    height: '20rem',
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: 'column',
+    boxShadow:'4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark)',
+
+    [theme.breakpoints.down('md')]: {
+        height: 'fit-content',
     }
 }))

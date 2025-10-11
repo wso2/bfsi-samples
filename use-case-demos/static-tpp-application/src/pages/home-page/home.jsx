@@ -19,6 +19,8 @@
 import HeroSection from "./hero-section/hero-section.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
 import ApplicationLayout from "../../layouts/application-layout/application-layout.jsx";
+import InfographicsSummery from "./infographics-summery/infographics-summery.jsx";
+import HomeContentLayout from "../../layouts/home-content-layout/home-content-layout.jsx";
 
 /**
  * The main component for the product's home page.
@@ -27,9 +29,9 @@ import ApplicationLayout from "../../layouts/application-layout/application-layo
  * * The component uses the **`ApplicationLayout`** layout wrapper to provide the standard
  * product header and content structure.
  */
-const Home = () => {
+const Home = ({configurations}) => {
     const userInfo = useAuthContext();
-    const {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo} = useConfigContext();
+    const {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo,chartData, total} = configurations;
 
     if (isLoading) {
         return <div>Loading configuration and bank data...</div>;
@@ -37,13 +39,11 @@ const Home = () => {
 
     return (
         <>
-            <ApplicationLayout configurations={configurations}>
+            <ApplicationLayout appInfo={config}>
                 <HeroSection userInfo={userInfo}/>
-                <div className="home-content-outer-container">
-                    <div className="home-content-inner-container">
-                        <InfographicsSummery bankInfoWithTotals={bankInfoWithTotals} />
-                    </div>
-                </div>
+                <HomeContentLayout>
+                    <InfographicsSummery total={total} chartData={chartData}/>
+                </HomeContentLayout>
             </ApplicationLayout>
         </>
     )

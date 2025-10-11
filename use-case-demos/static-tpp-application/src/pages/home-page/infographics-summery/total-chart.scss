@@ -1,0 +1,25 @@
+.chart-outer{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: center;
+  align-items: start;
+  gap: 1rem;
+
+  .chart-outer h2 {
+    font-size: 1.2rem;
+    margin: 0 1rem;
+    color: var(----oxygen-palette-fontColor-dark);
+    align-self: flex-start;
+  }
+
+.chart-container{
+    height: 100%;
+    width: 100%;
+  display: flex;
+
+  flex-direction: column;
+  }
+}

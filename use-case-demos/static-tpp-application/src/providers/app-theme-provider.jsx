@@ -48,9 +48,11 @@ const AppThemeProvider = ({children}) => {
                     },
                     fontColor: {
                         main: '#ecf0f1',
+                        dark: '#34495e',
                     },
                     shadows:{
                         main: '#FF5456',
+                        dark: '#34495e'
                     }
                 },
             },
