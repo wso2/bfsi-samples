@@ -15,7 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-.hero-section-outer{
-    background: url("/resources/assets/images/background/bg_image.webp") lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat;
+* {
+    margin: 0;
 }
+
+.shadow{
+    box-shadow: 4.5px 4.5px 5.625px -2.25px var(--color-shadow);
+}
+

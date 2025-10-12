@@ -16,16 +16,16 @@
  * under the License.
  */
 
-.product-header-outer {
-    width: 100%;
-    height: 3.5rem;
-    background: var(--header-gradient);
-    color: var(--color-fonts-white);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    font-size: 1.3rem;
-    font-weight: bold;
+import './subtitle.scss'
+
+const Subtitle = ({title})=>{
+    return (
+        <>
+            <div className="title-outer">
+                <p>{title}</p>
+            </div>
+        </>
+    );
 }
 
+export default Subtitle;

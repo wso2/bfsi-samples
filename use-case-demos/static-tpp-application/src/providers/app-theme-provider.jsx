@@ -44,12 +44,15 @@ const AppThemeProvider = ({children}) => {
                     },
                     secondary: {
                         main: '#FF7433',
+                        yellow: '#EAA340',
                     },
-                    white:{
-                        main: '#FFFFFF',
+                    fontColor: {
+                        main: '#ecf0f1',
+                        dark: '#34495e',
                     },
-                    black: {
-                        main: '#000000',
+                    shadows:{
+                        main: '#FF5456',
+                        dark: '#34495e'
                     }
                 },
             },
@@ -67,4 +70,3 @@ const AppThemeProvider = ({children}) => {
 };
 
 export default AppThemeProvider;
-

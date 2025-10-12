@@ -15,21 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-:root {
-    --color-primary: #FF7433;
-    --color-secondary: #EAA340;
-    --color-fonts-white: #ecf0f1;
-    --header-gradient: linear-gradient(90deg, var(--color-primary) 0.06%, var(--color-secondary) 139.7%);
-    --color-shadow: #bdc3c7
+.title-outer{
+    width: 100%;
+    height: fit-content;
+    font-size: 2rem;
+    font-weight: bold;
 }
-
-* {
-    margin: 0;
-}
-
-.shadow{
-    box-shadow: 4.5px 4.5px 5.625px -2.25px var(--color-shadow);
-}
-

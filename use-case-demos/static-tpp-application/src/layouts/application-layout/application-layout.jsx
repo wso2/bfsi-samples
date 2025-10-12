@@ -16,8 +16,11 @@
  * under the License.
  */
 
-import "./application-layout.css"
-import Header from "../components/header/header.jsx";
+import "./application-layout.scss"
+import Header from "../../components/header/header.jsx";
+
+import HeroSection from "../../pages/home-page/hero-section/hero-section.jsx";
+
 
 /**
  * A standard application layout component that establishes a persistent header
@@ -33,13 +36,12 @@ import Header from "../components/header/header.jsx";
  * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
  * @returns {JSX.Element} The rendered application shell with header and content area.
  */
-export const ApplicationLayout = ({configurations, children}) => {
+export const ApplicationLayout = ({children,appInfo}) => {
+
     return (
         <>
-            <Header name={configurations.name.applicationName}/>
-            <div className="product-content-outer">
-                {children}
-            </div>
+            <Header name={appInfo.applicationName}/>
+            {children}
         </>
     );
 }

@@ -17,39 +17,32 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-import Home from "./pages/home-page/home.jsx";
-import {useEffect, useState} from "react";
-import {api} from "./api.js";
 import AppThemeProvider from "./providers/app-theme-provider.jsx";
+import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.js";
 
 /**
- * The root component of the application, responsible for initial setup,
- * fetching global theme configurations, managing the loading state, and
- * defining the top-level routing structure.
+ * The root component of the application, responsible for setting up the main routing structure
+ * and applying global theming via the `AppThemeProvider`.
  *
- * It uses a `useEffect` hook to fetch theme configurations once on mount
- * via the `api.get` utility. While loading or if configurations are unavailable,
- * it displays a loading screen.
- *
- * Once loaded, it renders the primary route for the '/accounts-central/*' path,
- * wrapping the rest of the application's routes and components with the
- * `OxygenThemeProvider` to apply dynamic styling based on the fetched configurations.
+ * It consumes the `ConfigContext` to dynamically construct the base route path
+ * using a configured router name (e.g., `/${context.routerName.route}/*`).
+ * It then defines nested routes, such as the 'home' page, within the main route.
  */
 function App() {
 
-    const {config:configurations} = useConfigContext()
+    const context = useConfigContext();
 
-    if (!configurations) {
-        return <div>Loading Application Configuration...</div>;
+    if (context.isLoading || !context.config) {
+        return <div>Loading configuration...</div>;
     }
 
     return (<>
         <AppThemeProvider>
             <Routes>
-                <Route path={`/${configurations.name.route}/*`} element={
+                <Route path={`/${context.config.route}/*`} element={
                     <Routes>
-                        <Route path="home" element={<Home configurations={configurations} />}/>
+                        <Route path="home" element={<Home configurations={context} />}/>
                     </Routes>
                 }/>
             </Routes>

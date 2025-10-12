@@ -16,7 +16,20 @@
  * under the License.
  */
 
-.action-button{
-    box-shadow: 4.5px 4.5px 5.625px -2.25px var(--color-primary);
-    background: var(--color-fonts-white);
+.total-container{
+    font-weight: bold;
+    gap: 1.5rem;
+
+    p:first-child{
+        font-size: 1.5rem;
+    }
+
+    p:last-child{
+        font-size: 1rem;
+    }
+
+    p:last-child span{
+        font-size: 2.5rem;
+        margin-left: 1rem;
+    }
 }
