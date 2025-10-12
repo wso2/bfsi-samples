@@ -18,6 +18,23 @@
 import {useEffect, useState} from "react";
 import {api} from "../api.js";
 
+/**
+ * A custom React hook responsible for fetching and processing all application and financial configuration data.
+ *
+ * This hook performs the following key functions:
+ * 1. Fetches configuration data (including app name, bank details, and account data) from the `/configurations/config.json` endpoint using the `api.get` utility.
+ * 2. Manages multiple pieces of related state:
+ * - `config`: The application name.
+ * - `connectedBankDetails`: Raw bank list.
+ * - `accountInfoWithBankInfo`: Merged list of accounts, each enhanced with its respective bank's details.
+ * - `total`: The aggregated total balance across all accounts.
+ * - `bankInfoWithTotals`: The list of banks, with each object augmented by the sum of balances for its accounts.
+ * - `chartData`: The processed data structure (labels, totals, colors) required for the Doughnut/Total Chart visualization.
+ * - `isLoading`: Tracks the data fetching state.
+ * 3. **Processes the raw data** into various derived states, including calculating the total balance and preparing the data structure needed for charting.
+ *
+ * @returns {object} An object containing all derived state variables: `config`, `connectedBankDetails`, `bankInfoWithTotals`, `isLoading`, `accountInfoWithBankInfo`, `chartData`, and `total`.
+ */
 const useConfigContext = () => {
     const [config, setLoadedConfig] = useState(null);
     const [connectedBankDetails, setConnectedBankDetails] = useState(null);

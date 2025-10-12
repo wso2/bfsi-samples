@@ -17,8 +17,6 @@
  */
 
 import './infographics-summery.scss'
-// import {Card, Grid} from "@oxygen-ui/react";
-// import TotalChart from "../total-chart.jsx";
 import {
     ContentInnerSectionContainer,
     InfographicsInnerContainer
@@ -26,41 +24,25 @@ import {
 import TotalChart from "./total-chart.jsx";
 
 /**
- * Renders a summary section displaying key financial infographics using a responsive `Grid` layout.
+ * Renders a financial summary section that presents total balance and chart visualization.
  *
- * This component:
- * 1. Calculates the **total balance** across all bank accounts from the `bankInfoWithTotals` prop.
- * 2. Uses the **Oxygen UI `Grid`** system to create a responsive, two-column layout (on large/medium screens).
- * 3. The first column displays the calculated **"Total Balance"** inside an Oxygen UI `Card`.
- * 4. The second column renders a **`TotalChart`** component inside another `Card`, which visualizes
- * the balance distribution based on the provided bank data.
+ * This component utilizes custom **Styled Components** (`ContentInnerSectionContainer` and `InfographicsInnerContainer`)
+ * to structure a two-part layout:
+ * 1. The first section displays the **total aggregated balance** passed via the `total` prop.
+ * 2. The second section renders the **`TotalChart`** component, receiving its data via the `chartData` prop.
+ *
+ * It is responsible for the overall layout of the infographic summary, but the data calculation (total and chart data preparation)
+ * is expected to be handled by the parent component, as indicated by the props.
  *
  * @param {object} props - The component props.
- * @param {Array<object>} props.bankInfoWithTotals - An array of bank account objects, each containing a `totalBalance` field used for calculation and charting.
+ * @param {object} props.chartData - The prepared data object required by the `TotalChart` component.
+ * @param {number|string} props.total - The pre-calculated total balance across all accounts.
  * @returns {JSX.Element} The rendered summary section.
  */
 const InfographicsSummery = ({chartData,total}) => {
 
-    // const total = bankInfoWithTotals.reduce((acc, current) => {return acc+current.totalBalance},0)
-
     return (
         <>
-                {/*<Grid container={true} lg={12} md={12} sm={12} xs={12} sx={{height:"fit-content"}} spacing={2}>*/}
-                {/*    <Grid item={true} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}} >*/}
-                {/*        <Card sx={{height: "100%",display:"flex", justifyContent:"center", alignItems:"center", flexDirection:"column", gap:"1.5rem"}} className={"shadow"}>*/}
-                {/*            <p style={{fontSize:"1.5rem",fontWeight:"bold"}}>Total Balance</p>*/}
-                {/*            <div style={{display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem"}}>*/}
-                {/*                <p>GBP</p><span style={{fontSize:"2rem",fontWeight:"bold"}}>{total}</span>*/}
-                {/*            </div>*/}
-                {/*        </Card>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item={true} lg={6} md={6} sm={12} xs={12} direction={{lg:"row", sm:"column", md:"row", xs:"column"}}>*/}
-                {/*        <Card className={"shadow"}>*/}
-                {/*            <TotalChart bankInfoAndTotals={bankInfoWithTotals}/>*/}
-                {/*        </Card>*/}
-                {/*    </Grid>*/}
-                {/*</Grid>*/}
-
             <ContentInnerSectionContainer>
                 <InfographicsInnerContainer className="total-container">
                     <p>Total Balance</p>
@@ -75,4 +57,3 @@ const InfographicsSummery = ({chartData,total}) => {
 }
 
 export default InfographicsSummery;
-

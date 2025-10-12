@@ -23,20 +23,20 @@ import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 /**
- * A specialized React component for rendering a Doughnut chart using `react-chartjs-2`.
- * It visualizes the distribution of total balances across different bank accounts.
+ * A dedicated presentational component for rendering a Doughnut chart using `react-chartjs-2`.
+ * It visualizes the distribution of balances based on pre-processed data.
  *
  * This component:
- * 1. Registers necessary Chart.js elements (`ArcElement`, `Tooltip`, `Legend`).
- * 2. Uses a `useEffect` hook to transform the input `bankInfoAndTotals` prop into the
- * required `chartData` format whenever the input data changes.
- * 3. Dynamically extracts bank names (for labels), total balances (for data), and
- * predefined colors/borders from the bank objects.
- * 4. Renders the chart with specific styling options (responsive, legend position right, 75% cutout).
- * 5. Displays a loading message if chart data is not yet processed.
+ * 1. Ensures necessary Chart.js elements (`ArcElement`, `Tooltip`, `Legend`) are registered globally.
+ * 2. Defines static `options` for the chart, including responsiveness, legend positioning (right/start),
+ * custom legend labels, and padding.
+ * 3. Renders a title "Account Distribution" and the chart itself using the **`Doughnut`** component,
+ * expecting the **`chartData`** prop to be the final data structure required by Chart.js.
+ * 4. Note: Data transformation logic is expected to be handled by a parent component or custom hook
+ * before being passed via `chartData`.
  *
  * @param {object} props - The component props.
- * @param {Array<object>} props.bankInfoAndTotals - An array of objects, where each object contains `name`, `totalBalance`, `color`, and `border` properties.
+ * @param {object} props.chartData - The prepared data object required by the `Doughnut` chart, containing `labels` and `datasets`.
  * @returns {JSX.Element} The rendered Doughnut chart component.
  */
 const TotalChart = ({chartData})=>{

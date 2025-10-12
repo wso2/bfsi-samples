@@ -23,15 +23,24 @@ import InfographicsSummery from "./infographics-summery/infographics-summery.jsx
 import HomeContentLayout from "../../layouts/home-content-layout/home-content-layout.jsx";
 
 /**
- * The main component for the product's home page.
- * * It uses the **`useAuthContext`** hook to retrieve **user information** (or authentication state)
- * and passes this data to the **`HeroSection`** for personalized display.
- * * The component uses the **`ApplicationLayout`** layout wrapper to provide the standard
- * product header and content structure.
+ * The main component for the product's home page, responsible for aggregating
+ * user data, configuration, and bank information for display.
+ *
+ * This component:
+ * 1. Retrieves user authentication details using the **`useAuthContext`** hook.
+ * 2. Accepts pre-fetched application **configurations and bank data** (including total balance and chart data) via props.
+ * 3. Displays a **loading state** while the initial data is being fetched (`isLoading`).
+ * 4. Renders the application structure using **`<ApplicationLayout>`** and populates the content
+ * with **`<HeroSection>`** (for user greetings/actions) and **`<InfographicsSummery>`**
+ * (for financial data visualization).
+ *
+ * @param {object} props - The component props.
+ * @param {object} props.configurations - An object containing application state: `config` (app config), `isLoading` (boolean), `chartData` (chart structure), and `total` (total balance).
+ * @returns {JSX.Element} The rendered home page layout or a loading message.
  */
 const Home = ({configurations}) => {
     const userInfo = useAuthContext();
-    const {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo,chartData, total} = configurations;
+    const {config, isLoading, chartData, total} = configurations;
 
     if (isLoading) {
         return <div>Loading configuration and bank data...</div>;

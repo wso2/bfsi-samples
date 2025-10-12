@@ -159,6 +159,18 @@ export const UserInformationContainer = styled(Box)(({theme}) => ({
     }
 }))
 
+/**
+ * A styled component derived from the Oxygen UI `Grid` component, designed to serve
+ * as a general-purpose **outer container for main application content**.
+ *
+ * It establishes a **column layout** and applies generous default padding (`2rem 4rem`).
+ *
+ * This component is **responsive**, reducing the padding to `1rem 2rem` on small screens (`< sm`)
+ * to conserve space on mobile viewports.
+ *
+ * @param {object} props - Styled component props automatically injected by Emotion/Styled-components.
+ * @param {object} props.theme - The active Oxygen UI theme object, used for breakpoint definition.
+ */
 export const ContentOuterContainer = styled(Grid)(({theme}) => ({
     padding: '2rem 4rem',
     display: 'flex',
@@ -169,6 +181,19 @@ export const ContentOuterContainer = styled(Grid)(({theme}) => ({
     }
 }))
 
+/**
+ * A styled component derived from the Oxygen UI `Grid` component, designed
+ * to structure a **section of content that requires flexible horizontal/vertical grouping**.
+ *
+ * It defaults to a **row layout** (elements side-by-side) with a fixed gap (`1rem`).
+ *
+ * This component is **responsive**, switching to a **column layout** (stacking elements vertically)
+ * on medium screens and below (`< md`), making it ideal for adapting two-column layouts
+ * for tablets and mobile devices.
+ *
+ * @param {object} props - Styled component props automatically injected by Emotion/Styled-components.
+ * @param {object} props.theme - The active Oxygen UI theme object, used for breakpoint definition.
+ */
 export const ContentInnerSectionContainer = styled(Grid)(({theme}) => ({
     display: 'flex',
     flexDirection: 'row',
@@ -180,6 +205,20 @@ export const ContentInnerSectionContainer = styled(Grid)(({theme}) => ({
     }
 }))
 
+/**
+ * A styled component derived from the Oxygen UI `Card` component, designed
+ * to act as an **inner container for displaying individual infographic elements**
+ * (like total balance or a chart).
+ *
+ * It applies a **fixed height of `20rem`** on large screens and uses a **column flex layout**
+ * to center its content. It features a visible **dark box shadow**.
+ *
+ * This component is **responsive**, switching its height to **`fit-content`** on medium screens and below (`< md`),
+ * allowing the content to determine the final height on smaller viewports.
+ *
+ * @param {object} props - Styled component props automatically injected by Emotion/Styled-components.
+ * @param {object} props.theme - The active Oxygen UI theme object, used for breakpoint definition.
+ */
 export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
     width: '100%',
     height: '20rem',
