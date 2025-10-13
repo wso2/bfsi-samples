@@ -22,6 +22,7 @@ import {
     InfographicsInnerContainer
 } from "../../../components/styled-components/styled-containers.jsx";
 import TotalChart from "./total-chart.jsx";
+import {formatCurrency} from "../../../hooks/utility.js";
 
 /**
  * Renders a financial summary section that presents total balance and chart visualization.
@@ -46,7 +47,7 @@ const InfographicsSummery = ({chartData,total}) => {
             <ContentInnerSectionContainer>
                 <InfographicsInnerContainer className="total-container">
                     <p>Total Balance</p>
-                    <p>GBP<span>{total}</span></p>
+                    <p>GBP<span>{formatCurrency(total)}</span></p>
                 </InfographicsInnerContainer>
                 <InfographicsInnerContainer>
                     <TotalChart chartData={chartData}/>
