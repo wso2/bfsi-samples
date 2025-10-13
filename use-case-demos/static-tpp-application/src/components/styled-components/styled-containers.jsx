@@ -235,7 +235,7 @@ export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
 
 export const BankCardContainer = styled(Card)(({theme}) => ({
     width: '100%',
-    minWidth: '22rem',
+
     padding: '1rem',
     height: '16rem',
     display: 'flex',
@@ -244,17 +244,17 @@ export const BankCardContainer = styled(Card)(({theme}) => ({
     boxShadow: '4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark)',
 
     [theme.breakpoints.down('md')]: {
-        height: 'fit-content',
+        flex: 1,
     },
 
     [theme.breakpoints.down('lg')]: {
-        height: 'fit-content',
-        minWidth: '16rem',
+        flex: 1,
+
     },
 
     [theme.breakpoints.down('xl')]: {
-        height: 'fit-content',
-        minWidth: '16rem',
+        flex: 1,
+
     },
 }))
 
@@ -291,8 +291,6 @@ export const BankCardInfoContainer = styled(Box)(({ theme }) => ({
     flex: 1,
     marginLeft: theme.spacing(3),
     minWidth: 0,
-
-
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
