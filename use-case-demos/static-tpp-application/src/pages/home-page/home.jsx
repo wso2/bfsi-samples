@@ -22,6 +22,7 @@ import ApplicationLayout from "../../layouts/application-layout/application-layo
 import InfographicsSummery from "./infographics-summery/infographics-summery.jsx";
 import HomeContentLayout from "../../layouts/home-content-layout/home-content-layout.jsx";
 import ConnectedBanks from "./connected-banks/connected-banks.jsx";
+import Subtitle from "./subtitle/subtitle.jsx";
 
 /**
  * The main component for the product's home page, responsible for aggregating
@@ -53,6 +54,7 @@ const Home = ({configurations}) => {
                 <HeroSection userInfo={userInfo}/>
                 <HomeContentLayout>
                     <InfographicsSummery total={total} chartData={chartData}/>
+                    <Subtitle title="Connected Banks"/>
                     <ConnectedBanks banksInformationWithTotals={bankInfoWithTotals}/>
                 </HomeContentLayout>
             </ApplicationLayout>

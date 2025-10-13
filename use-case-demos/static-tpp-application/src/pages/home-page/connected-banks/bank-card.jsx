@@ -14,9 +14,9 @@ const BankCard = ({bankInformationWithTotal})=>{
                 <BankCardLogoContainer>
                     <img src={bankInformationWithTotal.image} alt="" className="bank-logo" />
                 </BankCardLogoContainer>
-                <BankCardInfoContainer>
+                <BankCardInfoContainer className="bank-info">
                     <p>{bankInformationWithTotal.name}</p>
-                    <p>{bankInformationWithTotal.currency}<span>{formatCurrency(bankInformationWithTotal.totalBalance)}</span></p>
+                    <p><span>{bankInformationWithTotal.currency}</span>{formatCurrency(bankInformationWithTotal.totalBalance)}</p>
                 </BankCardInfoContainer>
             </BankCardContainer>
 
