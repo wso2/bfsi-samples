@@ -228,6 +228,7 @@ export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
     flexDirection: 'column',
     boxShadow:'4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark)',
 
+
     [theme.breakpoints.down('md')]: {
         height: 'fit-content',
     }
