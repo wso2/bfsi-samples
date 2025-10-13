@@ -21,6 +21,7 @@ import useAuthContext from "../../hooks/use-auth-context.js";
 import ApplicationLayout from "../../layouts/application-layout/application-layout.jsx";
 import InfographicsSummery from "./infographics-summery/infographics-summery.jsx";
 import HomeContentLayout from "../../layouts/home-content-layout/home-content-layout.jsx";
+import ConnectedBanks from "./connected-banks/connected-banks.jsx";
 
 /**
  * The main component for the product's home page, responsible for aggregating
@@ -40,7 +41,7 @@ import HomeContentLayout from "../../layouts/home-content-layout/home-content-la
  */
 const Home = ({configurations}) => {
     const userInfo = useAuthContext();
-    const {config, isLoading, chartData, total} = configurations;
+    const {config, isLoading, chartData, total,bankInfoWithTotals} = configurations;
 
     if (isLoading) {
         return <div>Loading configuration and bank data...</div>;
@@ -52,6 +53,7 @@ const Home = ({configurations}) => {
                 <HeroSection userInfo={userInfo}/>
                 <HomeContentLayout>
                     <InfographicsSummery total={total} chartData={chartData}/>
+                    <ConnectedBanks banksInformationWithTotals={bankInfoWithTotals}/>
                 </HomeContentLayout>
             </ApplicationLayout>
         </>

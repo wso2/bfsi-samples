@@ -199,6 +199,7 @@ export const ContentInnerSectionContainer = styled(Grid)(({theme}) => ({
     flexDirection: 'row',
     alignItems: "center",
     gap: '1rem',
+    marginTop: '2rem',
 
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
@@ -232,3 +233,76 @@ export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
         height: 'fit-content',
     }
 }))
+
+export const BankCardContainer = styled(Card)(({theme}) => ({
+    width: '100%',
+    minWidth: '22rem',
+    padding: '1rem',
+    height: '16rem',
+    background: 'yellow',
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+
+    [theme.breakpoints.down('md')]: {
+        height: 'fit-content',
+    },
+
+    [theme.breakpoints.down('lg')]: {
+        height: 'fit-content',
+        minWidth: '16rem',
+    },
+
+    [theme.breakpoints.down('xl')]: {
+        height: 'fit-content',
+        minWidth: '16rem',
+    },
+}))
+
+export const BankCardLogoContainer = styled(Box)(({ theme }) => ({
+    // Base (XL/Desktop) Styles
+    width: '12rem',
+    height: '12rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: theme.spacing(2),
+    flexShrink: 0,
+    boxShadow: theme.shadows[3],
+    backgroundColor: theme.palette.grey[100],
+
+
+    [theme.breakpoints.down('xl')]: {
+        width: '6rem',
+        height: '6rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        width: '6rem',
+        height: '6rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: '10rem',
+        height: '10rem',
+        borderRadius: theme.spacing(1),
+    }
+}));
+
+export const BankCardInfoContainer = styled(Box)(({ theme }) => ({
+
+    width: '100%',
+    flex: 1,
+    marginLeft: theme.spacing(3),
+    minWidth: 0,
+
+
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: theme.spacing(1),
+    backgroundColor: 'green',
+
+    // Responsive Adjustments
+    [theme.breakpoints.down('md')]: {
+        marginLeft: theme.spacing(2),
+    },
+}));

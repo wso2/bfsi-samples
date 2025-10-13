@@ -1,10 +1,11 @@
 import {Grid} from "@oxygen-ui/react";
 import BankCard from "./bank-card.jsx";
+import {ContentInnerSectionContainer} from "../../../components/styled-components/styled-containers.jsx";
 
 const ConnectedBanks = ({banksInformationWithTotals})=>{
     return(
         <>
-            <Grid container={true} alignItems="center" sx={{height: { md:"16rem",sm:"fit-content", xs:"fit-content"},display:"flex", direction:{lg:"row",sm:"column",md:"row",xs:"column"}, justifyContent:"space-between",alignItems:"center"}} spacing={2}>
+            <ContentInnerSectionContainer>
                 {/*<BankCard />*/}
                 {/*<BankCard />*/}
                 {/*<BankCard />*/}
@@ -15,7 +16,7 @@ const ConnectedBanks = ({banksInformationWithTotals})=>{
                     );
                 })}
 
-            </Grid>
+            </ContentInnerSectionContainer>
         </>
     );
 }
