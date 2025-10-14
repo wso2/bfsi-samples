@@ -19,6 +19,7 @@
 import "./total-chart.scss";
 import {Doughnut} from "react-chartjs-2";
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
+import {useMediaQuery, useTheme} from "@mui/material";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -41,12 +42,18 @@ ChartJS.register(ArcElement, Tooltip, Legend);
  */
 const TotalChart = ({chartData})=>{
 
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+
+    const width = isSmallScreen ? '100%' : '100%';
+    const height = isSmallScreen ? '100%' : '100%';
+    const position = isSmallScreen ? 'top' : 'right';
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
             legend: {
-                position: 'right',
+                position: position,
                 align: 'start',
                 labels: {
                     usePointStyle: true,
@@ -54,20 +61,14 @@ const TotalChart = ({chartData})=>{
                     padding: 10,
                 }
             },
-
             tooltip: {}
-        },
-        layout:{
-            width: '100%',
-            height: '100%',
-            margin: '0 auto',
         },
     };
 
     return (
         <div className='chart-outer'>
             <h2 >Account Distribution</h2>
-            <div className='chart-container'>
+            <div className='chart-container' style={{width:width, height:height}}>
                 <Doughnut data={chartData} options={options} />
             </div>
         </div>
