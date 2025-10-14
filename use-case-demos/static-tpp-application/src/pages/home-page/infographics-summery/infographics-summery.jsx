@@ -22,7 +22,7 @@ import {
     InfographicsInnerContainer
 } from "../../../components/styled-components/styled-containers.jsx";
 import TotalChart from "./total-chart.jsx";
-import {formatCurrency} from "../../../hooks/utility.js";
+import {Card, Grid} from "@oxygen-ui/react";
 
 /**
  * Renders a financial summary section that presents total balance and chart visualization.
@@ -44,15 +44,29 @@ const InfographicsSummery = ({chartData,total}) => {
 
     return (
         <>
-            <ContentInnerSectionContainer>
-                <InfographicsInnerContainer className="total-container">
-                    <p>Total Balance</p>
-                    <p>GBP<span>{formatCurrency(total)}</span></p>
-                </InfographicsInnerContainer>
-                <InfographicsInnerContainer>
-                    <TotalChart chartData={chartData}/>
-                </InfographicsInnerContainer>
-            </ContentInnerSectionContainer>
+            {/*<ContentInnerSectionContainer>*/}
+            {/*    <InfographicsInnerContainer className="total-container">*/}
+            {/*        <p>Total Balance</p>*/}
+            {/*        <p>GBP<span>{total}</span></p>*/}
+            {/*    </InfographicsInnerContainer>*/}
+            {/*    <InfographicsInnerContainer>*/}
+            {/*        <TotalChart chartData={chartData}/>*/}
+            {/*    </InfographicsInnerContainer>*/}
+            {/*</ContentInnerSectionContainer>*/}
+
+            <Grid container className='informatics-content-summery' spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <Card className='total-card'>
+                        <h2>Total Balance</h2>
+                        <p>GBP<span>{total}</span></p>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Card className='summery-graph-card'>
+                        <TotalChart chartData={chartData}/>
+                    </Card>
+                </Grid>
+            </Grid>
         </>
     );
 }

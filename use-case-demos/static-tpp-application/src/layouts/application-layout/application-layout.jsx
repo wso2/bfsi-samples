@@ -17,31 +17,30 @@
  */
 
 import "./application-layout.scss"
+import {useContext} from "react";
+import ConfigContext from "../../providers/config-context.jsx";
 import Header from "../../components/header/header.jsx";
 
-import HeroSection from "../../pages/home-page/hero-section/hero-section.jsx";
-
-
 /**
- * A standard application layout component that establishes a persistent header
+ * A standard application layout component that establishes a persistent **header**
  * and a main content area for rendering child components.
  *
- * It consumes the **`ConfigContext`** and passes the entire context object
- * to the **`<Header />`** component, allowing the header to dynamically
- * render application details (like the name or navigation).
- * The main content is rendered within the `product-content-outer` div
- * using the **`children`** prop.
+ * It consumes the **`ConfigContext`** and passes the entire context object to the **`<Header />`**
+ * component, enabling the header to dynamically render application details (like the name).
+ * The main content is rendered within the `product-content-outer` div using the **`children`** prop.
  *
  * @param {object} props - The component props.
  * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
- * @returns {JSX.Element} The rendered application shell with header and content area.
+ * @returns {JSX.Element} The rendered application shell with a header and content area.
  */
-export const ApplicationLayout = ({children,appInfo}) => {
+export const ApplicationLayout = ({children, name}) => {
 
     return (
         <>
-            <Header name={appInfo.applicationName}/>
-            {children}
+            <Header name={name}/>
+            <div className="product-content-outer">
+                {children}
+            </div>
         </>
     );
 }

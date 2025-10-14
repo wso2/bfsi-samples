@@ -25,11 +25,11 @@ import {BrowserRouter} from "react-router-dom";
 /**
  * The main entry point for the React application.
  * It initializes the React root, wrapping the entire application in:
- * 1. `StrictMode` for development-time checks.
+ * 1. `StrictMode` for development-time checks and warnings.
  * 2. `BrowserRouter` to enable client-side routing.
- * 3. `ConfigProvider` to make global configurations accessible throughout the app.
+ * 3. `ConfigProvider` to handle global configuration fetching and state management.
  *
- * It finally renders the top-level `App` component.
+ * It finally renders the top-level `App` component, providing it access to the router and global configurations.
  */
 createRoot(document.getElementById('root')).render(
     <StrictMode>

@@ -16,20 +16,27 @@
  * under the License.
  */
 
-.total-container{
-    font-weight: bold;
-    gap: 1.5rem;
+.informatics-content-summery{
+    display: flex;
+    align-items: stretch;
+    min-height: 14rem;
 
-    p:first-child{
-        font-size: 1.5rem;
+    .total-card, .summery-graph-card{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        box-shadow: 4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark);
     }
 
-    p:last-child{
-        font-size: 1rem;
-    }
+    .total-card{
+        gap: 1rem;
 
-    p:last-child span{
-        font-size: 2.5rem;
-        margin-left: 1rem;
+        p span{
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
     }
 }

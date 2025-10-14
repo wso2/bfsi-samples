@@ -25,9 +25,9 @@ import useConfigContext from "./hooks/use-config-context.js";
  * The root component of the application, responsible for setting up the main routing structure
  * and applying global theming via the `AppThemeProvider`.
  *
- * It consumes the `ConfigContext` to dynamically construct the base route path
- * using a configured router name (e.g., `/${context.routerName.route}/*`).
- * It then defines nested routes, such as the 'home' page, within the main route.
+ * It consumes the **`ConfigContext`** to dynamically construct the base route path
+ * using the configured router name (accessed via `context.routerName.route`).
+ * It then defines **nested routes**, such as the 'home' page, within this main product route.
  */
 function App() {
 
@@ -37,12 +37,14 @@ function App() {
         return <div>Loading configuration...</div>;
     }
 
+    console.log(context)
+
     return (<>
         <AppThemeProvider>
             <Routes>
                 <Route path={`/${context.config.route}/*`} element={
                     <Routes>
-                        <Route path="home" element={<Home configurations={context} />}/>
+                        <Route path="home" element={<Home configurations={context}/>}/>
                     </Routes>
                 }/>
             </Routes>

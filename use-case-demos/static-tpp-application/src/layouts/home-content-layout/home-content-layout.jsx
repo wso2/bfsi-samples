@@ -1,11 +1,13 @@
 import {ContentOuterContainer} from "../../components/styled-components/styled-containers.jsx";
+import {Box} from "@oxygen-ui/react";
+import './home-content-layout.scss'
 
 const HomeContentLayout = ({children}) =>{
     return (
         <>
-            <ContentOuterContainer>
+            <Box className='home-content-outer'>
                 {children}
-            </ContentOuterContainer>
+            </Box>
         </>
     );
 }
