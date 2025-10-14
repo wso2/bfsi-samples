@@ -17,26 +17,24 @@
  */
 
 import {Box, IconButton} from "@oxygen-ui/react";
-import {ActionButtonContentOuter} from "../styled-components/styled-containers.jsx";
 import './quick-action-button.scss'
 import {useMediaQuery, useTheme} from "@mui/material";
 
 /**
- * A reusable, styled button component optimized for display within quick action lists.
+ * A reusable, styled button component optimized for display within quick action lists,
+ * which dynamically adjusts its size based on the viewport.
  *
- * It uses the **Oxygen UI `IconButton`** component for its base structure and wraps the content
- * with the **`ActionButtonContentOuter`** styled component to define the custom layout.
- * The component expects the **`children`** prop to be an array containing exactly two elements,
- * which are destructured into:
- * 1. The **icon** element (`iconElement`).
- * 2. The **text label** element (`nameText`).
- *
- * Note: The `onClick` prop has been removed from the component signature, as the functionality
- * is now inherited by the underlying `IconButton` (assuming the `IconButton` handles the click).
+ * This component:
+ * 1. Uses the **`useMediaQuery`** hook combined with **`useTheme`** to detect if the screen size is small (`< sm`).
+ * 2. Dynamically sets the **width and height** of the internal **`Box`** container for responsiveness:
+ * - Small screens: `5rem` width, `6rem` height.
+ * - Larger screens: `6rem` width, `7rem` height.
+ * 3. Wraps its content (`children`, expected to be the icon and label) within an
+ * **Oxygen UI `IconButton`** component and a responsive **`Box`** container.
  *
  * @param {object} props - The component props.
- * @param {Array<React.ReactNode>} props.children - An array where the first element is the icon component and the second is the name text/label.
- * @returns {JSX.Element} The rendered quick action button.
+ * @param {React.ReactNode} props.children - The content (typically an icon component and a text label) to be displayed inside the button.
+ * @returns {JSX.Element} The rendered quick action button with responsive sizing.
  */
 export const QuickActionButton = ({children}) => {
 

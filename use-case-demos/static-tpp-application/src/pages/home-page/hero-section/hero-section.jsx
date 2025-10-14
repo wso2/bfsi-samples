@@ -18,14 +18,8 @@
 
 import "./hero-section.scss"
 import {QuickActionButton} from "../../../components/quick-action-button/quick-action-button.jsx";
-import {ArrowLeftArrowRightIcon, UserGroupIcon, ClockAsteriskIcon, BoltIcon} from '@oxygen-ui/react-icons'
-import {
-    HeroInnerContainer,
-    HeroOuterContainer,
-    ProfileImageOuter, UserInformationContainer
-} from "../../../components/styled-components/styled-containers.jsx";
+import {ArrowLeftArrowRightIcon, UserGroupIcon, ClockAsteriskIcon, BoltIcon} from '@oxygen-ui/react-icons';
 import {Box, Grid} from "@oxygen-ui/react";
-import {useEffect, useState} from "react";
 import {useMediaQuery, useTheme} from "@mui/material";
 
 const onclickAction = () => {
@@ -54,20 +48,19 @@ const greetingSelection = () => {
 }
 
 /**
- * Renders the primary header or "hero" content for a product page using custom styled components
- * for a responsive layout.
+ * Renders the primary header or "hero" content for a product page with responsive layout adjustments.
  *
  * This component:
- * 1. Uses **Styled Components** (HeroOuterContainer, HeroInnerContainer, etc.) to structure
- * a two-part layout: the user info section and the quick actions section.
- * 2. Displays a **personalized greeting** by calling the **`greetingSelection`** function.
- * 3. Shows the user's **name and profile image**.
- * 4. Renders a static set of four **quick action buttons** defined in `quickActionsButtons`
- * (Payments, Transfer, Schedule, Payees) using the reusable `QuickActionButton` component.
- * 5. Displays a "Loading...." message while the `userInfo` prop is unavailable.
+ * 1. Uses the **`useMediaQuery`** and **`useTheme`** hooks to determine if the user is on a small screen (`< sm`),
+ * enabling conditional rendering and styling.
+ * 2. Displays a **loading state** if `userInfo` is not yet available.
+ * 3. Renders a main container with a **dynamic background image** provided by `userInfo.background`.
+ * 4. Hides the **user profile image** and adjusts the **container height** on small screens for mobile optimization.
+ * 5. Displays a personalized greeting (via `greetingSelection()`) alongside the user's name.
+ * 6. Renders a static set of **quick action buttons** by mapping over `quickActionsButtons`.
  *
- * @param {Object} props - The component props.
- * @param {Object} props.userInfo - The user information object, expected to contain `name` and `image` URL.
+ * @param {object} props - The component props.
+ * @param {object} props.userInfo - The user information object, expected to contain `name`, `image`, and `background` URL.
  * @returns {JSX.Element} The rendered hero section or a loading state.
  */
 const HeroSection = ({userInfo}) => {

@@ -26,7 +26,7 @@ import './header.scss'
  * It dynamically displays the application's title, which is retrieved from the
  * **`context`** prop (`context.routerName.applicationName`). It also renders a static
  * **logout icon button** using Oxygen UI components (`IconButton` and `ArrowRightFromBracketIcon`)
- * for user exit functionality.
+ * for user exit functionality. The icon is styled with white color and a size of 24.
  *
  * @param {object} props - The component props.
  * @param {object} props.context - The configuration context object (from `ConfigContext`) containing application details like `routerName.applicationName`.

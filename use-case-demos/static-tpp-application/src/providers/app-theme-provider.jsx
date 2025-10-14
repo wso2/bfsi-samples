@@ -19,12 +19,17 @@
 import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
 
 /**
- * A root theme provider component that wraps the Oxygen UI ThemeProvider from `@oxygen-ui/react`
- * to apply a custom, statically defined theme across the application.
+ * A root theme provider component that wraps the Material UI ThemeProvider from `@oxygen-ui/react`
+ * to apply a custom, statically defined application theme.
  *
  * It uses `extendTheme` to configure:
- * - Typography with the 'Inter' font family.
- * - Light and dark color schemes, setting specific hardcoded values for the primary color palette.
+ * - **Typography**: Sets the global font family to 'Inter'.
+ * - **Light Color Scheme**: Defines an extended palette including primary, secondary (with a specific 'yellow' key),
+ * custom `fontColor`, `shadows` color, and `backgroundColor` main values.
+ * - **Dark Color Scheme**: Defines a minimal dark palette with a specific primary color.
+ *
+ * All child components are rendered within this theme context, allowing them to utilize
+ * the custom color and typography definitions.
  *
  * @param {object} props - The component props.
  * @param {React.ReactNode} props.children - The child components to be rendered within the theme provider's scope.

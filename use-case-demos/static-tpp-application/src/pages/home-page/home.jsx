@@ -19,44 +19,26 @@
 import HeroSection from "./hero-section/hero-section.jsx";
 import useAuthContext from "../../hooks/use-auth-context.js";
 import ApplicationLayout from "../../layouts/application-layout/application-layout.jsx";
-import InfographicsSummery from "./infographics-summery/infographics-summery.jsx";
-import HomeContentLayout from "../../layouts/home-content-layout/home-content-layout.jsx";
 
 /**
- * The main component for the product's home page, responsible for aggregating
- * user data, configuration, and bank information for display.
+ * The main component for the product's home page.
  *
- * This component:
- * 1. Retrieves user authentication details using the **`useAuthContext`** hook.
- * 2. Accepts pre-fetched application **configurations and bank data** (including total balance and chart data) via props.
- * 3. Displays a **loading state** while the initial data is being fetched (`isLoading`).
- * 4. Renders the application structure using **`<ApplicationLayout>`** and populates the content
- * with **`<HeroSection>`** (for user greetings/actions) and **`<InfographicsSummery>`**
- * (for financial data visualization).
+ * It uses the **`useAuthContext`** hook to retrieve **user information** (or authentication state).
+ * The component applies the primary application structure using the **`<ApplicationLayout>`**
+ * wrapper, and passes the user data to the **`<HeroSection>`** component for personalized display
+ * of greetings and quick actions.
  *
- * @param {object} props - The component props.
- * @param {object} props.configurations - An object containing application state: `config` (app config), `isLoading` (boolean), `chartData` (chart structure), and `total` (total balance).
- * @returns {JSX.Element} The rendered home page layout or a loading message.
+ * @returns {JSX.Element} The rendered Home page, wrapped in the standard application layout.
  */
-const Home = ({configurations}) => {
+const Home = () => {
     const userInfo = useAuthContext();
-    const {config, isLoading, chartData, total} = configurations;
-
-    if (isLoading) {
-        return <div>Loading configuration and bank data...</div>;
-    }
-
     return (
         <>
-            <ApplicationLayout appInfo={config}>
+            <ApplicationLayout>
                 <HeroSection userInfo={userInfo}/>
-                <HomeContentLayout>
-                    <InfographicsSummery total={total} chartData={chartData}/>
-                </HomeContentLayout>
             </ApplicationLayout>
         </>
     )
 }
 
 export default Home;
-
