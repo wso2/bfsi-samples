@@ -17,10 +17,9 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-import ConfigContext from "./providers/config-context.jsx";
 import AppThemeProvider from "./providers/app-theme-provider.jsx";
 import Home from "./pages/home-page/home.jsx";
-import {useContext} from "react";
+import useConfigContext from "./hooks/use-config-context.js";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -32,14 +31,20 @@ import {useContext} from "react";
  */
 function App() {
 
-    const context = useContext(ConfigContext);
+    const context = useConfigContext();
+
+    if (context.isLoading || !context.config) {
+        return <div>Loading configuration...</div>;
+    }
+
+    console.log(context)
 
     return (<>
         <AppThemeProvider>
             <Routes>
-                <Route path={`/${context.routerName.route}/*`} element={
+                <Route path={`/${context.config.route}/*`} element={
                     <Routes>
-                        <Route path="home" element={<Home/>}/>
+                        <Route path="home" element={<Home configurations={context}/>}/>
                     </Routes>
                 }/>
             </Routes>

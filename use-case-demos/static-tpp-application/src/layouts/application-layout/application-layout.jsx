@@ -33,13 +33,11 @@ import Header from "../../components/header/header.jsx";
  * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
  * @returns {JSX.Element} The rendered application shell with a header and content area.
  */
-export const ApplicationLayout = ({children}) => {
-
-    const context = useContext(ConfigContext);
+export const ApplicationLayout = ({children, name}) => {
 
     return (
         <>
-            <Header context={context}/>
+            <Header name={name}/>
             <div className="product-content-outer">
                 {children}
             </div>

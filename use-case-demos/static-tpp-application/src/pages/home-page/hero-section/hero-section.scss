@@ -17,9 +17,6 @@
  */
 
 .outer-container{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  grid-auto-flow: row;
 
   .user-info{
 
