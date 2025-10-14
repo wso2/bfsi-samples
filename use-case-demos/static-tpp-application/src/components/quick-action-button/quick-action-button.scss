@@ -1,0 +1,14 @@
+.icon-container{
+  color: var(--oxygen-palette-shadows-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--oxygen-palette-backgroundColor-main);
+  flex-direction: column;
+  width: 5rem;
+  height: 6rem;
+  font-size: 1rem;
+  box-shadow: 4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-main);
+  border-radius: 0.4rem;
+}

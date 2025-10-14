@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import {IconButton} from "@oxygen-ui/react";
+import {Box, IconButton} from "@oxygen-ui/react";
 import {ActionButtonContentOuter} from "../styled-components/styled-containers.jsx";
+import './quick-action-button.scss'
 
 /**
  * A reusable, styled button component optimized for display within quick action lists.
@@ -42,10 +43,10 @@ export const QuickActionButton = ({children}) => {
 
     return (
         <IconButton >
-            <ActionButtonContentOuter>
+            <Box className='icon-container'>
                 {iconElement}
                 {nameText}
-            </ActionButtonContentOuter>
+            </Box>
         </IconButton>
     );
 };

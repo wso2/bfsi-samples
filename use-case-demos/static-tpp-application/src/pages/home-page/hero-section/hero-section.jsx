@@ -24,6 +24,7 @@ import {
     HeroOuterContainer,
     ProfileImageOuter, UserInformationContainer
 } from "../../../components/styled-components/styled-containers.jsx";
+import {Box, Grid} from "@oxygen-ui/react";
 
 const onclickAction = () => {
     console.log("Quick action action button clicked");
@@ -72,29 +73,29 @@ const HeroSection = ({userInfo}) => {
     if (!userInfo) {
         return <div>Loading....</div>
     }
-
     return (
         <>
-            <HeroOuterContainer background={userInfo.background}>
-                <HeroInnerContainer boxWidth={'100%'} justify={'start'}>
-                    <ProfileImageOuter>
+            <Grid container className="outer-container" style={{background: `url(${userInfo.background}) lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat`}}>
+
+                <Grid item className='user-info'>
+                    <Box className='user-profile'>
                         <img src={userInfo.image} alt="" className='profile-image' />
-                    </ProfileImageOuter>
-                    <UserInformationContainer>
+                    </Box>
+                    <Box className='user-details'>
                         <p>Hello,</p>
                         <p>{userInfo.name}, {greetingSelection()}</p>
-                    </UserInformationContainer>
-                </HeroInnerContainer>
+                    </Box>
+                </Grid>
 
-                <HeroInnerContainer boxWidth={'100%'} justify={'center'}>
+                <Grid item className='quick-actions'>
                     {quickActionsButtons.map((action, index) => {
                         const IconComponent = action.icon;
                         return (<QuickActionButton key={index} onClick={action.onClick}>
                             <IconComponent size={24} />
                             {action.name}
                         </QuickActionButton>)})}
-                </HeroInnerContainer>
-            </HeroOuterContainer>
+                </Grid>
+            </Grid>
         </>
     )
 }

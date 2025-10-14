@@ -16,9 +16,48 @@
  * under the License.
  */
 
-.profile-image{
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+.outer-container{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  grid-auto-flow: row;
+
+  .user-info{
+    height: 14rem;
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+    gap: 1rem;
+
+    .user-profile{
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+
+      .profile-image{
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    .user-details{
+      width: fit-content;
+      height: fit-content;
+      font-size: 1.5rem;
+      color: var(--oxygen-palette-fontColor-main);
+      font-weight: 600;
+    }
+  }
+
+  .quick-actions{
+    height: 14rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1%;
+  }
+
 }
+
+
