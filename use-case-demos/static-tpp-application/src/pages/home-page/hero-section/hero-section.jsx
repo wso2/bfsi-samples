@@ -51,7 +51,7 @@ const greetingSelection = () => {
  * Renders the primary header or "hero" content for a product page with responsive layout adjustments.
  *
  * This component:
- * 1. Uses the **`useMediaQuery`** and **`useTheme`** hooks to determine if the user is on a small screen (`< sm`),
+ * 1. Uses the **`useMediaQuery`** and **`useTheme`** hooks to determine if the user is on a small screen (`< md`),
  * enabling conditional rendering and styling.
  * 2. Displays a **loading state** if `userInfo` is not yet available.
  * 3. Renders a main container with a **dynamic background image** provided by `userInfo.background`.
