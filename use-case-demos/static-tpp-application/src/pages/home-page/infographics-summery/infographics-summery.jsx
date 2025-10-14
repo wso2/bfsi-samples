@@ -44,16 +44,6 @@ const InfographicsSummery = ({chartData,total}) => {
 
     return (
         <>
-            {/*<ContentInnerSectionContainer>*/}
-            {/*    <InfographicsInnerContainer className="total-container">*/}
-            {/*        <p>Total Balance</p>*/}
-            {/*        <p>GBP<span>{total}</span></p>*/}
-            {/*    </InfographicsInnerContainer>*/}
-            {/*    <InfographicsInnerContainer>*/}
-            {/*        <TotalChart chartData={chartData}/>*/}
-            {/*    </InfographicsInnerContainer>*/}
-            {/*</ContentInnerSectionContainer>*/}
-
             <Grid container className='informatics-content-summery' spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Card className='total-card'>
