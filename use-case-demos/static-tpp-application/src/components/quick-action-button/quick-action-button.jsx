@@ -19,6 +19,7 @@
 import {Box, IconButton} from "@oxygen-ui/react";
 import {ActionButtonContentOuter} from "../styled-components/styled-containers.jsx";
 import './quick-action-button.scss'
+import {useMediaQuery, useTheme} from "@mui/material";
 
 /**
  * A reusable, styled button component optimized for display within quick action lists.
@@ -39,13 +40,15 @@ import './quick-action-button.scss'
  */
 export const QuickActionButton = ({children}) => {
 
-    const [iconElement, nameText] = children;
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
+
+    const width = isSmallScreen ? "5rem" : "6rem";
+    const height = isSmallScreen ? "6rem" : "7rem";
 
     return (
         <IconButton >
-            <Box className='icon-container'>
-                {iconElement}
-                {nameText}
+            <Box className='icon-container' sx={{width:width,height:height}}>
+                {children}
             </Box>
         </IconButton>
     );

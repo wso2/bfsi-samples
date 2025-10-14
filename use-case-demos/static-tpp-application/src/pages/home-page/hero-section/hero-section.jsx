@@ -25,6 +25,8 @@ import {
     ProfileImageOuter, UserInformationContainer
 } from "../../../components/styled-components/styled-containers.jsx";
 import {Box, Grid} from "@oxygen-ui/react";
+import {useEffect, useState} from "react";
+import {useMediaQuery, useTheme} from "@mui/material";
 
 const onclickAction = () => {
     console.log("Quick action action button clicked");
@@ -70,20 +72,27 @@ const greetingSelection = () => {
  */
 const HeroSection = ({userInfo}) => {
 
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
+
     if (!userInfo) {
         return <div>Loading....</div>
     }
+
+    const displayStyle = isSmallScreen ? 'none' : 'flex';
+    const containerHeight = isSmallScreen ? 'fit-content' : '14rem';
+
+
     return (
         <>
             <Grid container className="outer-container" style={{background: `url(${userInfo.background}) lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat`}}>
 
-                <Grid item className='user-info'>
-                    <Box className='user-profile'>
+                <Grid item className='user-info' style={{height:containerHeight}}>
+                    <Box className='user-profile'  sx={{display: displayStyle}}>
                         <img src={userInfo.image} alt="" className='profile-image' />
                     </Box>
                     <Box className='user-details'>
                         <p>Hello,</p>
-                        <p>{userInfo.name}, {greetingSelection()}</p>
+                        <p>{userInfo.name} {greetingSelection()}</p>
                     </Box>
                 </Grid>
 
