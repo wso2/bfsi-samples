@@ -17,12 +17,18 @@
  */
 
 import './subtitle.scss'
+import {Button} from "@oxygen-ui/react";
 
-const Subtitle = ({title})=>{
+const Subtitle = ({title, name, onAction})=>{
+
+
+    const display = !(onAction && name)? "none": "flex"
+
     return (
         <>
             <div className="title-outer">
                 <p>{title}</p>
+                <Button color="primary" variant="contained" sx={{display:display}} onClick={onAction}>{name}</Button>
             </div>
         </>
     );

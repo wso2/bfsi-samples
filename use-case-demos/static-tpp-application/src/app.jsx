@@ -37,8 +37,6 @@ function App() {
         return <div>Loading configuration...</div>;
     }
 
-    console.log(context)
-
     return (<>
         <AppThemeProvider>
             <Routes>

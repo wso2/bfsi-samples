@@ -45,13 +45,13 @@ const InfographicsSummery = ({chartData,total}) => {
     return (
         <>
             <Grid container className='informatics-content-summery' spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid xs={12} md={6}>
                     <Card className='total-card'>
                         <h2>Total Balance</h2>
                         <p>GBP<span>{total}</span></p>
                     </Card>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid xs={12} md={6}>
                     <Card className='summery-graph-card'>
                         <TotalChart chartData={chartData}/>
                     </Card>
