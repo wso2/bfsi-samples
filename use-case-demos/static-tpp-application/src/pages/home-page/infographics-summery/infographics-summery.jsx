@@ -23,6 +23,7 @@ import {
 } from "../../../components/styled-components/styled-containers.jsx";
 import TotalChart from "./total-chart.jsx";
 import {Card, Grid} from "@oxygen-ui/react";
+import {formatCurrency} from "../../../hooks/utility.js";
 
 /**
  * Renders a financial summary section that presents total balance and chart visualization.
@@ -48,7 +49,7 @@ const InfographicsSummery = ({chartData,total}) => {
                 <Grid item xs={12} md={6}>
                     <Card className='total-card'>
                         <h2>Total Balance</h2>
-                        <p>GBP<span>{total}</span></p>
+                        <p>GBP<span>{formatCurrency(total)}</span></p>
                     </Card>
                 </Grid>
                 <Grid item xs={12} md={6}>
