@@ -228,7 +228,78 @@ export const InfographicsInnerContainer = styled(Card)(({theme}) => ({
     flexDirection: 'column',
     boxShadow:'4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark)',
 
+
     [theme.breakpoints.down('md')]: {
         height: 'fit-content',
     }
 }))
+
+export const BankCardContainer = styled(Card)(({theme}) => ({
+    width: '100%',
+
+    padding: '1rem',
+    height: '16rem',
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: '4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark)',
+
+    [theme.breakpoints.down('md')]: {
+        flex: 1,
+    },
+
+    [theme.breakpoints.down('lg')]: {
+        flex: 1,
+
+    },
+
+    [theme.breakpoints.down('xl')]: {
+        flex: 1,
+
+    },
+}))
+
+export const BankCardLogoContainer = styled(Box)(({ theme }) => ({
+    width: '12rem',
+    height: '12rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: theme.spacing(2),
+    flexShrink: 0,
+    boxShadow: theme.shadows[3],
+    backgroundColor: theme.palette.grey[100],
+
+
+    [theme.breakpoints.down('xl')]: {
+        width: '6rem',
+        height: '6rem',
+    },
+    [theme.breakpoints.down('md')]: {
+        width: '6rem',
+        height: '6rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+        width: '8rem',
+        height: '8rem',
+        borderRadius: theme.spacing(1),
+    }
+}));
+
+export const BankCardInfoContainer = styled(Box)(({ theme }) => ({
+
+    width: '100%',
+    flex: 1,
+    marginLeft: theme.spacing(3),
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: theme.spacing(1),
+    fontSize: '2rem',
+
+    [theme.breakpoints.down('md')]: {
+        marginLeft: theme.spacing(2),
+        fontSize: '1rem',
+    },
+}));
