@@ -46,7 +46,7 @@ const BankCard = ({bankInformationWithTotal})=>{
 
     return (
         <>
-            <Grid item xs={12} md={4} >
+            <Grid xs={12} md={4} >
                 <Card className='bank-card-outer' sx={{justifyContent: justifyContent}}>
                     <div className="logo-container" style={{width:width, height:height}}>
                         <img src={bankInformationWithTotal.image} alt="" className="bank-logo" />

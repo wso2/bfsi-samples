@@ -45,7 +45,6 @@ const useAuthContext = () => {
 
             try {
                 const response = await api.get("config.json");
-                console.log(response.user);
                 setUser(response.user);
             } catch (e) {
                 console.error(e.message);
