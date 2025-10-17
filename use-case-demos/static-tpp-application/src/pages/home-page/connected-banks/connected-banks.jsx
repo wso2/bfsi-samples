@@ -37,9 +37,9 @@ const ConnectedBanks = ({banksInformationWithTotals})=>{
         <>
             <Grid container spacing={2} className='banks-container'>
 
-                {banksInformationWithTotals.map((bank)=>{
+                {banksInformationWithTotals.map((bank,index)=>{
                     return (
-                        <BankCard key={bank.id} bankInformationWithTotal={bank} />);
+                        <BankCard key={index} bankInformationWithTotal={bank} />);
                 })}
 
             </Grid>
