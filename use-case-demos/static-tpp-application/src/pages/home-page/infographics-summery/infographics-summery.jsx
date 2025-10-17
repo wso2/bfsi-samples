@@ -17,10 +17,6 @@
  */
 
 import './infographics-summery.scss'
-import {
-    ContentInnerSectionContainer,
-    InfographicsInnerContainer
-} from "../../../components/styled-components/styled-containers.jsx";
 import TotalChart from "./total-chart.jsx";
 import {Card, Grid} from "@oxygen-ui/react";
 import {formatCurrency} from "../../../hooks/utility.js";

@@ -64,12 +64,10 @@ const useConfigContext = () => {
 
                 const banksWithTotal = response.banks.map((bank) => {
                     const total = response.accounts.filter((account) => account.bank === bank.name).reduce((sum, account) => sum+account.balance,0);
-
                     bankNames.push(bank.name);
                     totals.push(total);
                     fillColors.push(bank.color);
                     borderColors.push(bank.border);
-
                     return{
                         ...bank,
                         totalBalance: total,
@@ -85,7 +83,6 @@ const useConfigContext = () => {
                         ...bank,
                     }
                 })
-
                 setAccountInfoWithBankInfo(accountWithBankInfo)
 
                 const chartInfo = {
@@ -114,4 +111,3 @@ const useConfigContext = () => {
 }
 
 export default useConfigContext;
-
