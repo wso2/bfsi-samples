@@ -18,6 +18,16 @@
 
 import './subtitle.scss'
 
+/**
+ * A simple presentational component designed to render a section subtitle or heading.
+ *
+ * It wraps the provided **`title`** string in a `p` tag within a `div` that uses
+ * the class name 'title-outer' for styling.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.title - The text string to be displayed as the subtitle.
+ * @returns {JSX.Element} The rendered subtitle component.
+ */
 const Subtitle = ({title})=>{
     return (
         <>

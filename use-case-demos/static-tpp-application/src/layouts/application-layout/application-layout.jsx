@@ -17,8 +17,6 @@
  */
 
 import "./application-layout.scss"
-import {useContext} from "react";
-import ConfigContext from "../../providers/config-context.jsx";
 import Header from "../../components/header/header.jsx";
 
 /**

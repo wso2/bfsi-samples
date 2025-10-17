@@ -51,7 +51,6 @@ const BankCard = ({bankInformationWithTotal})=>{
                     <div className="logo-container" style={{width:width, height:height}}>
                         <img src={bankInformationWithTotal.image} alt="" className="bank-logo" />
                     </div>
-
                     <div className="bank-info-container">
                         <p>{bankInformationWithTotal.name}</p>
                         <p><span>{bankInformationWithTotal.currency}</span>{formatCurrency(bankInformationWithTotal.totalBalance)}</p>

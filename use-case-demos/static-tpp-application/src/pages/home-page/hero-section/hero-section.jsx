@@ -74,11 +74,9 @@ const HeroSection = ({userInfo}) => {
     const displayStyle = isSmallScreen ? 'none' : 'flex';
     const containerHeight = isSmallScreen ? 'fit-content' : '14rem';
 
-
     return (
         <>
             <Grid container className="outer-container" style={{background: `url(${userInfo.background}) lightgray -18.644px -372.574px / 145.345% 527.151% no-repeat`}}>
-
                 <Grid className='user-info' style={{height:containerHeight}} xs={12} md={6}>
                     <Box className='user-profile'  sx={{display: displayStyle}}>
                         <img src={userInfo.image} alt="" className='profile-image' />
@@ -88,7 +86,6 @@ const HeroSection = ({userInfo}) => {
                         <p>{userInfo.name} {greetingSelection()}</p>
                     </Box>
                 </Grid>
-
                 <Grid className='quick-actions' xs={12} md={6}>
                     {quickActionsButtons.map((action, index) => {
                         const IconComponent = action.icon;
