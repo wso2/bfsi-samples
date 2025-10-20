@@ -13,22 +13,22 @@
       "name": "Ascend Global Bank",
       "image": "/resources/assets/images/logos/assend_global_bank_logo.png",
       "currency": "GBP",
-      "color":"rgba(255, 99, 132, 0.6)",
-      "border":"rgba(255, 99, 132, 1)"
+      "color":"rgba(255,135,110,0.6)",
+      "border":"rgba(255,135,110, 1)"
     },
     {
       "name": "Global Asset Trust",
       "image": "/resources/assets/images/logos/global_asset_trust_logo.png",
       "currency": "GBP",
-      "color":"rgba(255, 206, 86, 0.6)",
-      "border":"rgba(255, 206, 86, 1)"
+      "color":"rgba(255, 185, 97, 0.6)",
+      "border":"rgba(255, 185, 97, 1)"
     },
     {
       "name": "Trust Union",
       "image": "/resources/assets/images/logos/trust_union_logo.png",
       "currency": "GBP",
-      "color":"rgba(54, 162, 235, 0.6)",
-      "border":"rgba(54, 162, 235, 1)"
+      "color":"rgba(254, 239, 184, 0.6)",
+      "border":"rgba(254, 239, 184, 1)"
     }
   ],
   "accounts": [
