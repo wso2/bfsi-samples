@@ -1,0 +1,19 @@
+{
+  "welcome_message": "Welcome to the localized app!",
+  "hello": "Hola",
+  "good_morning": "Good Morning!",
+  "good_evening": "Good Evening!",
+  "good_afternoon": "Good Afternoon!",
+  "payments": "Payments",
+  "transfer": "Transfer",
+  "schedule": "Schedule",
+  "payees": "Payees",
+  "total_balance": "Total Balance",
+  "accounts_distribution": "Accounts Distribution",
+  "connected_banks" : "Connected Banks",
+  "connected_accounts": "Connected Accounts",
+  "bank": "Bank",
+  "account_id": "Account Id",
+  "balance": "Balance",
+  "add_account": "Add Account"
+}

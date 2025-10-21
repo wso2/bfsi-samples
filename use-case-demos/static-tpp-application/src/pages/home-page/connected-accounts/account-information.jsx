@@ -1,20 +1,18 @@
 import {Box, TableCell, TableRow} from "@oxygen-ui/react";
-import "./account-information.scss"
+import "./connected-accounts.scss"
 import {formatCurrency} from "../../../hooks/utility.js";
 
 const AccountInformation = ({account,borderStatus,headers})=>{
 
     const getAccountValues = (header) => {
         switch (header) {
-            case "Logo":
+            case "Bank":
                 return (
                     <Box className="account-logo-container">
                         <img src={account.image} alt="" className="logo-image"/>
-
+                        <p>{account.bank}</p>
                     </Box>
                 );
-            case "Bank":
-                return account.bank;
             case "Account Id":
                 return account.id;
             case "Balance":
@@ -27,12 +25,11 @@ const AccountInformation = ({account,borderStatus,headers})=>{
         <TableRow hideBorder={borderStatus}>
             {headers.map((header) => {
 
-
                 const cellContent = getAccountValues(header);
 
                 return (
 
-                    <TableCell key={header}>
+                    <TableCell key={header} sx={{fontSize:'1.2rem'}}>
                         {cellContent}
                     </TableCell>
                 );

@@ -16,17 +16,16 @@
  * under the License.
  */
 
+/*
+ * utility for standardizing all API calls with default headers and centralized error logging.
+ *
+ * Params:
+ * @param {string} endpoint - The resource path (e.g., 'users').
+ * @param {object} [options={}] - Custom fetch options (e.g., method, body).
+ *
+ */
 const baseUrl = "/configurations"
 
-/**
- * A centralized utility function to handle API calls to a base configuration endpoint.
- * It standardizes request headers (JSON content type) and includes robust error handling.
- *
- * @param {string} endpoint - The specific API path to append to the base URL (/configurations).
- * @param {object} [options={}] - Standard fetch API options to customize the request (method, body, custom headers, etc.).
- * @returns {Promise<object|null>} The parsed JSON response data, or null for 204 No Content responses.
- * @throws {Error} Throws an error object containing status and response data if the request fails (HTTP status !response.ok).
- */
 async function fetchData(endpoint, options = {}) {
 
     const url = `${baseUrl}/${endpoint}`;
@@ -44,17 +43,6 @@ async function fetchData(endpoint, options = {}) {
     try {
         const response = await fetch(url, config);
 
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({message: response.statusText}));
-            const error = new Error(errorData.message || `HTTP error! Status: ${response.status}`);
-            error.status = response.status;
-            error.data = errorData;
-        }
-
-        if (response.status === 204 || response.headers.get('content-length') === '0') {
-            return null;
-        }
-
         return await response.json();
 
     } catch (error) {
@@ -63,10 +51,6 @@ async function fetchData(endpoint, options = {}) {
     }
 }
 
-/**
- * An API client object providing simplified methods for common HTTP verbs.
- * Currently, includes only the 'get' method.
- */
 export const api = {
     get: (endpoint, options = {}) => fetchData(endpoint, {method: 'GET', ...options}),
 }

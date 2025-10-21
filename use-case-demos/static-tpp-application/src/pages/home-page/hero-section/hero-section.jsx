@@ -21,6 +21,7 @@ import {QuickActionButton} from "../../../components/quick-action-button/quick-a
 import {ArrowLeftArrowRightIcon, UserGroupIcon, ClockAsteriskIcon, BoltIcon} from '@oxygen-ui/react-icons';
 import {Box, Grid} from "@oxygen-ui/react";
 import {useMediaQuery, useTheme} from "@mui/material";
+import {t} from "i18next";
 
 const onclickAction = () => {
     console.log("Quick action action button clicked");
@@ -37,13 +38,13 @@ const greetingSelection = () => {
     const currentHour = new Date().getHours();
 
     if (currentHour >= 5 && currentHour < 12) {
-        return ", Good Morning!";
+        return `, ${t('good_morning')}`;
     } else if (currentHour >= 0 && currentHour < 5) {
         return "";
     } else if (currentHour >= 12 && currentHour < 18) {
-        return  ", Good Afternoon!";
+        return  `, ${t('good_afternoon')}`;
     } else {
-        return  ", Good Evening!";
+        return  `, ${t('good_evening')}`;
     }
 }
 
@@ -82,7 +83,7 @@ const HeroSection = ({userInfo}) => {
                         <img src={userInfo.image} alt="" className='profile-image' />
                     </Box>
                     <Box className='user-details'>
-                        <p>Hello,</p>
+                        <p>{t('hello')},</p>
                         <p>{userInfo.name} {greetingSelection()}</p>
                     </Box>
                 </Grid>

@@ -20,6 +20,8 @@ import {Route, Routes} from "react-router-dom";
 import AppThemeProvider from "./providers/app-theme-provider.jsx";
 import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.js";
+import {Suspense} from "react";
+import {useTranslation} from "react-i18next";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -33,11 +35,14 @@ function App() {
 
     const context = useConfigContext();
 
+    const {t, i18n} = useTranslation();
+
     if (context.isLoading || !context.config) {
         return <div>Loading configuration...</div>;
     }
 
     return (<>
+        <Suspense fallback={<div>Loading configuration...</div>}>
         <AppThemeProvider>
             <Routes>
                 <Route path={`/${context.config.route}/*`} element={
@@ -47,6 +52,7 @@ function App() {
                 }/>
             </Routes>
         </AppThemeProvider>
+            </Suspense>
     </>)
 }
 

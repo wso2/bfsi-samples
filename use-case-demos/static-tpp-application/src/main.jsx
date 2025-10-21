@@ -21,6 +21,7 @@ import {createRoot} from 'react-dom/client'
 import './index.scss'
 import App from './app.jsx'
 import {BrowserRouter} from "react-router-dom";
+import './i18n.js';
 
 /**
  * The main entry point for the React application.

@@ -3,7 +3,7 @@ import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "
 import AccountInformation from "./account-information.jsx";
 
 const ConnectedAccountsTable = ({accounts})=>{
-    const headers = ["Logo", "Bank", "Account Id", "Balance"];
+    const headers = [ "Bank", "Account Id", "Balance"];
     return (
         <TableContainer>
             <Table>

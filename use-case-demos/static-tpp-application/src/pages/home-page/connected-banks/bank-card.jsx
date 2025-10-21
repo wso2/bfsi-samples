@@ -17,7 +17,7 @@
  */
 
 import {formatCurrency} from "../../../hooks/utility.js";
-import './bank-card.scss'
+import './connected-banks.scss'
 import {Card, Grid} from "@oxygen-ui/react";
 import {useMediaQuery, useTheme} from "@mui/material";
 
