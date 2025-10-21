@@ -23,10 +23,10 @@ import {formatCurrency} from "../../../hooks/utility.js";
 /*
  * AccountInformation component renders a single row in the connected accounts table.
  * It uses a switch case to correctly format and display account data
- * (bank logo, ID, and formatted balance) based on the table header.
+ * (bank logo, ID, currency, and formatted balance) based on the table header.
  *
  * Params:
- * @param {object} account - The individual account object containing bank, ID, balance, and image.
+ * @param {object} account - The individual account object containing bank, ID, balance, currency, and image.
  * @param {boolean} borderStatus - Flag to hide the bottom border for the last row.
  * @param {Array<string>} headers - Array of table headers used to map and display the correct account value.
  */
@@ -43,8 +43,10 @@ const AccountInformation = ({account,borderStatus,headers})=>{
                 );
             case "Account Id":
                 return account.id;
+            case "Currency":
+                return account.currency
             case "Balance":
-                return account.currency+" "+formatCurrency(account.balance);
+                return formatCurrency(account.balance);
             default:
                 return null;
         }
@@ -52,9 +54,7 @@ const AccountInformation = ({account,borderStatus,headers})=>{
     return (
         <TableRow hideBorder={borderStatus}>
             {headers.map((header) => {
-
                 const cellContent = getAccountValues(header);
-
                 return (
 
                     <TableCell key={header} sx={{fontSize:'1.2rem'}}>

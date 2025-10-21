@@ -28,7 +28,7 @@ import AccountInformation from "./account-information.jsx";
  * @param {Array<object>} accounts - List of account objects to display in the table.
  */
 const ConnectedAccountsTable = ({accounts}) => {
-    const headers = ["Bank", "Account Id", "Balance"];
+    const headers = ["Bank", "Account Id", "Currency","Balance"];
     return (
         <TableContainer>
             <Table>
