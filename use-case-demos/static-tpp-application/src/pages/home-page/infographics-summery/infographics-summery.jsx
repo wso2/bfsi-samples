@@ -21,21 +21,13 @@ import TotalChart from "./total-chart.jsx";
 import {Card, Grid} from "@oxygen-ui/react";
 import {formatCurrency} from "../../../hooks/utility.js";
 
-/**
- * Renders a financial summary section that presents total balance and chart visualization.
+/*
+ * InfographicsSummery component displays the total balance and a distribution chart
+ * in a responsive two-column grid layout.
  *
- * This component utilizes custom **Styled Components** (`ContentInnerSectionContainer` and `InfographicsInnerContainer`)
- * to structure a two-part layout:
- * 1. The first section displays the **total aggregated balance** passed via the `total` prop.
- * 2. The second section renders the **`TotalChart`** component, receiving its data via the `chartData` prop.
- *
- * It is responsible for the overall layout of the infographic summary, but the data calculation (total and chart data preparation)
- * is expected to be handled by the parent component, as indicated by the props.
- *
- * @param {object} props - The component props.
- * @param {object} props.chartData - The prepared data object required by the `TotalChart` component.
- * @param {number|string} props.total - The pre-calculated total balance across all accounts.
- * @returns {JSX.Element} The rendered summary section.
+ * Params:
+ * @param {object} chartData - Data for the distribution chart.
+ * @param {number} total - The total balance amount.
  */
 const InfographicsSummery = ({chartData,total}) => {
 

@@ -23,6 +23,13 @@ import {Box, Grid} from "@oxygen-ui/react";
 import {useMediaQuery, useTheme} from "@mui/material";
 import {t} from "i18next";
 
+/*
+ * HeroSection component displays a personalized welcome banner with user details,
+ * a dynamic greeting based on the time of day, and quick action buttons.
+ *
+ * Params:
+ * @param {object} userInfo - User profile information (name, image, background URL).
+ */
 const onclickAction = () => {
     console.log("Quick action action button clicked");
 }
@@ -48,22 +55,6 @@ const greetingSelection = () => {
     }
 }
 
-/**
- * Renders the primary header or "hero" content for a product page with responsive layout adjustments.
- *
- * This component:
- * 1. Uses the **`useMediaQuery`** and **`useTheme`** hooks to determine if the user is on a small screen (`< md`),
- * enabling conditional rendering and styling.
- * 2. Displays a **loading state** if `userInfo` is not yet available.
- * 3. Renders a main container with a **dynamic background image** provided by `userInfo.background`.
- * 4. Hides the **user profile image** and adjusts the **container height** on small screens for mobile optimization.
- * 5. Displays a personalized greeting (via `greetingSelection()`) alongside the user's name.
- * 6. Renders a static set of **quick action buttons** by mapping over `quickActionsButtons`.
- *
- * @param {object} props - The component props.
- * @param {object} props.userInfo - The user information object, expected to contain `name`, `image`, and `background` URL.
- * @returns {JSX.Element} The rendered hero section or a loading state.
- */
 const HeroSection = ({userInfo}) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

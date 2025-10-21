@@ -20,17 +20,13 @@ import {Grid} from "@oxygen-ui/react";
 import './connected-banks.scss'
 import BankCard from "./bank-card.jsx";
 
-/**
- * A component responsible for displaying a list of connected banks using responsive cards.
+/*
+ * ConnectedBanks component displays a list of financial institutions
+ * connected to the user's account, rendering each one using a BankCard component.
  *
- * It iterates over the **`banksInformationWithTotals`** array and renders a **`<BankCard />`**
- * component for each bank, passing the bank's summary data as a prop.
- * The bank cards are organized within an **Oxygen UI `Grid` container** to ensure a responsive,
- * spaced layout.
+ * Params:
+ * @param {Array<object>} banksInformationWithTotals - List of bank objects, each including total balance information.
  *
- * @param {object} props - The component props.
- * @param {Array<object>} props.banksInformationWithTotals - An array of bank objects, where each object contains the necessary details (e.g., ID, logo, name, total balance) for the BankCard component.
- * @returns {JSX.Element} The rendered list of connected bank cards within a grid layout.
  */
 const ConnectedBanks = ({banksInformationWithTotals})=>{
     return(

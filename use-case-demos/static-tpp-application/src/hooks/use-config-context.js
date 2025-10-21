@@ -19,22 +19,14 @@
 import {useEffect, useState} from "react";
 import {api} from "../api.js";
 
-/**
- * A custom React hook responsible for fetching and processing all application and financial configuration data.
+/*
+ * useConfigContext hook fetches and processes the main application configuration data.
+ * It loads bank details and accounts, calculates total balances, structures data for the
+ * donut chart, and organizes account information for display components.
  *
- * This hook performs the following key functions:
- * 1. Fetches configuration data (including app name, bank details, and account data) from the `/configurations/config.json` endpoint using the `api.get` utility.
- * 2. Manages multiple pieces of related state:
- * - `config`: The application name.
- * - `connectedBankDetails`: Raw bank list.
- * - `accountInfoWithBankInfo`: Merged list of accounts, each enhanced with its respective bank's details.
- * - `total`: The aggregated total balance across all accounts.
- * - `bankInfoWithTotals`: The list of banks, with each object augmented by the sum of balances for its accounts.
- * - `chartData`: The processed data structure (labels, totals, colors) required for the Doughnut/Total Chart visualization.
- * - `isLoading`: Tracks the data fetching state.
- * 3. **Processes the raw data** into various derived states, including calculating the total balance and preparing the data structure needed for charting.
- *
- * @returns {object} An object containing all derived state variables: `config`, `connectedBankDetails`, `bankInfoWithTotals`, `isLoading`, `accountInfoWithBankInfo`, `chartData`, and `total`.
+ * Returns:
+ * @returns {object} An object containing: config, connectedBankDetails, bankInfoWithTotals,
+ * isLoading status, accountInfoWithBankInfo, chartData, and the total balance.
  */
 const useConfigContext = () => {
     const [config, setLoadedConfig] = useState(null);
@@ -73,7 +65,6 @@ const useConfigContext = () => {
                         totalBalance: total,
                     }
                 })
-
                 setBankInfoWithTotals(banksWithTotal)
 
                 const accountWithBankInfo = response.accounts.map(account => {

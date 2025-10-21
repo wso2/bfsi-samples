@@ -17,11 +17,13 @@
  */
 
 /*
- * utility for standardizing all API calls with default headers and centralized error logging.
+ * Utility function for standardizing API calls against the base URL,
+ * applying default headers, and centralizing error handling.
  *
  * Params:
- * @param {string} endpoint - The resource path (e.g., 'users').
- * @param {object} [options={}] - Custom fetch options (e.g., method, body).
+ * @param {string} endpoint - The resource path relative to the base URL (e.g., 'users' or 'data/items').
+ * @param {object} [options={}] - Custom fetch options (e.g., method, body, custom headers).
+ * @returns {Promise<object>} The JSON response body.
  *
  */
 const baseUrl = "/configurations"

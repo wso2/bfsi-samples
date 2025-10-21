@@ -23,24 +23,14 @@ import {useMediaQuery, useTheme} from "@mui/material";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-/**
- * A dedicated presentational component for rendering a Doughnut chart using `react-chartjs-2`.
- * It visualizes the distribution of balances based on pre-processed data.
+/*
+ * Chart component that visualizes the distribution of account balances (Doughnut Chart).
+ * It dynamically adjusts the legend position based on screen size (mocked).
  *
- * This component:
- * 1. Ensures necessary Chart.js elements (`ArcElement`, `Tooltip`, `Legend`) are registered globally.
- * 2. Defines static `options` for the chart, including responsiveness, legend positioning (right/start),
- * custom legend labels, and padding.
- * 3. Renders a title "Account Distribution" and the chart itself using the **`Doughnut`** component,
- * expecting the **`chartData`** prop to be the final data structure required by Chart.js.
- * 4. Note: Data transformation logic is expected to be handled by a parent component or custom hook
- * before being passed via `chartData`.
- *
- * @param {object} props - The component props.
- * @param {object} props.chartData - The prepared data object required by the `Doughnut` chart, containing `labels` and `datasets`.
- * @returns {JSX.Element} The rendered Doughnut chart component.
+ * Params:
+ * @param {object} chartData - Data structure for the Doughnut chart (labels, datasets).
  */
-const TotalChart = ({chartData})=>{
+const TotalChart = ({chartData}) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
 
@@ -65,9 +55,9 @@ const TotalChart = ({chartData})=>{
 
     return (
         <div className='chart-outer'>
-            <h2 >Account Distribution</h2>
+            <h2>Account Distribution</h2>
             <div className='chart-container'>
-                <Doughnut data={chartData} options={options} />
+                <Doughnut data={chartData} options={options}/>
             </div>
         </div>
     );

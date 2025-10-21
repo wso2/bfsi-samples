@@ -16,6 +16,14 @@
  * under the License.
  */
 
+/*
+ * Utility function to format a numeric value into a localized currency string
+ * with two decimal places.
+ *
+ * Params:
+ * @param {number} value - The numeric amount to be formatted.
+ * @returns {string} The formatted currency string (e.g., '1,234.56').
+ */
 export const formatCurrency = (value) => {
     return value.toLocaleString('en-US',{
         minimumFractionDigits: 2,

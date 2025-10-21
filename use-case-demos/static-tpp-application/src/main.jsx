@@ -23,14 +23,10 @@ import App from './app.jsx'
 import {BrowserRouter} from "react-router-dom";
 import './i18n.js';
 
-/**
+/*
  * The main entry point for the React application.
- * It initializes the React root, wrapping the entire application in:
- * 1. `StrictMode` for development-time checks and warnings.
- * 2. `BrowserRouter` to enable client-side routing.
- * 3. `ConfigProvider` to handle global configuration fetching and state management.
- *
- * It finally renders the top-level `App` component, providing it access to the router and global configurations.
+ * Initializes the React root, enables Strict Mode, and wraps the main App component
+ * with essential providers like BrowserRouter for routing and i18n for localization.
  */
 createRoot(document.getElementById('root')).render(
     <StrictMode>

@@ -21,20 +21,13 @@ import './connected-banks.scss'
 import {Card, Grid} from "@oxygen-ui/react";
 import {useMediaQuery, useTheme} from "@mui/material";
 
-/**
- * A responsive component that displays a single bank's summary information as a card.
+/*
+ * BankCard component displays detailed information for a single connected bank,
+ * including the bank's logo and the total aggregated balance across its accounts.
  *
- * This component:
- * 1. Uses **`useMediaQuery`** to detect screen size (medium and below) to adjust styling.
- * 2. Dynamically sets the **logo image container's width and height** based on the screen size
- * (6rem for small, 8rem for medium/large).
- * 3. Adjusts the **content justification** of the card container (`space-between` on small screens, `center` otherwise).
- * 4. Displays the bank's **logo**, **name**, and the **total balance** formatted by the `formatCurrency` utility.
- * 5. Is wrapped in an **Oxygen UI `Grid` item** to fit into a responsive layout (full width on small screens, one-third width on medium/large).
+ * Params:
+ * @param {object} bankInformationWithTotal - Object containing bank details (name, image, currency) and total balance.
  *
- * @param {object} props - The component props.
- * @param {object} props.bankInformationWithTotal - An object containing bank details, expected to include `image`, `name`, `currency`, and `totalBalance`.
- * @returns {JSX.Element} The rendered bank summary card.
  */
 const BankCard = ({bankInformationWithTotal})=>{
 

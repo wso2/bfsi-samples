@@ -20,17 +20,11 @@ import {IconButton} from "@oxygen-ui/react";
 import {ArrowRightFromBracketIcon} from "@oxygen-ui/react-icons";
 import './header.scss'
 
-/**
- * A dedicated component for rendering the application's top header bar.
+/*
+ * Header component displays the application name and a primary action button (e.g., sign out).
  *
- * It dynamically displays the application's title, which is retrieved from the
- * **`context`** prop (`context.routerName.applicationName`). It also renders a static
- * **logout icon button** using Oxygen UI components (`IconButton` and `ArrowRightFromBracketIcon`)
- * for user exit functionality. The icon is styled with white color and a size of 24.
- *
- * @param {object} props - The component props.
- * @param {object} props.context - The configuration context object (from `ConfigContext`) containing application details like `routerName.applicationName`.
- * @returns {JSX.Element} The rendered header bar.
+ * Params:
+ * @param {string} name - The application or product name to display.
  */
 const Header = ({name}) => {
     return(

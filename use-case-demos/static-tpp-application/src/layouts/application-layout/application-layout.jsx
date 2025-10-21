@@ -19,17 +19,13 @@
 import "./application-layout.scss"
 import Header from "../../components/header/header.jsx";
 
-/**
- * A standard application layout component that establishes a persistent **header**
- * and a main content area for rendering child components.
+/*
+ * ApplicationLayout component defines the main structure of the application page,
+ * including the navigation header and a container for the page content.
  *
- * It consumes the **`ConfigContext`** and passes the entire context object to the **`<Header />`**
- * component, enabling the header to dynamically render application details (like the name).
- * The main content is rendered within the `product-content-outer` div using the **`children`** prop.
- *
- * @param {object} props - The component props.
- * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
- * @returns {JSX.Element} The rendered application shell with a header and content area.
+ * Params:
+ * @param {ReactNode} children - The main content of the page (e.g., Home Content Layout).
+ * @param {string} name - The application name to be displayed in the header.
  */
 export const ApplicationLayout = ({children, name}) => {
 

@@ -19,15 +19,12 @@
 import {Box} from "@oxygen-ui/react";
 import './home-content-layout.scss'
 
-/**
- * A simple layout component for the main content area of the Home page.
+/*
+ * HomeContentLayout component serves as a simple wrapper/container
+ * for the main content blocks displayed on the Home dashboard.
  *
- * It acts as a wrapper, applying the class name 'home-content-outer' to an **Oxygen UI `Box`** component
- * to control the styling and layout of all child elements (such as infographic summaries or account lists).
- *
- * @param {object} props - The component props.
- * @param {React.ReactNode} props.children - The content to be rendered within the main body of the Home page.
- * @returns {JSX.Element} The rendered content wrapper.
+ * Params:
+ * @param {ReactNode} children - The content (e.g., summary cards, bank lists) to be rendered inside the layout.
  */
 const HomeContentLayout = ({children}) =>{
     return (

@@ -19,21 +19,18 @@
 import './subtitle.scss'
 import {Button} from "@oxygen-ui/react";
 
-/**
- * A simple presentational component designed to render a section subtitle or heading.
+/*
+ * Subtitle component used to display a section title and an optional action button.
+ * Relies on an external Button component (mocked here for compilation).
  *
- * It wraps the provided **`title`** string in a `p` tag within a `div` that uses
- * the class name 'title-outer' for styling.
+ * Params:
+ * @param {string} title - The main text for the section title.
+ * @param {string} [name] - The label for the action button (if provided).
+ * @param {function} [onAction] - The function to execute when the button is clicked.
  *
- * @param {object} props - The component props.
- * @param {string} props.title - The text string to be displayed as the subtitle.
- * @returns {JSX.Element} The rendered subtitle component.
  */
 const Subtitle = ({title, name, onAction})=>{
-
-
     const display = !(onAction && name)? "none": "flex"
-
     return (
         <>
             <div className="title-outer">
