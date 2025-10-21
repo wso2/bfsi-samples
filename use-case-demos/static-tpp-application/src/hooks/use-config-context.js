@@ -107,7 +107,7 @@ const useConfigContext = () => {
         }
         fetchData();
     }, []);
-    return {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo, chartData, total};
+    return {config,connectedBankDetails, bankInfoWithTotals, isLoading, accountInfoWithBankInfo, chartData, total,};
 }
 
 export default useConfigContext;

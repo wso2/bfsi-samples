@@ -45,7 +45,7 @@ const AppThemeProvider = ({children}) => {
             light: {
                 palette: {
                     primary: {
-                        main: '#FF5499',
+                        main: '#FF7433',
                     },
                     secondary: {
                         main: '#FF7433',

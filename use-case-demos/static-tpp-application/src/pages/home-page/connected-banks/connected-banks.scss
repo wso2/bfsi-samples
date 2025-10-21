@@ -18,4 +18,37 @@
 
 .banks-container{
   height: fit-content;
+
+  .bank-card-outer{
+    display: flex;
+    align-items: center;
+    box-shadow: 4.5px 4.5px 5.625px -2.25px var(--oxygen-palette-shadows-dark);
+    gap: 1rem;
+
+    .logo-container{
+      border-radius: 1rem;
+
+      .bank-logo{
+        width: 100%;
+        height: fit-content;
+        object-fit: cover;
+      }
+    }
+
+    .bank-info-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+      font-weight: 600;
+      font-size: 1.2rem;
+
+      p span{
+        font-size: 0.8rem;
+        margin-right: 0.8rem;
+      }
+    }
+  }
 }

@@ -17,6 +17,7 @@
  */
 
 import './subtitle.scss'
+import {Button} from "@oxygen-ui/react";
 
 /**
  * A simple presentational component designed to render a section subtitle or heading.
@@ -28,11 +29,16 @@ import './subtitle.scss'
  * @param {string} props.title - The text string to be displayed as the subtitle.
  * @returns {JSX.Element} The rendered subtitle component.
  */
-const Subtitle = ({title})=>{
+const Subtitle = ({title, name, onAction})=>{
+
+
+    const display = !(onAction && name)? "none": "flex"
+
     return (
         <>
             <div className="title-outer">
                 <p>{title}</p>
+                <Button color="primary" variant="contained" sx={{display:display}} onClick={onAction}>{name}</Button>
             </div>
         </>
     );

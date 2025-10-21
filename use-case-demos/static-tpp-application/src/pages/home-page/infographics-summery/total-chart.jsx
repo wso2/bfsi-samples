@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import "./total-chart.scss";
+import "./infographics-summery.scss";
 import {Doughnut} from "react-chartjs-2";
 import {ArcElement, Chart as ChartJS, Legend, Tooltip} from "chart.js";
 import {useMediaQuery, useTheme} from "@mui/material";
@@ -44,8 +44,6 @@ const TotalChart = ({chartData})=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
 
-    const width = isSmallScreen ? '100%' : '100%';
-    const height = isSmallScreen ? '100%' : '100%';
     const position = isSmallScreen ? 'top' : 'right';
 
     const options = {
@@ -68,7 +66,7 @@ const TotalChart = ({chartData})=>{
     return (
         <div className='chart-outer'>
             <h2 >Account Distribution</h2>
-            <div className='chart-container' style={{width:width, height:height}}>
+            <div className='chart-container'>
                 <Doughnut data={chartData} options={options} />
             </div>
         </div>
