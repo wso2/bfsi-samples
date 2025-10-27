@@ -24,14 +24,10 @@ export interface ApplicationLayoutProps {
     children: ReactNode;
 }
 
-
 /**
- * A standard application layout component that establishes a persistent **header**
- * and a main content area for rendering child components.
- *
- * It consumes the **`ConfigContext`** and passes the entire context object to the **`<Header />`**
- * component, enabling the header to dynamically render application details (like the name).
- * The main content is rendered within the `product-content-outer` div using the **`children`** prop.
+ * A foundational React layout component that establishes the basic structure for the application.
+ * It renders a persistent application-wide `Header`, passing it a dynamic `name` prop,
+ * and then renders the main page content (`children`) within a dedicated content container.
  */
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
 

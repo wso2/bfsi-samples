@@ -2,7 +2,7 @@
   "user": {
     "name": "James Smith",
     "image": "/resources/assets/images/profile/dp_image.webp",
-    "background":"/resources/assets/images/background/bg_image.webp"
+    "background":"/resources/assets/images/background/bg-image.webp"
   },
   "name": {
     "route": "accounts-central",

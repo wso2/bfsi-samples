@@ -22,8 +22,13 @@ import {useEffect, useState} from "react";
 import {api} from "../utility/api.ts";
 import type {Account, AppInfo, Bank, Config, StandingOrders, TransactionData, User} from "./config-interfaces.ts";
 
-
-
+/**
+ * A custom React Hook that acts as the application's central data store.
+ * It fetches the main configuration from 'config.json' on mount, then processes
+ * and aggregates the raw financial data (accounts, banks, transactions) into
+ * various derived state variables (e.g., total balances, chart data).
+ * It returns all application information and processed financial totals for global use.
+ */
 const initialConfig: Config = {
     user: { name: '', image: '', background: '' },
     name: { route: '', applicationName: '' ,route_bank_one:''},

@@ -26,6 +26,13 @@ interface ActionButtonProps {
     onClick?: (path:string) => void;
 }
 
+/**
+ * A highly reusable and styled action button component designed for quick navigation or tasks.
+ * It renders an `IconButton` displaying an optional `icon` and a text `name`.
+ *
+ * When clicked, it triggers the provided `onClick` handler, passing the button's `name`
+ * (converted to lowercase) as the navigation path argument. It renders nothing if no `onClick` handler is provided.
+ */
 const QuickActionButton = ({icon,name, onClick} : ActionButtonProps)=>{
 
     if (!onClick) return null;

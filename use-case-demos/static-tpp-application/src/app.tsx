@@ -17,12 +17,9 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-
 import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
-
-
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -38,24 +35,24 @@ function App() {
 
     return (<>
         <AppThemeProvider>
-        <Routes>
-            <Route path={`/${appInfo.route}/*`} element={
-                <Routes>
-                    <Route path="home"
-                           element={
-                               <Home userInfo={userInfo}
-                                     name={appInfo.applicationName}
-                                     total={total}
-                                     chartData={chartInfo}
-                                     banksWithAccounts={banksWithAccounts}
-                                     transactions={transactions}
-                                     standingOrderList={standingOrderList}
-                                     appInfo={appInfo}
-                               />
-                           }/>
-                </Routes>
-            } />
-        </Routes>
+            <Routes>
+                <Route path={`/${appInfo.route}/*`} element={
+                    <Routes>
+                        <Route path="home"
+                               element={
+                                   <Home userInfo={userInfo}
+                                         name={appInfo.applicationName}
+                                         total={total}
+                                         chartData={chartInfo}
+                                         banksWithAccounts={banksWithAccounts}
+                                         transactions={transactions}
+                                         standingOrderList={standingOrderList}
+                                         appInfo={appInfo}
+                                   />
+                               }/>
+                    </Routes>
+                } />
+            </Routes>
         </AppThemeProvider>
         </>)
 }

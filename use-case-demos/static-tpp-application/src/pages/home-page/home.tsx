@@ -29,7 +29,6 @@ import type {BanksWithAccounts, ChartData} from "../../hooks/use-config-context.
  * It fetches user information using the `useAuthContext` custom hook and
  * passes this data to the `QuickActions` component to display user-specific content.
  */
-
 interface AccountsCentralLayoutProps {
     name: string;
     userInfo: User

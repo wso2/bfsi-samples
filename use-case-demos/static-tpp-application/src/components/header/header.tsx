@@ -32,6 +32,11 @@ export interface HeaderProps {
     name: string;
 }
 
+/**
+ * A basic application header component that displays the application's name/title.
+ * It also renders a right-aligned **Logout icon** (`ArrowRightFromBracketIcon`)
+ * wrapped in an `IconButton` for user session termination or sign-out functionality.
+ */
 const Header: FC<HeaderProps> = ({ name }) => {
     return(
         <div className="header-outer">

@@ -18,9 +18,21 @@
  *
  */
 
-
+/**
+ * A reusable API service client for fetching JSON data from a configured base URL.
+ * It uses the native `fetch` API, prepends the `baseUrl` to all endpoints,
+ * and includes basic error handling for network issues and bad HTTP status codes.
+ */
 const baseUrl = '/configurations';
 
+/**
+ * Asynchronously fetches JSON data from a specific API endpoint.
+ *
+ * @param {string} endpoint The specific path to append to the baseUrl (e.g., 'users/1').
+ * @param {RequestInit} [options] Optional configuration object for the `fetch` request (e.g., headers, method).
+ * @returns {Promise<any>} A promise that resolves with the parsed JSON response body.
+ * @throws {Error} Throws an error if the network request fails or the HTTP response status is not OK (200-299).
+ */
 const fetchData = async (endpoint:string, options?:RequestInit)=>{
 
     const url = `${baseUrl}/${endpoint}`;
