@@ -23,6 +23,11 @@ import { Grid } from "@mui/material";
 import HomePageLayout from "../../layouts/home-page-layout/home-page-layout.tsx";
 import type {AppInfo, StandingOrders, TransactionData, User} from "../../hooks/config-interfaces.ts";
 import type {BanksWithAccounts, ChartData} from "../../hooks/use-config-context.ts";
+import {InfographicsContent} from "./infographics-content/infographics-content.tsx";
+import ConnectedBanksAccounts from "./connected-banks-accounts/connected-banks-accounts.tsx";
+import CustomTitle from "../../components/custom-title/custom-title.tsx";
+import LatestTransactions from "./latest-transactions/latest-transactions.tsx";
+import StandingOrdersTable from "./standing-orders/standing-orders.tsx";
 
 /**
  * The main component for the product's home page.
@@ -39,13 +44,25 @@ interface AccountsCentralLayoutProps {
     standingOrderList: StandingOrders[];
     appInfo: AppInfo;
 }
-const Home = ({name,userInfo, appInfo}:AccountsCentralLayoutProps)=>{
+const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo}:AccountsCentralLayoutProps)=>{
     return (
         <>
             <ApplicationLayout name={name}>
                 <HomePageLayout userInfo={userInfo} appInfo={appInfo}>
                     <Grid className={'info-graphic'}>
-
+                        <InfographicsContent total={total} chartInfo={chartData}/>
+                    </Grid>
+                    <Grid className={'accounts-container'}>
+                        <CustomTitle title={"Connected Banks And Accounts"} buttonName={"Add Account"} buttonType={"contained"}/>
+                        <ConnectedBanksAccounts bankAndAccountsInfo={banksWithAccounts}/>
+                    </Grid>
+                    <Grid className={'transactions-container'}>
+                        <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"}/>
+                        <LatestTransactions transactions={transactions}/>
+                    </Grid>
+                    <Grid className={'standing-orders-container'}>
+                        <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"}/>
+                        <StandingOrdersTable standingOrderList={standingOrderList}/>
                     </Grid>
 
                 </HomePageLayout>

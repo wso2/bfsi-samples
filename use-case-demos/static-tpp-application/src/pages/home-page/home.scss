@@ -64,3 +64,113 @@
   }
 }
 
+.content-outer{
+  background: var(--oxygen-palette-primary-backgroundColor);
+  width: 100%;
+
+  .info-graphic{
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+
+    .info-graphic-card{
+      flex: 0.5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .display-total{
+        font-size: 4rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        color: var(--oxygen-palette-primary-main);
+
+        span{
+          font-size: 2rem;
+          margin-right: 1rem;
+        }
+      }
+
+      .lastupdate-container{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: end;
+        justify-content: flex-end;
+        font-weight: 300;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .accounts-container{
+    width: 100%;
+
+    .accordian-header-container{
+      display: flex;
+      padding: 0.5rem 1rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+
+      .bank-container{
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        .bank-logo-container{
+          width: 4rem;
+          height: 4rem;
+          background: yellow;
+
+          .bank-logo{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+      }
+
+      .balance-container{
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 600;
+        gap: 1rem;
+
+        span{
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .table-row{
+      background: var(--oxygen-palette-primary-backgroundColor);
+      .table-body{
+        font-size: 1.2rem;
+      }
+    }
+
+  }
+  .transactions-container{
+    width: 100%;
+
+    .table-container{
+      background: var(--oxygen-palette-primary-tableBackground);
+    }
+  }
+
+  .standing-orders-container{
+    width: 100%;
+
+    .standing-orders-container-outer{
+      background: var(--oxygen-palette-primary-tableBackground);
+    }
+  }
+
+}
