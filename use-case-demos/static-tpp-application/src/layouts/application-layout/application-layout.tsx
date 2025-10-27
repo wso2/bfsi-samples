@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import "./application-layout.scss"
-import {useContext} from "react";
-import ConfigContext from "../../providers/config-context.jsx";
-import Header from "../../components/header/header.jsx";
+import {type FC, type ReactNode} from "react";
+import Header from "../../components/header/header";
+
+export interface ApplicationLayoutProps {
+    name: string;
+    children: ReactNode;
+}
+
 
 /**
  * A standard application layout component that establishes a persistent **header**
@@ -28,24 +32,17 @@ import Header from "../../components/header/header.jsx";
  * It consumes the **`ConfigContext`** and passes the entire context object to the **`<Header />`**
  * component, enabling the header to dynamically render application details (like the name).
  * The main content is rendered within the `product-content-outer` div using the **`children`** prop.
- *
- * @param {object} props - The component props.
- * @param {React.ReactNode} props.children - The content (views or components) to be displayed in the main body of the application.
- * @returns {JSX.Element} The rendered application shell with a header and content area.
  */
-export const ApplicationLayout = ({children}) => {
-
-    const context = useContext(ConfigContext);
+export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
 
     return (
         <>
-            <Header context={context}/>
+            <Header name={name} />
             <div className="product-content-outer">
                 {children}
             </div>
         </>
     );
-}
+};
 
 export default ApplicationLayout;
-

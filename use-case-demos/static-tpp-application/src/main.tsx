@@ -19,25 +19,19 @@
 import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
 import './index.scss'
-import App from './app.jsx'
+import App from './app.tsx'
 import {BrowserRouter} from "react-router-dom";
-import {ConfigProvider} from "./providers/config-context.jsx";
 
 /**
- * The main entry point for the React application.
- * It initializes the React root, wrapping the entire application in:
- * 1. `StrictMode` for development-time checks and warnings.
- * 2. `BrowserRouter` to enable client-side routing.
- * 3. `ConfigProvider` to handle global configuration fetching and state management.
- *
- * It finally renders the top-level `App` component, providing it access to the router and global configurations.
+ * The entry point of the React application.
+ * It creates a new React root for the DOM element with the ID 'root',
+ * and renders the main App component wrapped in StrictMode and BrowserRouter
+ * for development checks and client-side routing.
  */
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
-            <ConfigProvider>
             <App/>
-            </ConfigProvider>
         </BrowserRouter>
     </StrictMode>,
 )

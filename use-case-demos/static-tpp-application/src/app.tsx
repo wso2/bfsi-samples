@@ -17,10 +17,12 @@
  */
 
 import {Route, Routes} from "react-router-dom";
-import ConfigContext from "./providers/config-context.jsx";
-import AppThemeProvider from "./providers/app-theme-provider.jsx";
+
 import Home from "./pages/home-page/home.jsx";
-import {useContext} from "react";
+import useConfigContext from "./hooks/use-config-context.ts";
+import AppThemeProvider from "./providers/app-theme-provider.tsx";
+
+
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -32,19 +34,30 @@ import {useContext} from "react";
  */
 function App() {
 
-    const context = useContext(ConfigContext);
+    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList} = useConfigContext();
 
     return (<>
         <AppThemeProvider>
-            <Routes>
-                <Route path={`/${context.routerName.route}/*`} element={
-                    <Routes>
-                        <Route path="home" element={<Home/>}/>
-                    </Routes>
-                }/>
-            </Routes>
+        <Routes>
+            <Route path={`/${appInfo.route}/*`} element={
+                <Routes>
+                    <Route path="home"
+                           element={
+                               <Home userInfo={userInfo}
+                                     name={appInfo.applicationName}
+                                     total={total}
+                                     chartData={chartInfo}
+                                     banksWithAccounts={banksWithAccounts}
+                                     transactions={transactions}
+                                     standingOrderList={standingOrderList}
+                                     appInfo={appInfo}
+                               />
+                           }/>
+                </Routes>
+            } />
+        </Routes>
         </AppThemeProvider>
-    </>)
+        </>)
 }
 
 export default App

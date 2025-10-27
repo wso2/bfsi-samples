@@ -16,15 +16,33 @@
  * under the License.
  */
 
-.product-header-outer {
-    width: 100%;
-    height: 3.5rem;
-    background: linear-gradient(90deg, var(--oxygen-palette-secondary-main) 0.06%, var(--oxygen-palette-secondary-yellow) 139.7%);
-    color: var(--oxygen-palette-fontColor-main);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2rem;
-    font-size: 1.3rem;
-    font-weight: bold;
+import { IconButton } from "@oxygen-ui/react";
+import type {FC} from "react";
+// @ts-ignore
+import {ArrowRightFromBracketIcon} from  '@oxygen-ui/react-icons'
+import '../components.scss'
+
+export interface HeaderContext {
+    routerName: {
+        applicationName: string;
+    };
 }
+
+export interface HeaderProps {
+    name: string;
+}
+
+const Header: FC<HeaderProps> = ({ name }) => {
+    return(
+        <div className="header-outer">
+
+            <p>{name}</p>
+
+            <IconButton style={{ color: 'white' }}>
+                <ArrowRightFromBracketIcon size={24} />
+            </IconButton>
+        </div>
+    );
+}
+
+export default Header;

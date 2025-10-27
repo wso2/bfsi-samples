@@ -35,7 +35,12 @@ import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
  * @param {React.ReactNode} props.children - The child components to be rendered within the theme provider's scope.
  * @returns {JSX.Element} The ThemeProvider component with the defined theme applied.
  */
-const AppThemeProvider = ({children}) => {
+
+interface ApplicationThemeProviderProps {
+    children?: React.ReactNode;
+}
+
+const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
 
     const theme = extendTheme({
         typography: {
@@ -45,21 +50,14 @@ const AppThemeProvider = ({children}) => {
             light: {
                 palette: {
                     primary: {
-                        main: '#FF5499',
-                    },
-                    secondary: {
-                        main: '#FF7433',
-                        yellow: '#EAA340',
+                        main: '#FF5100',
+                        button: '#FFFFFF',
+                        backgroundColor: '#FFF5EE',
+                        tableBackground: '#FFFFFF',
                     },
                     fontColor: {
-                        main: '#ecf0f1',
+                        white: '#FFFFFF',
                     },
-                    shadows:{
-                        main: '#FF5456',
-                    },
-                    backgroundColor: {
-                        main: '#FFFFFF',
-                    }
                 },
             },
             dark: {

@@ -16,43 +16,28 @@
  * under the License.
  */
 
-.outer-container{
+import { IconButton } from "@oxygen-ui/react";
+import * as React from "react";
+import '../components.scss'
 
-  .user-info{
-
-    display: flex;
-    align-items: center;
-    padding-left: 2%;
-    gap: 1rem;
-
-    .user-profile{
-      width: 8rem;
-      height: 8rem;
-      border-radius: 50%;
-
-      .profile-image{
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-      }
-    }
-
-    .user-details{
-      width: fit-content;
-      height: fit-content;
-      font-size: 1.5rem;
-      color: var(--oxygen-palette-fontColor-main);
-      font-weight: 600;
-    }
-  }
-
-  .quick-actions{
-    height: 14rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1%;
-  }
-
+interface ActionButtonProps {
+    icon?: React.ReactNode;
+    name?: string;
+    onClick?: (path:string) => void;
 }
+
+const QuickActionButton = ({icon,name, onClick} : ActionButtonProps)=>{
+
+    if (!onClick) return null;
+
+    return (
+        <>
+            <IconButton className={'action-button'} onClick={()=> onClick(`${name?.toLowerCase()}`)}>
+                {icon}
+                <p>{name}</p>
+            </IconButton>
+        </>
+    );
+}
+
+export default QuickActionButton;
