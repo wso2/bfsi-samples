@@ -61,7 +61,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
         navigate("/"+appInfo.route+"/"+pathTo);
     }
 
-    const greetingSelection = () => {
+    const generateGreetingMsg = () => {
         const currentHour = new Date().getHours();
 
         if (currentHour >= 5 && currentHour < 12) {
@@ -82,7 +82,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
                     <Box className='avatar-container' sx={{display: responsiveDisplay}}>
                         <img src={userInfo.image} alt='avatar' className='avatar' />
                     </Box>
-                    <p>Hello,<br/><span>{userInfo.name}{greetingSelection()}</span></p>
+                    <p>Hello,<br/><span>{userInfo.name}{generateGreetingMsg()}</span></p>
                 </Grid>
                 <Grid className='hero-inner-secton actions' sx={{minHeight: responsiveMinHeight}}>
                     {actionButtons.map((button, index) => {
