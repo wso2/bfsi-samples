@@ -51,6 +51,17 @@ export interface BanksWithAccounts{
     total: number;
 }
 
+interface UseConfigContextReturn {
+    appInfo: AppInfo;
+    userInfo: User;
+    bankTotals: BankWithTotal[] | undefined;
+    chartInfo: ChartData;
+    total: number;
+    banksWithAccounts: BanksWithAccounts[];
+    transactions: TransactionData[];
+    standingOrderList: StandingOrders[];
+}
+
 
 /**
  * A custom React Hook that acts as the application's central data store.
@@ -59,7 +70,7 @@ export interface BanksWithAccounts{
  * various derived state variables (e.g., total balances, chart data).
  * It returns all application information and processed financial totals for global use.
  */
-const useConfigContext = () => {
+const useConfigContext = ():UseConfigContextReturn  => {
 
     const [config,setConfig] = useState<Config>(initialConfig)
     const [totalsOfBanks, setTotalsOfBanks] = useState<BankWithTotal[]>()
@@ -79,14 +90,6 @@ const useConfigContext = () => {
 
     useEffect(() => {
         const fetchData = async ()=>{
-
-
-            try{
-
-            }catch (e){
-                throw e;
-            }
-
 
             try{
                 const response = await api.get<Config>('config.json');
