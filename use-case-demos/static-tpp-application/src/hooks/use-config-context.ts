@@ -80,53 +80,67 @@ const useConfigContext = () => {
     useEffect(() => {
         const fetchData = async ()=>{
 
-            const response = await api.get('config.json') as Config;
-            setConfig(response);
 
-            const totalsOfBanks = response.banks.map((bank) => {
-                const totals = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
-                return {
-                    bank: bank,
-                    total: totals
-                }
-            });
-            setTotalsOfBanks(totalsOfBanks)
+            try{
 
-            const data : ChartData ={
-                label:'',
-                labels:totalsOfBanks.map(bankdata=> bankdata.bank.name),
-                data: totalsOfBanks.map(bankData=>bankData.total),
-                backgroundColor: totalsOfBanks.map(bankData=>bankData.bank.color),
-                borderColor: totalsOfBanks.map(bankData=>bankData.bank.border),
-                borderWidth: 2,
-                cutout: '35%'
+            }catch (e){
+                throw e;
             }
-            setChartDatas(data)
 
-            const totalBalance = totalsOfBanks.reduce((sum,bank) => sum + bank.total, 0)
-            setTotalBalances(totalBalance)
 
-            const banksWithAccounts = response.banks.map((bank)=>{
-                const accounts = response.accounts.filter((account)=> account.bank===bank.name);
-                const total = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
+            try{
+                const response = await api.get<Config>('config.json');
+                setConfig(response);
 
-                return{
-                    bank: bank,
-                    accounts: accounts,
-                    total: total
+                const totalsOfBanks = response.banks.map((bank) => {
+                    const totals = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
+                    return {
+                        bank: bank,
+                        total: totals
+                    }
+                });
+                setTotalsOfBanks(totalsOfBanks)
+
+                const data : ChartData ={
+                    label:'',
+                    labels:totalsOfBanks.map(bankdata=> bankdata.bank.name),
+                    data: totalsOfBanks.map(bankData=>bankData.total),
+                    backgroundColor: totalsOfBanks.map(bankData=>bankData.bank.color),
+                    borderColor: totalsOfBanks.map(bankData=>bankData.bank.border),
+                    borderWidth: 2,
+                    cutout: '35%'
                 }
-            })
-            setBanksWithAllAccounts(banksWithAccounts)
+                setChartDatas(data)
 
-            const transcations = response.transactions;
-            setTransactionDatas(transcations);
+                const totalBalance = totalsOfBanks.reduce((sum,bank) => sum + bank.total, 0)
+                setTotalBalances(totalBalance)
 
-            const standingOrders= response.standingOrders;
-            setStandingOrdersList(standingOrders)
+                const banksWithAccounts = response.banks.map((bank)=>{
+                    const accounts = response.accounts.filter((account)=> account.bank===bank.name);
+                    const total = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
+
+                    return{
+                        bank: bank,
+                        accounts: accounts,
+                        total: total
+                    }
+                })
+
+                setBanksWithAllAccounts(banksWithAccounts)
+
+                const transcations = response.transactions;
+                setTransactionDatas(transcations);
+
+                const standingOrders= response.standingOrders;
+                setStandingOrdersList(standingOrders)
+            }catch (e) {
+                console.log(e)
+            }
         }
         fetchData();
     },[])
     return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList  }
 }
 
+// @ts-ignore
 export default useConfigContext;
