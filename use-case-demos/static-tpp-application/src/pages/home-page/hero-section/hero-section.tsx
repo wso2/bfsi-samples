@@ -25,12 +25,6 @@ import { useNavigate} from "react-router-dom";
 import type {AppInfo, User} from "../../../hooks/config-interfaces.ts";
 import QuickActionButton from "../../../components/quick-action-button/quick-action-button.tsx";
 
-/**
- * A responsive dashboard header component that displays a personalized, time-of-day-sensitive
- * greeting and user avatar. It renders a row of quick-access action buttons (Payments, Transfer, etc.)
- * which navigate the user based on the configured app route. The layout adapts for mobile screens.
- */
-
 interface ActionButton {
     icon: React.ReactNode;
     name: string;
@@ -41,6 +35,11 @@ interface HeroSectionProps {
     appInfo: AppInfo;
 }
 
+/**
+ * A responsive dashboard header component that displays a personalized, time-of-day-sensitive
+ * greeting and user avatar. It renders a row of quick-access action buttons (Payments, Transfer, etc.)
+ * which navigate the user based on the configured app route. The layout adapts for mobile screens.
+ */
 const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
 

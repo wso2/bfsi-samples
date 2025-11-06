@@ -16,11 +16,6 @@
  * under the License.
  */
 
-/**
- * A reusable API service client for fetching JSON data from a configured base URL.
- * It uses the native `fetch` API, prepends the `baseUrl` to all endpoints,
- * and includes basic error handling for network issues and bad HTTP status codes.
- */
 const baseUrl = '/configurations';
 
 /**
