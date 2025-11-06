@@ -58,10 +58,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     ];
 
     const onClickHandlerActionButtons = (pathTo:string)=>{
-        const absolutePath = "/"+appInfo.route+"/"+pathTo;
-        navigate(absolutePath);
-
-        console.log(pathTo);
+        navigate("/"+appInfo.route+"/"+pathTo);
     }
 
     const greetingSelection = () => {
