@@ -30,7 +30,6 @@ export interface ApplicationLayoutProps {
  * and then renders the main page content (`children`) within a dedicated content container.
  */
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
-
     return (
         <>
             <Header name={name} />

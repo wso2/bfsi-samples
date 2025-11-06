@@ -44,10 +44,7 @@ const Home = ({name,userInfo, appInfo}:AccountsCentralLayoutProps)=>{
         <>
             <ApplicationLayout name={name}>
                 <HomePageLayout userInfo={userInfo} appInfo={appInfo}>
-                    <Grid className={'info-graphic'}>
-
-                    </Grid>
-
+                    <Grid className={'info-graphic'}></Grid>
                 </HomePageLayout>
             </ApplicationLayout>
         </>
