@@ -17,7 +17,6 @@
  */
 
 import { IconButton } from "@oxygen-ui/react";
-import * as React from "react";
 import '../components.scss'
 
 interface ActionButtonProps {
