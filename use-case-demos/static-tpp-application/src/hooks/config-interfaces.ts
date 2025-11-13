@@ -1,22 +1,21 @@
-/*
- * *
- *  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
- *  *
- *  * WSO2 LLC. licenses this file to you under the Apache License,
- *  * Version 2.0 (the "License"); you may not use this file except
- *  * in compliance with the License.
- *  * You may obtain a copy of the License at
- *  *
- *  *     http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  * Unless required by applicable law or agreed to in writing,
- *  * software distributed under the License is distributed on an
- *  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  * KIND, either express or implied. See the License for the
- *  * specific language governing permissions and limitations
- *  * under the License.
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
+
 
 export interface User {
     name: string;
@@ -24,10 +23,15 @@ export interface User {
     background: string;
 }
 
+export interface DynamicBanks {
+    name: string;
+    route: string;
+}
+
 export interface AppInfo {
     route: string;
     applicationName: string;
-    route_bank_one: string;
+    banksInfo: DynamicBanks[];
 }
 
 export interface Bank {
@@ -45,7 +49,7 @@ export interface Account {
     balance: number;
 }
 
-interface Payee {
+export interface Payee {
     name: string;
     bank: string;
     accountNumber: string;
@@ -56,10 +60,12 @@ export interface TransactionData{
     "date": string,
     "reference": string,
     "bank": string,
-    "Account": string,
-    "Amount": string,
-    "Currency": string
+    "account": string,
+    "amount": string,
+    "currency": string
 }
+
+
 
 export interface StandingOrders{
     "ID": string,
@@ -71,6 +77,25 @@ export interface StandingOrders{
     "Currency": string,
 }
 
+export interface Step {
+    id: string;
+    name: string;
+    component: string;
+}
+
+export interface UseCase {
+    id: string;
+    title: string;
+    steps: Step[];
+}
+
+export interface Type {
+    id: string;
+    title: string;
+    useCases: UseCase[];
+}
+
+
 export interface Config {
     user: User;
     name: AppInfo;
@@ -79,4 +104,36 @@ export interface Config {
     payees: Payee[];
     transactions: TransactionData[];
     standingOrders: StandingOrders[];
+    types: Type[];
 }
+
+interface PaymentData {
+    type: "payment";
+    data: { 
+        id: string; 
+        amount: string; 
+        currency: string; 
+        account:string;
+        bank:string;
+        date:string;
+        reference:string;
+    };
+}
+
+interface SingleAccountState {
+    type: "single";
+    data: { 
+        accountDetails: any; 
+        bankInfo: string; 
+    };
+}
+
+interface MultipleAccountState {
+    type: "multiple";
+    data: { 
+        accountDetails: any; 
+        bankInfo: string; 
+    };
+}
+
+export type OperationState = PaymentData | SingleAccountState | MultipleAccountState;

@@ -16,28 +16,28 @@
  * under the License.
  */
 
+import {Grid } from "@oxygen-ui/react";
+import './banking-layouts-styles.scss'
 
-
-import {Box, Button} from "@oxygen-ui/react";
-
-interface TitleProps {
-    title: string;
-    buttonName?: string;
-    buttonType?: "contained"|"outlined";
-    onPress?: (buttonName:string) => void;
+interface BankingOuterLayoutProps {
+    children: React.ReactNode;
+    image: string;
 }
 
-const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
+const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
 
-    const visibility = buttonName? "flex" : "none";
     return(
         <>
-            <Box className={'title-container'}>
-                <p>{title}</p>
-                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'')}}>{buttonName}</Button>
-            </Box>
+            <Grid container className="banks-pages-inner-container">
+                    <Grid className="banking-logo-container">
+                        <img src={image} alt="" />
+                    </Grid>
+                    <Grid className={'banking-dynemic-content'}>
+                        {children}
+                    </Grid>
+            </Grid>
         </>
-    );
+    )
 }
 
-export default CustomTitle;
+export default BankingOuterLayout;

@@ -16,11 +16,36 @@
  * under the License.
  */
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import svgr from 'vite-plugin-svgr'
+.content-page-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
 
-export default defineConfig({
-  base: '/bfsi_static_demo/',
-  plugins: [react(),svgr()],
-});
+    .page-name-container{
+
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .form-login-one-container{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+
+        .form-buttons-container{
+            display: flex;
+            justify-content: end;
+            gap: 1rem;
+            margin-top: 1rem;
+
+            .button-styles{
+                width: 6rem;
+                height: 3rem;
+            }
+        }
+    }
+}

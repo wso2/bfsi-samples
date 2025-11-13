@@ -50,6 +50,7 @@ const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
                         button: '#FFFFFF',
                         backgroundColor: '#FFF5EE',
                         tableBackground: '#FFFFFF',
+                        innerButtonBackground: '#bdc3c7',
                     },
                     fontColor: {
                         white: '#FFFFFF',

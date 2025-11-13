@@ -16,11 +16,27 @@
  * under the License.
  */
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import svgr from 'vite-plugin-svgr'
+.account-button-outer{
+  width: 30vw;
+  height: 15vh;
+  display: flex;
+  background: var(--oxygen-palette-primary-innerButtonBackground);;
+  border-radius: 0;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem;
+  color: var(--oxygen-palette-fontColor-white);
 
-export default defineConfig({
-  base: '/bfsi_static_demo/',
-  plugins: [react(),svgr()],
-});
+
+  .logo-container{
+    width: 5rem;
+    height: 5rem;
+
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+

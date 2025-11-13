@@ -16,11 +16,7 @@
  * under the License.
  */
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import svgr from 'vite-plugin-svgr'
+import { QueryClient } from "@tanstack/react-query";
 
-export default defineConfig({
-  base: '/bfsi_static_demo/',
-  plugins: [react(),svgr()],
-});
+export const queryClient = new QueryClient();
+

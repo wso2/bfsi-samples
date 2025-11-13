@@ -21,13 +21,15 @@ import ApplicationLayout from "../../layouts/application-layout/application-layo
 
 import { Grid } from "@mui/material";
 import HomePageLayout from "../../layouts/home-page-layout/home-page-layout.tsx";
-import type {AppInfo, StandingOrders, TransactionData, User} from "../../hooks/config-interfaces.ts";
-import type {BanksWithAccounts, ChartData} from "../../hooks/use-config-context.ts";
+import type {AppInfo, Bank, StandingOrders, TransactionData, User} from "../../hooks/config-interfaces.ts";
+import type {BanksWithAccounts, ChartData, OverlayDataProp} from "../../hooks/use-config-context.ts";
 import {InfographicsContent} from "./infographics-content/infographics-content.tsx";
 import ConnectedBanksAccounts from "./connected-banks-accounts/connected-banks-accounts.tsx";
 import CustomTitle from "../../components/custom-title/custom-title.tsx";
 import LatestTransactions from "./latest-transactions/latest-transactions.tsx";
 import StandingOrdersTable from "./standing-orders/standing-orders.tsx";
+import {useNavigate} from "react-router-dom";
+import OverlayConfirmation from "../../components/overlay-confirmation/overlay-confirmation.tsx";
 
 /**
  * The main component for the product's home page.
@@ -43,8 +45,31 @@ interface AccountsCentralLayoutProps {
     transactions: TransactionData[];
     standingOrderList: StandingOrders[];
     appInfo: AppInfo;
+    banksList: Bank[];
+    overlayInformation: OverlayDataProp;
 }
-const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo}:AccountsCentralLayoutProps)=>{
+
+export interface SideButtonProps {
+    name: string;
+}
+
+const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation}:AccountsCentralLayoutProps)=>{
+
+    const navigate = useNavigate();
+
+    console.log(overlayInformation)
+
+    const onButtonHandler = (buttonName:string) => {
+        if(buttonName === "Add Account"){
+            navigate(`/${appInfo.route}/accounts`,{
+                state:{
+                    name:appInfo.applicationName,
+                    banksWithAccounts:banksList,
+                }
+            });
+        }
+    }
+
     return (
         <>
             <ApplicationLayout name={name}>
@@ -53,7 +78,7 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
                         <InfographicsContent total={total} chartInfo={chartData}/>
                     </Grid>
                     <Grid className={'accounts-container'}>
-                        <CustomTitle title={"Connected Banks And Accounts"} buttonName={"Add Account"} buttonType={"contained"}/>
+                        <CustomTitle title={"Connected Banks And Accounts"} buttonName={"Add Account"} buttonType={"contained"} onPress={onButtonHandler}/>
                         <ConnectedBanksAccounts bankAndAccountsInfo={banksWithAccounts}/>
                     </Grid>
                     <Grid className={'transactions-container'}>
@@ -67,6 +92,17 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
 
                 </HomePageLayout>
             </ApplicationLayout>
+
+            {overlayInformation.flag &&
+                <OverlayConfirmation
+                    onConfirm={overlayInformation.overlayData.onMainButtonClick}
+                    onCancel={()=>{}}
+                    mainButtonText={overlayInformation.overlayData.mainButtonText}
+                    secondaryButtonText={overlayInformation.overlayData.secondaryButtonText}
+                    content={overlayInformation.overlayData.context}
+                    title={overlayInformation.overlayData.title}/>
+
+            }
         </>
     );
 }
