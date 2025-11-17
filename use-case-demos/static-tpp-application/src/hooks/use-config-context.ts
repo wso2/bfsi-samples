@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 export interface ChartData{
     label: string;
     labels: string[];
@@ -77,7 +76,6 @@ const useConfigContext = () => {
         }
     }
 
-
     const totals = useMemo(() => {
         if (!configData) return [];
         return configData.banks.map((bank) => {
@@ -131,8 +129,6 @@ const useConfigContext = () => {
             const sourceBankName = newTransactionData.bank;
             const sourceAccountNumber = newTransactionData.account;
 
-
-
                 const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
                     const baseConfig = oldConfig || configData;
 
@@ -156,8 +152,6 @@ const useConfigContext = () => {
                         accounts: updatedAccounts,
                         transactions: updatedTransactionData,
                     }
-
-
                 })
 
             queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });

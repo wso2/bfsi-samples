@@ -21,7 +21,6 @@ import type { Config } from "./config-interfaces";
 import { api } from "../utility/api";
 import {queryClient} from "../utility/query-client.ts";
 
-
 export const STORAGE_KEY = "appConfig";
 
 export const useConfig = () =>
@@ -38,8 +37,10 @@ export const useConfig = () =>
             } catch {
                 console.log("Error getting config query");
             }
+
             const res = await api.get<Config>("config.json");
             const data = ((res as any)?.data ?? res) as Config;
+
             try {
                 queryClient.setQueryData(["appConfig"],data as Config);
             } catch {
@@ -48,6 +49,4 @@ export const useConfig = () =>
             return data;
         },
         staleTime: Infinity,
-
     });
-

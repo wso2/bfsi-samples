@@ -60,7 +60,6 @@ export function App() {
         
         <AppThemeProvider>
             <Routes>
-                
                 <Route path={`/${appInfo.route}/*`} element={
                     <Routes>
                         <Route index element={<Navigate to="home" replace />} />
@@ -83,7 +82,6 @@ export function App() {
                     </Routes>
                 } />
 
-
                 {appInfo.banksInfo.map((bank,index)=>(
                     <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
                         <Route path={"login"} element={<LoginPage />}/>
@@ -98,7 +96,6 @@ export function App() {
                         <Route path={"account-select-uc-3"} element={<AccountsSelectionThreePage/>}/>
                     </Route>
                 ))}
-
 
             </Routes>
         </AppThemeProvider>

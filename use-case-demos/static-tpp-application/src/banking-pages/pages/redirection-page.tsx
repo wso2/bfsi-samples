@@ -76,8 +76,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
     }
-    
-
 
     const navigate = useNavigate();
 
@@ -91,7 +89,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
         },1000);
         return () => clearTimeout(timer);
     }, []);
-
 
     return (
         <>
