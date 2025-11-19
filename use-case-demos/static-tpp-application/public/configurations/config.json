@@ -14,24 +14,24 @@
       "name": "Ascend Global Bank",
       "image": "/bfsi_static_demo/resources/assets/images/logos/assend_global_bank_logo.png",
       "currency": "GBP",
-      "color":"rgba(255,135,110,0.6)",
-      "border":"rgba(255,135,110, 1)",
+      "color":"#FF5100",
+      "border":"#FF5100",
       "bankNumber": 1
     },
     {
       "name": "Global Asset Trust",
       "image": "/bfsi_static_demo/resources/assets/images/logos/global_asset_trust_logo.png",
       "currency": "GBP",
-      "color":"rgba(255, 185, 97, 0.6)",
-      "border":"rgba(255, 185, 97, 1)",
+      "color":"#FFCC66",
+      "border":"#FFCC66",
       "bankNumber": 2
     },
     {
       "name": "Trust Union",
       "image": "/bfsi_static_demo/resources/assets/images/logos/trust_union_logo.png",
       "currency": "GBP",
-      "color":"rgba(254, 239, 184, 0.6)",
-      "border":"rgba(254, 239, 184, 1)",
+      "color":"#8E4714",
+      "border":"#8E4714",
       "bankNumber": 3
     }
   ],

@@ -36,7 +36,7 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
 
-    const position = isSmallScreen ? 'top' : 'right';
+    // const position = isSmallScreen ? 'top' : 'right';
 
     const displayDirection = isSmallScreen ? 'column' : 'row';
 
@@ -60,14 +60,19 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
         responsive: true,
         maintainAspectRatio: false,
         cutout:chartInfo.cutout,
+        // layout:{
+        //     padding:{
+        //         right:100,
+        //     }
+        // },
         plugins: {
             legend: {
-                position: position,
-                align: 'start',
+                position: "right",
+                align: 'center',
                 labels: {
                     usePointStyle: true,
-                    boxWidth: 8,
-                    padding: 10,
+                    boxWidth: 24,
+                    padding: 25,
                 }
             },
             tooltip: {}
