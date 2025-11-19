@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, Input, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
@@ -27,6 +27,7 @@ export interface OutletContext{
     onSuccessHandler : () => void;
     navigationData : any;
     appInfo : AppInfo;
+    themeColor : string;
 }
 
 interface loginformData{
@@ -36,7 +37,7 @@ interface loginformData{
 
 const LoginWithEmailPage = ()=>{
 
-    const { onSuccessHandler, appInfo} = useOutletContext<OutletContext>();
+    const { onSuccessHandler, appInfo,themeColor} = useOutletContext<OutletContext>();
     const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
         defaultValues:{
             email:''
@@ -60,7 +61,7 @@ const LoginWithEmailPage = ()=>{
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
-                    <h3>Login Page</h3>
+                    <p>Please login to your account</p>
                 </Grid>
 
                 <Grid className={"form-login-one-container"}>
@@ -68,19 +69,20 @@ const LoginWithEmailPage = ()=>{
                         <FormControl fullWidth={true} margin={'normal'} >
                             <label>Email</label>
                             <Controller name={'email'} control={control} render={({field}) => (
-                                <OutlinedInput
+                                <Input
                                     {...field}
                                     placeholder={"Enter your email"}
                                     type={"text"}
                                     error={!!errors.email}
+                                    sx={{marginLeft:'2rem'}}
                                 />
                             )}/>
                             <ErrorMessage error={errors.email}/>
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem'}}>Login</Button>
-                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
+                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem',background:themeColor}}>Login</Button>
+                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

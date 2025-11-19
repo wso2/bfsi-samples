@@ -59,6 +59,8 @@ const useConfigContext = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    console.log(configData)
+
     const redirectState = location.state?.operationState;
 
     const [overlayInformation, setOverlayInformation] = useState<OverlayDataProp>({flag:false,overlayData:{context:"",secondaryButtonText:"",mainButtonText:"",title:"",onMainButtonClick:()=>{}}});

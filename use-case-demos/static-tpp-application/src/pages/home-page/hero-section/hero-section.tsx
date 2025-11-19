@@ -52,7 +52,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const responsivePadding = isLargeScreen ? '1rem' : '2rem';
 
     const actionButtons: ActionButton[] = [
-        {icon: <BoltIcon size={'medium'}/>, name: "Payments"},
+        {icon: <BoltIcon size={'medium'}/>, name: "Pay Bills"},
         {icon: <ArrowLeftArrowRightIcon size={'medium'}/>, name: "Transfer"},
         {icon: <ClockAsteriskIcon size={'medium'}/>, name: "Schedule"},
         {icon: <UserGroupIcon size={'medium'}/>, name: "Payees"},

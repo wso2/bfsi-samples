@@ -26,6 +26,8 @@ export interface User {
 export interface DynamicBanks {
     name: string;
     route: string;
+    bankNumber : number;
+    startingAccountNumbers: string;
 }
 
 export interface AppInfo {
@@ -40,6 +42,8 @@ export interface Bank {
     currency: string;
     color: string;
     border: string;
+    bankNumber: number;
+    startingAccountNumbers: string;
 }
 
 export interface Account {

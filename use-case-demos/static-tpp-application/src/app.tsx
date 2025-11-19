@@ -77,7 +77,7 @@ export function App() {
                                          overlayInformation={overlayInformation}
                                    />
                                }/>
-                        <Route path="payments" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
+                        <Route path="paybills" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
                         <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
                     </Routes>
                 } />

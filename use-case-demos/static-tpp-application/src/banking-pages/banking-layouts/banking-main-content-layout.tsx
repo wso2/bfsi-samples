@@ -36,25 +36,33 @@ interface BankingMainContentLayoutProps{
     usecasesList: UseCase[];
     selectedUsecaseIndex: number;
     usecaseSelectionHandler: (index: number) => void;
-    bankName:string;
+    themeColor: string;
+
 }
 
 
-const BankingMainContentLayout = ({ children,usecasesList,selectedUsecaseIndex,usecaseSelectionHandler,bankName}: BankingMainContentLayoutProps) => {
+const BankingMainContentLayout = ({ children,usecasesList,selectedUsecaseIndex,usecaseSelectionHandler,themeColor}: BankingMainContentLayoutProps) => {
+
+
+
 
     return (
         <Grid container className={'banking-outer-layout'}>
-            <Grid className="banking-bank-name-container">
-                <h3>{bankName}</h3>
-            </Grid>
+            {/*<Grid className="banking-bank-name-container">*/}
+            {/*    <h3>{bankName}</h3>*/}
+            {/*</Grid>*/}
             
             <Grid className="banking-usecase-layout">
                 {usecasesList.map((useCase,index) => {
 
                     const isSelected = selectedUsecaseIndex === index;
 
+                    const backgroundThemeColor = isSelected? themeColor : '';
+                    const colorThemeColor = isSelected? '': themeColor;
+                    const borderThemeColor = isSelected? '':themeColor;
+
                     return (
-                        <Button key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
+                        <Button sx={{background:backgroundThemeColor, color: colorThemeColor, borderColor:borderThemeColor}} key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
                     )
                 })}
             </Grid>

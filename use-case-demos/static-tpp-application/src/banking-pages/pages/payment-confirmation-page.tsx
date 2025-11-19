@@ -26,32 +26,32 @@ const PaymentConfirmationPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
+    const { onSuccessHandler,navigationData, themeColor } = useOutletContext<OutletContext>();
     const navigate = useNavigate();
 
     return(
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
-                    <h3>Please authorize following payment</h3>
+                    <p>Please authorize following payment</p>
                 </Grid>
 
                 <Grid className={"form-login-one-container"}>
-                   <Box sx={{width:'100%', marginTop:'1rem'}}>
+                   <Box sx={{width:'100%', marginTop:'1rem', display:'flex',flexDirection:'column',gap:'1rem'}}>
                         <p>Debited Account : <br />
-                        <span style={{fontWeight:'600'}}>{navigationData.current.formData.userAccount}</span></p>
+                        <span style={{fontWeight:'600', marginLeft:'1rem'}}>{navigationData.current.formData.userAccount}</span></p>
 
-                        <List sx={{listStyleType: 'disc', pl: 4, display: 'flex', flexDirection: 'column', gap: '0'}}>
+                        <List sx={{listStyleType: 'disc', pl: 8, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Amount : {navigationData.current.formData?.amount}</ListItem>
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Currency : {navigationData.current.formData?.currency}</ListItem>
-                            <ListItem sx={{display: 'list-item', padding:'0 1rem',}}>Payee : <br /><span style={{paddingLeft:'1rem', fontWeight:'600'}}>{navigationData.current.formData?.payeeAccount}</span></ListItem>
+                            <ListItem sx={{display: 'list-item', padding:'0 1rem',}}>Reciver : <br /><span style={{ fontWeight:'600'}}>{navigationData.current.formData?.payeeAccount}</span></ListItem>
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Reference : {navigationData.current.formData?.reference}</ListItem>
                         </List>
                    </Box>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
-                        <Button variant={'outlined'} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} sx={{background:themeColor}} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
+                        <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

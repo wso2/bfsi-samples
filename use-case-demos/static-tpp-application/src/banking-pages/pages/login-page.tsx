@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Box, Button, FormControl, Grid, OutlinedInput, useTheme } from "@oxygen-ui/react";
+import { Box, Button, FormControl, Grid, Input, useTheme } from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { ErrorMessage } from "../../pages/payments-page/payment-form/payment-form.tsx";
@@ -29,6 +29,10 @@ export interface OutletContext {
     navigationData: any;
     accountsToAdd: any;
     appInfo: AppInfo;
+    themeColor: string;
+    selectedAccountNumber:string;
+
+
 }
 
 interface loginformData {
@@ -41,8 +45,10 @@ const LoginPage = () => {
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
+
+
     const navigate = useNavigate();
-    const { onSuccessHandler,appInfo } = useOutletContext<OutletContext>();
+    const { onSuccessHandler,appInfo,themeColor } = useOutletContext<OutletContext>();
     const { control, handleSubmit, formState: { errors } } = useForm<loginformData>({
         defaultValues: {
             email: '', password: ''
@@ -62,20 +68,21 @@ const LoginPage = () => {
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
-                    <h3>Login Page</h3>
+                    <p>Login to your account</p>
                 </Grid>
 
                 <Grid className="form-login-one-container">
-                    <form onSubmit={handleSubmit(onSubmitHandler)}>
+                    <form onSubmit={handleSubmit(onSubmitHandler)} style={{display:'flex', flexDirection:'column', justifyContent:'center', gap:'1rem'}}>
 
                         <FormControl fullWidth={true} >
                             <label>Email</label>
                             <Controller name={'email'} control={control} rules={{ required: 'Email address required' }} render={({ field }) => (
-                                <OutlinedInput
+                                <Input
                                     {...field}
                                     placeholder={"Enter your email"}
                                     type={"text"}
                                     error={!!errors.email}
+                                    sx={{marginLeft:'2rem'}}
                                 />
                             )} />
                             <ErrorMessage error={errors.email} />
@@ -84,19 +91,20 @@ const LoginPage = () => {
                         <FormControl fullWidth={true}>
                             <label>password</label>
                             <Controller name={'password'} control={control} rules={{ required: 'Password required to proceed' }} render={({ field }) => (
-                                <OutlinedInput
+                                <Input
                                     {...field}
                                     placeholder={"Enter your password"}
                                     type={"password"}
                                     error={!!errors.password}
+                                    sx={{marginLeft:'2rem'}}
                                 />
                             )} />
                             <ErrorMessage error={errors.password} />
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button className="button-styles" variant={'contained'} type={'submit'}>Login</Button>
-                            <Button variant={'outlined'} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
+                            <Button className="button-styles" sx={{background:themeColor}} variant={'contained'} type={'submit'}>Login</Button>
+                            <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

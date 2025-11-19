@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Button, FormControl, FormControlLabel, FormLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
+import {Box, Button, FormControl, FormControlLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
@@ -27,7 +27,7 @@ import {useMediaQuery} from "@mui/material";
 
 const AccountsAuthorizationTwoPage = ()=>{
 
-    const { onSuccessHandler, accountsToAdd } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, accountsToAdd, themeColor } = useOutletContext<OutletContext>();
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
@@ -38,26 +38,26 @@ const AccountsAuthorizationTwoPage = ()=>{
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
                 <Grid className="page-name-container">
-                    <h3>Accounts Authorization</h3>
+                    <p>Please confirm the authorization to your selected accounts</p>
                 </Grid>
 
-                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh'}}>
+                <Grid className={"form-login-one-container"}>
 
-                    <FormControl>
-                        <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
-                    </FormControl>
+                    {/*<FormControl>*/}
+                    {/*    <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>*/}
+                    {/*</FormControl>*/}
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
                         <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
                         <p>Frequency : 4 Days</p>
                     </Box>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', overflowY: 'auto'}}>
+                    <FormControl sx={{display:'flex', flexDirection:'column'}}>
 
                         {accountsToAdd.current.data[0].map((account:SelectedAccountEntry,index:number)=>{
 
                             return (
-                                <Box key={index} sx={{display:'flex', flexDirection:'column'}}>
-                                    <p>Permission to : </p> <h3>{account.permission}</h3>
+                                <Box key={index} sx={{display:'flex', flexDirection:'column', gap:'1rem'}}>
+                                    <p>Permission to :  {account.permission} </p>
 
                                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
 
@@ -72,8 +72,8 @@ const AccountsAuthorizationTwoPage = ()=>{
                     </FormControl>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem',background:themeColor}}>Confirm</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

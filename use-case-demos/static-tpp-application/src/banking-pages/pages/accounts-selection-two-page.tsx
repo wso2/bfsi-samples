@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Switch, useTheme} from "@oxygen-ui/react";
+import {Box, Button, Checkbox, FormControl, FormControlLabel, Grid, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
@@ -32,13 +32,9 @@ export interface SelectedAccountEntry {
 
 const AccountsSelectionTwoPage = ()=>{
 
-    const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();
 
-    console.log(accountsToAdd);
-
-    console.log(navigationData)
-
-    const multiAccounts = ["iban DE 000023245320","iban DE 000023245321","iban DE 000023245322"];
+    const multiAccounts = [selectedAccountNumber+"-0566-1212",selectedAccountNumber+"-0045-2020",selectedAccountNumber+"-0400-1010"];
 
     const listOfPermissions = ["Accounts read", "Accounts write", "Accounts basics"];
 
@@ -59,7 +55,6 @@ const AccountsSelectionTwoPage = ()=>{
                 if (entry.permission === permission) {
 
                     const accounts = checked ? [...entry.accounts, accountId] : entry.accounts.filter(id => id !== accountId);
-                    console.log("accounts", accounts);
                     return { ...entry, accounts };
                 }
 
@@ -69,8 +64,6 @@ const AccountsSelectionTwoPage = ()=>{
     };
 
     const handleSubmit = () => {
-
-
 
         if(selectedData.length>0){
             accountsToAdd.current = {type:"multiple",data:[selectedData]};
@@ -90,27 +83,27 @@ const AccountsSelectionTwoPage = ()=>{
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
 
                 <Grid className="page-name-container">
-                    <h3>Account Authorization</h3>
+                    <p>Please select your accounts to add</p>
                 </Grid>
 
-                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh'}}>
+                <Grid className={"form-login-one-container"}>
 
-                    <FormControl>
-                        <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
-                    </FormControl>
+                    {/*<FormControl>*/}
+                    {/*    <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>*/}
+                    {/*</FormControl>*/}
 
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
-                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
+                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true} sx={{color:themeColor}}/>} label={"Recurring"} labelPlacement={'start'}/>
                         <p>Frequency : 4 Days</p>
                     </Box>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', overflowY: 'auto'}}>
+                    <FormControl sx={{display:'flex', flexDirection:'column', gap:'2rem'}}>
                         {listOfPermissions.map((item, index) => {
                             const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
                             return (
                                 <Box key={index} sx={{display: 'flex', flexDirection: 'column'}}>
 
-                                    <p>Permission to : </p> <h3>{item}</h3>
+                                    <p>Permission to :  {item}</p>
 
                                     {multiAccounts.map((account, index2) => {
 
@@ -126,8 +119,8 @@ const AccountsSelectionTwoPage = ()=>{
                     </FormControl>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={handleSubmit}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={handleSubmit} sx={{width:'6rem',height:'3rem',background:themeColor}}>Confirm</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

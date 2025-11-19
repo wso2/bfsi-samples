@@ -22,15 +22,18 @@ import './banking-layouts-styles.scss'
 interface BankingOuterLayoutProps {
     children: React.ReactNode;
     image: string;
+    bankName: string;
+    themeColor: string;
 }
 
-const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
+const BankingOuterLayout = ({children, image,bankName,themeColor}:BankingOuterLayoutProps)=>{
 
     return(
         <>
             <Grid container className="banks-pages-inner-container">
                     <Grid className="banking-logo-container">
                         <img src={image} alt="" />
+                        <h3 style={{color:themeColor}}>{bankName}</h3>
                     </Grid>
                     <Grid className={'banking-dynemic-content'}>
                         {children}

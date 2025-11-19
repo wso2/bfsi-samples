@@ -17,19 +17,23 @@
  */
 
 .banks-pages-inner-container{
-    height: 90%;
     background: white;
-    padding: 1rem 0 0 0;
+    padding: 1rem;
     width: 100%;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    min-height: 100vh;
+
 
 
     .banking-logo-container{
         width: 100%;
         height: fit-content;
-        justify-content: center;
+        align-items: center;
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
         img{
             width: 4rem;
@@ -40,7 +44,7 @@
     }
 
     .banking-dynemic-content{
-        flex: 1;
+        height: fit-content;
         padding: 1rem 0;
         display: flex;
         justify-content: center;

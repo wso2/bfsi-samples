@@ -18,19 +18,14 @@
 
 .banking-outer-layout {
     width: 100%;
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
+    padding: 1rem ;
     justify-content: center;
     align-items: center;
     background: #ffebee;
-
-    .banking-bank-name-container{
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-    }
+    min-height: 100vh;
 
     .banking-usecase-layout{
         width: 90%;
@@ -42,7 +37,7 @@
 
     .banking-inner-component-container{
         width: 90%;
-        flex: 1;
+        height: 100%;
         background: #95a5a6;
         justify-content: center;
         align-items: center;

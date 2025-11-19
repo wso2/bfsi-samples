@@ -7,7 +7,7 @@
   "name": {
     "route": "accounts-central",
     "applicationName": "Accounts Central",
-    "banksInfo": [{"name": "Ascend Global Bank","route": "ascend-global"},{"name": "Trust Union","route": "trust-union"},{"name": "Global Asset Trust","route": "global-asset-trust"}]
+    "banksInfo": [{"name": "Ascend Global Bank","route": "ascend-global","bankNumber": 1,"startingAccountNumbers": "0066"},{"name": "Trust Union","route": "trust-union","bankNumber": 2,"startingAccountNumbers": "0055"},{"name": "Global Asset Trust","route": "global-asset-trust","bankNumber": 3,"startingAccountNumbers": "0044"}]
   },
   "banks": [
     {
@@ -15,45 +15,48 @@
       "image": "/bfsi_static_demo/resources/assets/images/logos/assend_global_bank_logo.png",
       "currency": "GBP",
       "color":"rgba(255,135,110,0.6)",
-      "border":"rgba(255,135,110, 1)"
+      "border":"rgba(255,135,110, 1)",
+      "bankNumber": 1
     },
     {
       "name": "Global Asset Trust",
       "image": "/bfsi_static_demo/resources/assets/images/logos/global_asset_trust_logo.png",
       "currency": "GBP",
       "color":"rgba(255, 185, 97, 0.6)",
-      "border":"rgba(255, 185, 97, 1)"
+      "border":"rgba(255, 185, 97, 1)",
+      "bankNumber": 2
     },
     {
       "name": "Trust Union",
       "image": "/bfsi_static_demo/resources/assets/images/logos/trust_union_logo.png",
       "currency": "GBP",
       "color":"rgba(254, 239, 184, 0.6)",
-      "border":"rgba(254, 239, 184, 1)"
+      "border":"rgba(254, 239, 184, 1)",
+      "bankNumber": 3
     }
   ],
   "accounts": [
     {
-      "id": "0006-1123-7724",
+      "id": "0066-1123-7724",
       "bank": "Ascend Global Bank",
       "name": "savings account",
       "balance": 1350
 
     },
     {
-      "id": "0006-4435-9454",
+      "id": "0066-4435-9454",
       "bank": "Ascend Global Bank",
       "name": "Current account",
       "balance": 450
     },
     {
-      "id": "0043-4435-9454",
+      "id": "0044-4435-9454",
       "bank": "Global Asset Trust",
       "name": "Current account",
       "balance": 750
     },
     {
-      "id": "0054-4435-9454",
+      "id": "0055-4435-9454",
       "bank": "Trust Union",
       "name": "Current account",
       "balance": 1265.20

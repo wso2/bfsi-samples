@@ -37,11 +37,11 @@ const QuickActionButton = ({icon,name, onClick} : ActionButtonProps)=>{
 
     if (!onClick) return null;
 
-    const isDisabled = name === "Payments"? false : true;
+    const isDisabled = name === "Pay Bills"? false : true;
 
     return (
         <>
-            <IconButton className={'action-button'} disabled={isDisabled} onClick={()=> onClick(`${name?.toLowerCase()}`)}>
+            <IconButton className={'action-button'} disabled={isDisabled} onClick={()=> onClick(`${name?.toLowerCase().replace(' ','')}`)}>
                 {icon}
                 <p>{name}</p>
             </IconButton>

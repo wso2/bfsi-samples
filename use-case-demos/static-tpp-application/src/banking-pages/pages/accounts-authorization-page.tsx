@@ -25,7 +25,9 @@ import './inner-pages-stylings.scss'
 
 const AccountsAuthorizationPage = ()=>{
 
-    const { onSuccessHandler, accountsToAdd } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, accountsToAdd,themeColor } = useOutletContext<OutletContext>();
+
+    console.log(accountsToAdd)
 
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
 
@@ -44,13 +46,13 @@ const AccountsAuthorizationPage = ()=>{
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
-                    <h3>Authorize the Account</h3>
+                    <p>Please authorize the following permissions to your account</p>
                 </Grid>
 
                 <Grid className={"form-login-one-container"}>
 
                     <FormControl>
-                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current[0]}</FormLabel>
+                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current.data[0]}</FormLabel>
                     </FormControl>
 
                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
@@ -59,11 +61,11 @@ const AccountsAuthorizationPage = ()=>{
                         })}
                     </List>
 
-                    <p>Sharing Period : {getFutureDate()}</p>
+                    <p>Permission expired on : {getFutureDate()}</p>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem',background:themeColor}}>Confirm</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, Input, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {Controller, useForm} from "react-hook-form";
@@ -35,7 +35,7 @@ const OtpPage = ()=>{
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
-    const { onSuccessHandler } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, themeColor } = useOutletContext<OutletContext>();
 
     const {control,handleSubmit,formState:{errors}} = useForm<OtpFormData>({
         defaultValues:{
@@ -58,27 +58,28 @@ const OtpPage = ()=>{
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
-                    <h3>SMS Authentication</h3>
+                    <p>SMS Authentication</p>
                 </Grid>
                 
-                <Grid className={"form-login-one-container"}>
-                    <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <Grid className={"form-login-one-container"} >
+                    <form onSubmit={handleSubmit(onSubmitHandler)} style={{gap:'2rem', display:'flex', flexDirection:'column'}}>
                         <FormControl fullWidth={true} margin={'normal'} >
                             <label>OTP code</label>
                             <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
-                                <OutlinedInput
+                                <Input
                                     {...field}
-                                    placeholder={"Enter otp"}
+                                    placeholder={"Enter otp code"}
                                     type={"text"}
                                     error={!!errors.code}
+                                    sx={{marginLeft:'2rem'}}
                                 />
                             )}/>
                             <ErrorMessage error={errors.code}/>
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button variant={'contained'} className="button-styles" type={'submit'}>Confirm</Button>
-                            <Button variant={'outlined'} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
+                            <Button variant={'contained'} sx={{background:themeColor}} className="button-styles" type={'submit'}>Confirm</Button>
+                            <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

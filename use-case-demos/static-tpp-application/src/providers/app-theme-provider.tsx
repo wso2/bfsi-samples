@@ -51,6 +51,9 @@ const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
                         backgroundColor: '#FFF5EE',
                         tableBackground: '#FFFFFF',
                         innerButtonBackground: '#bdc3c7',
+                        bankColor1:'#9b59b6',
+                        bankColor2:'#f1c40f',
+                        bankColor3:'#2ecc71',
                     },
                     fontColor: {
                         white: '#FFFFFF',

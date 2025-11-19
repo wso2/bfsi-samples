@@ -144,7 +144,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
 
 
                 <FormControl fullWidth={true} margin={'dense'}>
-                    <label>Payee Account</label>
+                    <label>Biller Info</label>
                     <Controller name={'payeeAccount'} control={control} rules={{required:'Payee required'}} render={({field}) => (
                         <Select {...field}
                                 displayEmpty

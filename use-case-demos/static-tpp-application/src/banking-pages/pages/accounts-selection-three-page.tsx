@@ -30,13 +30,9 @@ export interface SelectedAccountEntry {
 
 const AccountsSelectionThreePage = ()=>{
 
-    const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
+    const { onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();
 
-    console.log(accountsToAdd);
-
-    console.log(navigationData)
-
-    const accountsList = ["0006-0566-1212","0006-0045-2020","0006-0400-1010"];
+    const accountsList = [selectedAccountNumber+"-0566-1212",selectedAccountNumber+"-0045-2020",selectedAccountNumber+"-0400-1010"];
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
@@ -62,12 +58,12 @@ const AccountsSelectionThreePage = ()=>{
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
 
                 <Grid className="page-name-container">
-                    <h3>Account Authorization</h3>
+                    <p>Select account to proceed</p>
                 </Grid>
 
 
 
-                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh', overflowY: 'auto', justifyContent:'flex-start', alignItems: 'stretch'}}>
+                <Grid className={"form-login-one-container"} sx={{marginTop:'1rem',justifyContent:'flex-start', alignItems: 'stretch'}}>
 
                     <FormControl>
                         <FormLabel id={"check-box-group"}>Following permissions Granted</FormLabel>
@@ -100,8 +96,8 @@ const AccountsSelectionThreePage = ()=>{
 
 
                     <Box className="form-buttons-container" justifyContent="end">
-                        <Button variant={'contained'} onClick={handleAccountSelection}>Done</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={handleAccountSelection} sx={{width:'6rem',height:'3rem',background:themeColor}}>Done</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
 
