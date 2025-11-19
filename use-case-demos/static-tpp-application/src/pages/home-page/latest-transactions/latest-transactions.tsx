@@ -16,10 +16,12 @@
  * under the License.
  */
 
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react"
+import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react"
 import type {TransactionData} from "../../../hooks/config-interfaces.ts";
 import '../home.scss';
 import {formatCurrency} from "../../../utility/number-formatter.ts";
+// @ts-ignore
+import {ArrowDownIcon, ArrowUpIcon} from "@oxygen-ui/react-icons";
 
 interface LatestTransactionsProps {
     transactions: TransactionData[];
@@ -32,27 +34,26 @@ const LatestTransactions = ({transactions}:LatestTransactionsProps)=>{
                 <TableContainer >
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell>id</TableCell>
-                                <TableCell>date</TableCell>
-                                <TableCell>reference</TableCell>
-                                <TableCell>bank</TableCell>
-                                <TableCell>Account</TableCell>
-                                <TableCell>Currency</TableCell>
-                                <TableCell>Amount</TableCell>
+                            <TableRow sx={{backgroundColor:'#F6F6F7'}}>
+                                <TableCell sx={{color:'#6B7280'}}>id</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>date</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>reference</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>bank</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Account</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Amount</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {transactions.map((transactionData, index)=>{
+                                const credDebitStatus = transactionData.status === "c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
                                 return(
-                                    <TableRow key={index}>
+                                    <TableRow key={index} hideBorder={true}>
                                         <TableCell>{transactionData.id}</TableCell>
                                         <TableCell>{transactionData.date}</TableCell>
                                         <TableCell>{transactionData.reference}</TableCell>
                                         <TableCell>{transactionData.bank}</TableCell>
                                         <TableCell>{transactionData.account}</TableCell>
-                                        <TableCell>{transactionData.currency}</TableCell>
-                                        <TableCell>{formatCurrency(transactionData.amount)}</TableCell>
+                                        <TableCell><Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{transactionData.currency+" "+formatCurrency(transactionData.amount)} {credDebitStatus}</Box></TableCell>
                                     </TableRow>
                                 );
                             })}

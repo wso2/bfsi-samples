@@ -99,7 +99,8 @@
       "bank": "Ascend Global",
       "account": "1234-5678-9012-3456",
       "amount": "1250.75",
-      "currency": "USD"
+      "currency": "USD",
+      "status":"c"
     },
     {
       "id": "T00123457",
@@ -108,7 +109,8 @@
       "bank": "Trust Union",
       "account": "9876-5432-1098-7654",
       "amount": "500.00",
-      "currency": "EUR"
+      "currency": "EUR",
+      "status":"c"
     },
     {
       "id": "T00123458",
@@ -117,7 +119,8 @@
       "bank": "Global Asset Trust",
       "account": "1111-2222-3333-4444",
       "amount": "99.99",
-      "currency": "GBP"
+      "currency": "GBP",
+      "status":"d"
     },
     {
       "id": "T00123459",
@@ -126,7 +129,8 @@
       "bank": "Ascend Global",
       "account": "5555-6666-7777-8888",
       "amount": "25.50",
-      "currency": "USD"
+      "currency": "USD",
+      "status":"d"
     }
   ],
   "standingOrders": [

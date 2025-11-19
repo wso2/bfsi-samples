@@ -46,6 +46,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "account":navigationData.current?.formData.userAccount,
             "amount": navigationData.current?.formData.amount.toString().replace(/[^\d.-]/g, ''),
             "currency":navigationData.current?.formData.currency,
+            "status":"c"
         }
 
         state = {
