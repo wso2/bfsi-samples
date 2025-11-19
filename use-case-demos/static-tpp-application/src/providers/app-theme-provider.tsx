@@ -47,6 +47,7 @@ const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
                 palette: {
                     primary: {
                         main: '#FF5100',
+                        secondaryColor:'#EAA340',
                         button: '#FFFFFF',
                         backgroundColor: '#FFF5EE',
                         tableBackground: '#FFFFFF',

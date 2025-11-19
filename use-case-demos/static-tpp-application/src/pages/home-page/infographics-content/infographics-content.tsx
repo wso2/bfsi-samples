@@ -60,18 +60,16 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
         responsive: true,
         maintainAspectRatio: false,
         cutout:chartInfo.cutout,
-        // layout:{
-        //     padding:{
-        //         right:100,
-        //     }
-        // },
+        layout:{
+            autoPadding:true,
+        },
         plugins: {
             legend: {
                 position: "right",
                 align: 'center',
                 labels: {
                     usePointStyle: true,
-                    boxWidth: 24,
+                    boxWidth: 20,
                     padding: 25,
                 }
             },
