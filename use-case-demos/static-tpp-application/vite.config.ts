@@ -21,6 +21,6 @@ import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr'
 
 export default defineConfig({
-  base: '/bfsi_static_demo/',
+  base: 'open_banking_demo_test/demos/usecases/dist/',
   plugins: [react(),svgr()],
 });
