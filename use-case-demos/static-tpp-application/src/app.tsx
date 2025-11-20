@@ -97,6 +97,7 @@ export function App() {
                     </Route>
                 ))}
 
+                <Route path="/" element={<Navigate to={`/${appInfo.route}`} replace />} />
             </Routes>
         </AppThemeProvider>
 
