@@ -31,18 +31,18 @@ const StandingOrdersTable = ({standingOrderList}:StandingOrdersProps)=>{
                 <TableContainer>
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Reference</TableCell>
-                                <TableCell>Bank</TableCell>
-                                <TableCell>Next Date</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Amount</TableCell>
+                            <TableRow sx={{backgroundColor:'#F6F6F7'}}>
+                                <TableCell sx={{color:'#6B7280'}}>ID</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Reference</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Bank</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Next Date</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Status</TableCell>
+                                <TableCell sx={{color:'#6B7280'}}>Amount</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {standingOrderList.map((standingOrder) => (
-                                <TableRow>
+                                <TableRow hideBorder={true}>
                                     <TableCell>{standingOrder.ID}</TableCell>
                                     <TableCell>{standingOrder.Reference}</TableCell>
                                     <TableCell>{standingOrder.Bank}</TableCell>

@@ -66,9 +66,9 @@ const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
                     <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
 
                     {banksList?.map((account, index) => (
-                        <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}}>
+                        <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}} >
                             <Box className={"account-button-outer"}>
-                                <Box className={"logo-container"}>
+                                <Box className={"logo-container"} sx={{marginLeft:'2rem'}}>
                                     <img src={account.image} alt=""/>
                                 </Box>
                                 <p>{account.name}</p>
