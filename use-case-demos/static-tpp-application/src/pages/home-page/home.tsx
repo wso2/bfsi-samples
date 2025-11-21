@@ -78,7 +78,7 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
                         <InfographicsContent total={total} chartInfo={chartData}/>
                     </Grid>
                     <Grid className={'accounts-container'}>
-                        <CustomTitle title={"Connected Banks And Accounts"} buttonName={"Add Account"} buttonType={"contained"} onPress={onButtonHandler}/>
+                        <CustomTitle title={"Connected Banks"} buttonName={"Add Account"} buttonType={"contained"} onPress={onButtonHandler}/>
                         <ConnectedBanksAccounts bankAndAccountsInfo={banksWithAccounts}/>
                     </Grid>
                     <Grid className={'transactions-container'}>

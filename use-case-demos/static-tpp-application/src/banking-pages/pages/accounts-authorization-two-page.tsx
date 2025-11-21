@@ -25,6 +25,7 @@ import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
 
+
 const AccountsAuthorizationTwoPage = ()=>{
 
     const { onSuccessHandler, accountsToAdd, themeColor } = useOutletContext<OutletContext>();
@@ -36,7 +37,7 @@ const AccountsAuthorizationTwoPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding, flexGrow:1}}>
                 <Grid className="page-name-container">
                     <p>Please confirm the authorization to your selected accounts</p>
                 </Grid>
@@ -47,8 +48,8 @@ const AccountsAuthorizationTwoPage = ()=>{
                     {/*    <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>*/}
                     {/*</FormControl>*/}
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
-                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
-                        <p>Frequency : 4 Days</p>
+                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true} sx={{"--oxygen-palette-primary-main": themeColor}}/>} label={"Recurring"} labelPlacement={'start'}/>
+                        <p>Expires in : 4 Days</p>
                     </Box>
 
                     <FormControl sx={{display:'flex', flexDirection:'column'}}>
@@ -72,8 +73,8 @@ const AccountsAuthorizationTwoPage = ()=>{
                     </FormControl>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem',background:themeColor}}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

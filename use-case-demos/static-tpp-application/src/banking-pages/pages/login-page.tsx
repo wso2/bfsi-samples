@@ -23,6 +23,8 @@ import { ErrorMessage } from "../../pages/payments-page/payment-form/payment-for
 import './inner-pages-stylings.scss'
 import { useMediaQuery } from "@mui/material";
 import type {AppInfo} from "../../hooks/config-interfaces.ts";
+// import _default from "chart.js/dist/plugins/plugin.legend";
+// import onHover = _default.defaults.onHover;
 
 export interface OutletContext {
     onSuccessHandler: () => void;
@@ -66,7 +68,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Login to your account</p>
                 </Grid>
@@ -82,7 +84,7 @@ const LoginPage = () => {
                                     placeholder={"Enter your email"}
                                     type={"text"}
                                     error={!!errors.email}
-                                    sx={{marginLeft:'2rem'}}
+                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
                                 />
                             )} />
                             <ErrorMessage error={errors.email} />
@@ -96,15 +98,16 @@ const LoginPage = () => {
                                     placeholder={"Enter your password"}
                                     type={"password"}
                                     error={!!errors.password}
-                                    sx={{marginLeft:'2rem'}}
+                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
+                                    className={'form-input-item'}
                                 />
                             )} />
                             <ErrorMessage error={errors.password} />
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button className="button-styles" sx={{background:themeColor}} variant={'contained'} type={'submit'}>Login</Button>
-                            <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
+                            <Button className="button-styles " sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} variant={'contained'} type={'submit'}>Login</Button>
+                            <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

@@ -44,7 +44,7 @@ const AccountsAuthorizationPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Please authorize the following permissions to your account</p>
                 </Grid>
@@ -64,8 +64,8 @@ const AccountsAuthorizationPage = ()=>{
                     <p>Permission expired on : {getFutureDate()}</p>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem',background:themeColor}}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={onSuccessHandler}  sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

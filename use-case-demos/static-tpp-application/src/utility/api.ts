@@ -21,7 +21,8 @@
  * It uses the native `fetch` API, prepends the `baseUrl` to all endpoints,
  * and includes basic error handling for network issues and bad HTTP status codes.
  */
-export const baseUrl = 'https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/configurations';
+// export const baseUrl = 'https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/configurations';
+export const baseUrl = '/configurations';
 
 /**
  * Asynchronously fetches JSON data from a specific API endpoint.

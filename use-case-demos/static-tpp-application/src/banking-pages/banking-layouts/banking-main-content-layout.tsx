@@ -57,12 +57,8 @@ const BankingMainContentLayout = ({ children,usecasesList,selectedUsecaseIndex,u
 
                     const isSelected = selectedUsecaseIndex === index;
 
-                    const backgroundThemeColor = isSelected? themeColor : '';
-                    const colorThemeColor = isSelected? '': themeColor;
-                    const borderThemeColor = isSelected? '':themeColor;
-
                     return (
-                        <Button sx={{background:backgroundThemeColor, color: colorThemeColor, borderColor:borderThemeColor}} key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
+                        <Button sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor, borderColor:themeColor,'--oxygen-palette-primary-main':themeColor}} key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
                     )
                 })}
             </Grid>

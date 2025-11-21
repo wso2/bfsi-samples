@@ -56,7 +56,7 @@ const OtpPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>SMS Authentication</p>
                 </Grid>
@@ -71,15 +71,15 @@ const OtpPage = ()=>{
                                     placeholder={"Enter otp code"}
                                     type={"text"}
                                     error={!!errors.code}
-                                    sx={{marginLeft:'2rem'}}
+                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
                                 />
                             )}/>
                             <ErrorMessage error={errors.code}/>
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button variant={'contained'} sx={{background:themeColor}} className="button-styles" type={'submit'}>Confirm</Button>
-                            <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
+                            <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} className="button-styles" type={'submit'}>Confirm</Button>
+                            <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

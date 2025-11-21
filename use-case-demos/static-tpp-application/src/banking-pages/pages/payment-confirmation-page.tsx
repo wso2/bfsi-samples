@@ -31,7 +31,7 @@ const PaymentConfirmationPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Please authorize following payment</p>
                 </Grid>
@@ -50,8 +50,8 @@ const PaymentConfirmationPage = ()=>{
                    </Box>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} sx={{background:themeColor}} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
-                        <Button variant={'outlined'} sx={{color:themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
+                        <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

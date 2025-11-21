@@ -55,7 +55,7 @@ const AccountsSelectionThreePage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding, flexGrow:1}}>
 
                 <Grid className="page-name-container">
                     <p>Select account to proceed</p>
@@ -76,9 +76,9 @@ const AccountsSelectionThreePage = ()=>{
 
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
 
-                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
+                        <FormControlLabel control={<Switch id={"account-one"} sx={{"--oxygen-palette-primary-main": themeColor}} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
 
-                        <p>Frequency : 4 Days</p>
+                        <p>Expires in : 4 Days</p>
 
                     </Box>
 
@@ -87,7 +87,7 @@ const AccountsSelectionThreePage = ()=>{
                         <RadioGroup aria-label="select-account" name="account-selection-group" value={selectedAccount} onChange={handleRadioChange}>
                             {accountsList.map((account, index) => {
                                 return (
-                                    <FormControlLabel key={index} control={<Radio />} label={`${navigationData.current.bankInfo.name}-${account}`} value={account}/>
+                                    <FormControlLabel key={index} control={<Radio sx={{'--oxygen-palette-primary-main': themeColor}} />} label={`${navigationData.current.bankInfo.name}-${account}`} value={account}/>
                                 );
                             })}
                         </RadioGroup>
@@ -96,8 +96,8 @@ const AccountsSelectionThreePage = ()=>{
 
 
                     <Box className="form-buttons-container" justifyContent="end">
-                        <Button variant={'contained'} onClick={handleAccountSelection} sx={{width:'6rem',height:'3rem',background:themeColor}}>Done</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}}>Cancel</Button>
+                        <Button variant={'contained'} onClick={handleAccountSelection} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Done</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
 

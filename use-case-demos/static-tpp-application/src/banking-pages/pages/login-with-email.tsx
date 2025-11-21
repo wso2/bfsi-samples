@@ -59,7 +59,7 @@ const LoginWithEmailPage = ()=>{
 
     return (
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Please login to your account</p>
                 </Grid>
@@ -74,15 +74,15 @@ const LoginWithEmailPage = ()=>{
                                     placeholder={"Enter your email"}
                                     type={"text"}
                                     error={!!errors.email}
-                                    sx={{marginLeft:'2rem'}}
+                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
                                 />
                             )}/>
                             <ErrorMessage error={errors.email}/>
                         </FormControl>
 
                         <Box className="form-buttons-container">
-                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem',background:themeColor}}>Login</Button>
-                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem',color:themeColor, borderColor:themeColor}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
+                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Login</Button>
+                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

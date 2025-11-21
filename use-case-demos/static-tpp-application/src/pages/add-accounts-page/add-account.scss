@@ -16,8 +16,14 @@
  * under the License.
  */
 
+.accounts-buttons-container{
+  display: flex;
+  flex-direction: column;
+}
+
 .account-button-outer{
-  width: 30vw;
+  width: 30rem;
+  width: 30rem;
   height: 15vh;
   display: flex;
   background: var(--oxygen-palette-primary-innerButtonBackground);;
