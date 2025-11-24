@@ -34,6 +34,13 @@ export interface  accountsToAddContent {
     data: []
 }
 
+/**
+ * @function BankingHomePage
+ * @description The main controller component for bank authorization and flow simulation.
+ * It initializes the bank's flow management hook (`useBankNavigationHook`), determines
+ * the bank's theme color, and uses `BankingMainContentLayout` to orchestrate the rendering
+ * of the specific step components (`Outlet`) based on the current step in the flow.
+ */
 const BankingHomePage = ({ useCases,bank,appInfo }: BankingHomePageProps) => {
 
     const navigate = useNavigate();

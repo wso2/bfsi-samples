@@ -16,6 +16,12 @@
  * under the License.
  */
 
+/**
+ * @function formatCurrency
+ * @description Safely formats a number, string, null, or undefined value into a currency string
+ * using 'en-US' locale and ensuring exactly two decimal places.
+ * Invalid inputs are defaulted to '0.00'.
+ */
 export const formatCurrency = (value: number | string | null | undefined): string => {
 
     let numericValue = parseFloat(String(value));

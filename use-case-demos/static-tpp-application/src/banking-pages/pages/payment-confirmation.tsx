@@ -21,6 +21,12 @@ import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import '../banking.scss'
 
+/**
+ * @function PaymentConfirmation
+ * @description A simulated component confirming payment details during the bank's authorization flow.
+ * It displays the payee, amount, and reference passed through navigation state,
+ * and upon clicking "Success," it calls `onSuccessHandler` to simulate payment execution.
+ */
 const PaymentConfirmation = ()=>{
 
     const { onSuccessHandler, navigationData } = useOutletContext<OutletContext>();

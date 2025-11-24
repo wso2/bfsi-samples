@@ -23,8 +23,7 @@ import { ErrorMessage } from "../../pages/payments-page/payment-form/payment-for
 import './inner-pages-stylings.scss'
 import { useMediaQuery } from "@mui/material";
 import type {AppInfo} from "../../hooks/config-interfaces.ts";
-// import _default from "chart.js/dist/plugins/plugin.legend";
-// import onHover = _default.defaults.onHover;
+
 
 export interface OutletContext {
     onSuccessHandler: () => void;
@@ -42,6 +41,13 @@ interface loginformData {
     password: string;
 }
 
+/**
+ * @function LoginPage
+ * @description A simulated login component for the bank authorization flow.
+ * It uses `react-hook-form` for input validation and state management, and upon
+ * successful submission (simulated credential check), it calls `onSuccessHandler`
+ * to proceed to the next step in the banking authorization sequence.
+ */
 const LoginPage = () => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

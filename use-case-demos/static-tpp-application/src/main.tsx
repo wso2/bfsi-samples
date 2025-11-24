@@ -28,10 +28,9 @@ import { queryClient } from './utility/query-client.ts';
 
 
 /**
- * The entry point of the React application.
- * It creates a new React root for the DOM element with the ID 'root',
- * and renders the main App component wrapped in StrictMode and BrowserRouter
- * for development checks and client-side routing.
+ * @classdesc Renders the main React application into the DOM's 'root' element.
+ * It sets up the application with client-side routing,
+ * React Query for data fetching, and development-time checks.
  */
 
 const rootElement = document.getElementById("root");

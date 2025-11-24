@@ -41,6 +41,12 @@ interface HeroSectionProps {
     appInfo: AppInfo;
 }
 
+/**
+ * @function HeroSection
+ * @description The top dashboard component that displays a personalized, time-sensitive greeting
+ * and a row of quick-access action buttons (e.g., Pay Bills, Transfer).
+ * The layout and component rendering are dynamically adjusted based on screen size (responsiveness).
+ */
 const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
 

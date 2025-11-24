@@ -26,13 +26,12 @@ interface HomePageLayoutProps {
     userInfo: User;
     appInfo: AppInfo;
 }
+
 /**
- * A main layout component for the application's home page.
- * It serves as a container that consistently displays the `HeroSection` (containing user info
- * and quick actions) at the top, followed by the main content (`children`).
- *
- * It ensures the content padding is responsive, adjusting the horizontal spacing based on
- * screen size (less padding on small screens and more on large screens).
+ * @function HomePageLayout
+ * @description The structural component for the application's main dashboard.
+ * It consistently places the **HeroSection** (user greeting and quick actions)
+ * at the top and wraps the main content (`children`) below it, applying responsive padding.
  */
 const HomePageLayout = ({children,userInfo, appInfo}:HomePageLayoutProps)=>{
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));

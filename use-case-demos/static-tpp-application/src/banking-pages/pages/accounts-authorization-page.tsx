@@ -23,6 +23,13 @@ import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
 import './inner-pages-stylings.scss'
 
+/**
+ * @function AccountsAuthorizationPage
+ * @description A dynamic component simulating the final step in a single account connection flow.
+ * It prompts the user to **authorize specific permissions** for a selected account,
+ * displays the consent duration, and uses `onSuccessHandler` to simulate the successful
+ * authorization callback, or cancels the flow using `Maps(-1)`.
+ */
 const AccountsAuthorizationPage = ()=>{
 
     const { onSuccessHandler, accountsToAdd,themeColor } = useOutletContext<OutletContext>();

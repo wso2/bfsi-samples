@@ -32,6 +32,12 @@ interface InfographicsContentProps {
     chartInfo: ChartData & { labels: string[], cutout: string };
 }
 
+/**
+ * @function InfographicsContent
+ * @description A composite component that displays key financial overview data,
+ * including the **Total Balance** (formatted currency) and an **Account Distribution**
+ * Doughnut chart. It uses responsive styling and Chart.js to render the visual data.
+ */
 export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

@@ -31,11 +31,6 @@ import StandingOrdersTable from "./standing-orders/standing-orders.tsx";
 import {useNavigate} from "react-router-dom";
 import OverlayConfirmation from "../../components/overlay-confirmation/overlay-confirmation.tsx";
 
-/**
- * The main component for the product's home page.
- * It fetches user information using the `useAuthContext` custom hook and
- * passes this data to the `QuickActions` component to display user-specific content.
- */
 interface AccountsCentralLayoutProps {
     name: string;
     userInfo: User
@@ -53,6 +48,13 @@ export interface SideButtonProps {
     name: string;
 }
 
+/**
+ * @function Home
+ * @description The main dashboard component that composes various UI elements
+ * like infographics, connected accounts, and transaction lists, into the
+ * central application layout. It handles specific button clicks to navigate
+ * to other functional pages (e.g., 'Add Account', 'view more').
+ */
 const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation}:AccountsCentralLayoutProps)=>{
 
     const navigate = useNavigate();

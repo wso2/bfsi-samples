@@ -28,6 +28,13 @@ interface LatestTransactionsProps {
     transactions: TransactionData[];
 }
 
+/**
+ * @function LatestTransactions
+ * @description A presentational component that displays a limited list (currently 4)
+ * of the most recent financial transactions in a table format.
+ * It uses the transaction status ('c' for credit, otherwise debit) to display
+ * directional icons and applies currency formatting to the amount.
+ */
 const LatestTransactions = ({transactions}:LatestTransactionsProps)=>{
     return (
         <>

@@ -26,6 +26,12 @@ interface PageLayoutProps {
     title: string;
 }
 
+/**
+ * @function PaymentAccountPageLayout
+ * @description A layout component that wraps content for pages like payments and account management.
+ * It provides a standardized header with a dynamic title, a back button for navigation,
+ * and uses a responsive Grid system to size the content area based on the page title.
+ */
 const PaymentAccountPageLayout = ({children,title}:PageLayoutProps)=>{
     const navigate = useNavigate();
 

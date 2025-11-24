@@ -24,6 +24,13 @@ interface StandingOrdersProps {
     standingOrderList: StandingOrders[];
 }
 
+/**
+ * @function StandingOrdersTable
+ * @description A presentational component that renders a list of recurring
+ * payments (standing orders) in a structured table format.
+ * It iterates over the provided data and uses the `formatCurrency` utility
+ * for standardized display of monetary values.
+ */
 const StandingOrdersTable = ({standingOrderList}:StandingOrdersProps)=>{
     return (
         <>

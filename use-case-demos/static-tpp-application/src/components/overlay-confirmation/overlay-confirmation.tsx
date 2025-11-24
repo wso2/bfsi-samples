@@ -28,6 +28,12 @@ interface ConfirmationOverlayProps {
     secondaryButtonText?: string;
 }
 
+/**
+ * @function OverlayConfirmationComponent
+ * @description A modal component used to present a user with a mandatory confirmation or action prompt.
+ * It renders a title, content message, a required primary action button (`onConfirm`),
+ * and an optional secondary button (`onCancel`) for dismissal or negative actions.
+ */
 const OverlayConfirmationComponent: React.FC<ConfirmationOverlayProps> = ({onConfirm, onCancel, title,content, mainButtonText,secondaryButtonText}) =>{
 
     const shouldShowSecondaryButton = !!secondaryButtonText;

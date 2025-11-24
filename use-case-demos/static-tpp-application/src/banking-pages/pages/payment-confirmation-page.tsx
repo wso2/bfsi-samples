@@ -22,6 +22,12 @@ import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
 import { useMediaQuery } from "@mui/material";
 
+/**
+ * @function PaymentConfirmationPage
+ * @description A dynamic component simulating the final user authorization step for a payment.
+ * It displays a summary of the full payment details (amount, payee, reference, source account),
+ * and requires the user to click "Confirm" to trigger `onSuccessHandler` and finalize the transaction.
+ */
 const PaymentConfirmationPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

@@ -70,8 +70,6 @@ export interface TransactionData{
     "status": string
 }
 
-
-
 export interface StandingOrders{
     "ID": string,
     "Reference": string,

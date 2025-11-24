@@ -28,6 +28,12 @@ export interface SelectedAccountEntry {
     accounts: string[];
 }
 
+/**
+ * @function AccountsSelectionThreePage
+ * @description A dynamic component simulating the final account selection step in an authorization flow.
+ * It first displays the already **granted permissions** and consent duration, then prompts the user
+ * to select one specific account via radio buttons, before proceeding with `onSuccessHandler`.
+ */
 const AccountsSelectionThreePage = ()=>{
 
     const { onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();

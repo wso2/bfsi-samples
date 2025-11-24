@@ -53,6 +53,12 @@ export const ErrorMessage = ({error}:{error:any})=>{
     return <p className={"error-message-payments"}>{error.message}</p>
 }
 
+/**
+ * @function PaymentForm
+ * @description Manages the user interface, state, and validation for initiating a new payment.
+ * It collects payment details and, upon confirmation, redirects the user to the
+ * corresponding bank's authorization flow (via `react-router` state).
+ */
 const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

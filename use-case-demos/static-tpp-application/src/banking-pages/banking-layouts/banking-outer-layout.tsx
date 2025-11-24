@@ -26,6 +26,12 @@ interface BankingOuterLayoutProps {
     themeColor: string;
 }
 
+/**
+ * @function BankingOuterLayout
+ * @description The highest-level layout component for bank-specific pages (e.g., authorization flows).
+ * It displays the bank's logo and name, applies the bank's unique theme color to the title,
+ * and acts as a wrapper for the dynamic process content (`children`).
+ */
 const BankingOuterLayout = ({children, image,bankName,themeColor}:BankingOuterLayoutProps)=>{
 
     return(

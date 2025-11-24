@@ -40,18 +40,16 @@ interface BankingMainContentLayoutProps{
 
 }
 
-
+/**
+ * @function BankingMainContentLayout
+ * @description A layout component that structures the main content area for bank-specific
+ * authorization flows. It displays a row of **UseCase** selection buttons, dynamically
+ * styled with the bank's theme color, and renders the current step component (`children`) below.
+ */
 const BankingMainContentLayout = ({ children,usecasesList,selectedUsecaseIndex,usecaseSelectionHandler,themeColor}: BankingMainContentLayoutProps) => {
-
-
-
 
     return (
         <Grid container className={'banking-outer-layout'}>
-            {/*<Grid className="banking-bank-name-container">*/}
-            {/*    <h3>{bankName}</h3>*/}
-            {/*</Grid>*/}
-            
             <Grid className="banking-usecase-layout">
                 {usecasesList.map((useCase,index) => {
 

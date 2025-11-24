@@ -25,9 +25,10 @@ export interface ApplicationLayoutProps {
 }
 
 /**
- * A foundational React layout component that establishes the basic structure for the application.
- * It renders a persistent application-wide `Header`, passing it a dynamic `name` prop,
- * and then renders the main page content (`children`) within a dedicated content container.
+ * @function ApplicationLayout
+ * @description The highest-level wrapper component that provides the consistent
+ * overall structure for the application. It renders the global `Header`
+ * and contains the main content (`children`) of the current page below it.
  */
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
 

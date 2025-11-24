@@ -34,7 +34,12 @@ interface loginformData{
     email: string;
 }
 
-
+/**
+ * @function LoginWithEmailPage
+ * @description A simulated login component for the bank authorization flow focusing only on email input.
+ * It uses `react-hook-form` for input and validation, and upon submitting the correct
+ * email ("john@gmail.com"), it calls `onSuccessHandler` to advance the user to the next step.
+ */
 const LoginWithEmailPage = ()=>{
 
     const { onSuccessHandler, appInfo,themeColor} = useOutletContext<OutletContext>();

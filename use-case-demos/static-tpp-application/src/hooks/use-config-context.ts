@@ -51,6 +51,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
 import {queryClient} from "../utility/query-client.ts";
 
+/**
+ * @function useConfigContext
+ * @description The central state management hook that fetches application configuration,
+ * aggregates raw data into calculated properties (e.g., totals, chart data),
+ * and critically, handles global state updates following bank redirection flows (payments, account linking).
+ */
 const CONFIG_QUER_KEY = ["appConfig"];
 
 const useConfigContext = () => {

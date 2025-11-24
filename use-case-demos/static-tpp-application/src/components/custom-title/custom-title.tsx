@@ -27,12 +27,16 @@ interface TitleProps {
     onPress?: (buttonName:string,title?:string) => void;
 }
 
+/**
+ * @function CustomTitle
+ * @description A reusable header component that displays a section `title`.
+ * It optionally renders a dynamic `Button` (either contained or outlined)
+ * which triggers an `onPress` callback, passing both the button's name and the title.
+ */
 const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
 
     const visibility = buttonName? "flex" : "none";
     // const isDisabled = buttonName === "view more"? true : false;
-
-
     return(
         <>
             <Box className={'title-container'}>

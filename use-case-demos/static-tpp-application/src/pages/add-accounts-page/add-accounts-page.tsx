@@ -34,6 +34,12 @@ interface AddAccountsPageProps {
     banks: Bank[];
 }
 
+/**
+ * @function AddAccountsPage
+ * @description A page component allowing users to initiate the process of connecting
+ * a new bank account. It lists available banks and, upon selection, redirects the
+ * user to the specific bank's authorization flow (via `react-router` state).
+ */
 const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
 
     const navigate = useNavigate();

@@ -25,6 +25,12 @@ interface BankingHookProps {
     type: string;
 }
 
+/**
+ * @function useBankNavigationHook
+ * @description A custom hook that manages the state and flow of multi-step banking authorization
+ * processes (use cases). It determines the initial route type, manages the sequence of
+ * steps, tracks the current step index, and provides a handler to advance the process upon success.
+ */
 export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
 
     const initialTypeIndex = usecase.findIndex(item => item.id === type);
@@ -77,6 +83,5 @@ export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
 
         setCurrentStep(step);
     }
-
     return {usecasesList, onSuccessHandler,currentStep,selectedUsecaseIndex,usecaseSelectionHandler}
 }

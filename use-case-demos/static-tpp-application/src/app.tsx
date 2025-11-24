@@ -38,12 +38,10 @@ import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.t
 
 
 /**
- * The root component of the application, responsible for setting up the main routing structure
- * and applying global theming via the `AppThemeProvider`.
- *
- * It consumes the **`ConfigContext`** to dynamically construct the base route path
- * using the configured router name (accessed via `context.routerName.route`).
- * It then defines **nested routes**, such as the 'home' page, within this main product route.
+ * @function App
+ * @description The root component that sets up global theming and
+ * defines the application's entire routing structure based on configuration data.
+ * It manages paths for the main dashboard and dynamically for external bank flows.
  */
 export function App() {
 

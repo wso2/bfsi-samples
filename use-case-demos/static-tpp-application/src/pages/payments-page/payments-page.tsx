@@ -31,6 +31,12 @@ interface PaymentsPageProps {
     banksList: Bank[];
 }
 
+/**
+ * @function PaymentsPage
+ * @description The main page component for handling payments. It sets up the overall
+ * application layout and the specific payment page layout, then wraps the core
+ * payment form within a Card component, passing necessary configuration and data.
+ */
 const PaymentsPage = ({appInfo,banksWithAccounts, payeeData, banksList}:PaymentsPageProps) => {
     return (
         <>

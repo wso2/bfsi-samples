@@ -30,6 +30,12 @@ interface ConnectedBanksAccountsProps{
     bankAndAccountsInfo: BanksWithAccounts[];
 }
 
+/**
+ * @function ConnectedBanksAccounts
+ * @description Renders a comprehensive view of all connected financial institutions
+ * and their respective accounts. It displays an overview of bank totals using Cards
+ * and details individual accounts within responsive Accordion components.
+ */
 const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps)=>{
 
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
@@ -38,14 +44,9 @@ const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps
 
     return(
         <>
-
             <div className="main-connected-banks-outer" style={{display:"flex", flexDirection:"column"}}>
-
-
             <Grid className="card-outer" sx={{flexDirection: responsiveDirections}}>
-
                 {bankAndAccountsInfo.map((bank,index)=>(
-
                     <Card key={index} className={'card-inner-bank-info'} >
                         <div className="card-top-container">
                             <div className="logo">
@@ -65,9 +66,7 @@ const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps
                 ))}
 
             </Grid>
-
                 <CustomTitle title={"Connected Accounts"}></CustomTitle>
-
             <div>
                 {bankAndAccountsInfo.map((bank,index)=>{
                     return (
