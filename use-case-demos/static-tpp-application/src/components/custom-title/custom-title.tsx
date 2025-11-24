@@ -24,18 +24,20 @@ interface TitleProps {
     title: string;
     buttonName?: string;
     buttonType?: "contained"|"outlined";
-    onPress?: (buttonName:string) => void;
+    onPress?: (buttonName:string,title?:string) => void;
 }
 
 const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
 
     const visibility = buttonName? "flex" : "none";
-    const isDisabled = buttonName === "view more"? true : false;
+    // const isDisabled = buttonName === "view more"? true : false;
+
+
     return(
         <>
             <Box className={'title-container'}>
                 <p>{title}</p>
-                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'')}} disabled={isDisabled}>{buttonName}</Button>
+                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'',title)}}>{buttonName}</Button>
             </Box>
         </>
     );

@@ -33,6 +33,8 @@ import AccountsAuthorizationPage from "./banking-pages/pages/accounts-authorizat
 import AccountsSelectionTwoPage from "./banking-pages/pages/accounts-selection-two-page.tsx";
 import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authorization-two-page.tsx";
 import AccountsSelectionThreePage from "./banking-pages/pages/accounts-selection-three-page.tsx";
+import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx";
+import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
 
 
 /**
@@ -79,6 +81,8 @@ export function App() {
                                }/>
                         <Route path="paybills" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
                         <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
+                        <Route path="transactions" element={<AllTransactions name={appInfo.applicationName} transactions={transactions}/>}/>
+                        <Route path="standing-orders" element={<AllStandingOrders name={appInfo.applicationName} standingOrdersList={standingOrderList}/>}/>
                     </Routes>
                 } />
 

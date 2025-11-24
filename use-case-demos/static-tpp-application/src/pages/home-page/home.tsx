@@ -59,7 +59,9 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
 
     console.log(overlayInformation)
 
-    const onButtonHandler = (buttonName:string) => {
+    const onButtonHandler = (buttonName:string,title?:string) => {
+
+        console.log(buttonName)
         if(buttonName === "Add Account"){
             navigate(`/${appInfo.route}/accounts`,{
                 state:{
@@ -67,6 +69,9 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
                     banksWithAccounts:banksList,
                 }
             });
+        }else if(buttonName === "view more"){
+            const route = title === "Latest Transactions"? "transactions": "standing-orders";
+            navigate(`/${appInfo.route}/${route}`);
         }
     }
 
@@ -82,11 +87,11 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
                         <ConnectedBanksAccounts bankAndAccountsInfo={banksWithAccounts}/>
                     </Grid>
                     <Grid className={'transactions-container'}>
-                        <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"}/>
+                        <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
                         <LatestTransactions transactions={transactions}/>
                     </Grid>
                     <Grid className={'standing-orders-container'}>
-                        <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"}/>
+                        <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
                         <StandingOrdersTable standingOrderList={standingOrderList}/>
                     </Grid>
 

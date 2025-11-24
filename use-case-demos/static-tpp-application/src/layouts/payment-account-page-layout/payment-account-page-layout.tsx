@@ -32,6 +32,8 @@ const PaymentAccountPageLayout = ({children,title}:PageLayoutProps)=>{
     const handleBackNavigation = ()=>{
         navigate(-1);
     }
+
+    const pagewidth = title === "Transactions" || title ==="Standing Orders" ? [12,12,12] : [12,6,4];
     return (
         <>
             <Box className='title-and-back-container'>
@@ -42,7 +44,7 @@ const PaymentAccountPageLayout = ({children,title}:PageLayoutProps)=>{
 
             </Box>
             <Grid container className={'payments-layout'}>
-                <Grid xs={12} sm={6} md={4}>
+                <Grid xs={pagewidth[0]} sm={pagewidth[1]} md={pagewidth[2]}>
                     {children}
                 </Grid>
             </Grid>

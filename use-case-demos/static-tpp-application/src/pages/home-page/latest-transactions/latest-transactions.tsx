@@ -23,6 +23,7 @@ import {formatCurrency} from "../../../utility/number-formatter.ts";
 // @ts-ignore
 import {ArrowDownIcon, ArrowUpIcon} from "@oxygen-ui/react-icons";
 
+const LATEST_TRANSACTION_COUNT = 4;
 interface LatestTransactionsProps {
     transactions: TransactionData[];
 }
@@ -44,7 +45,7 @@ const LatestTransactions = ({transactions}:LatestTransactionsProps)=>{
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {transactions.map((transactionData, index)=>{
+                            {transactions.slice(0, LATEST_TRANSACTION_COUNT).map((transactionData:TransactionData, index:number)=>{
                                 const credDebitStatus = transactionData.status === "c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
                                 return(
                                     <TableRow key={index} hideBorder={true}>

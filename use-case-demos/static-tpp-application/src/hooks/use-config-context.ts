@@ -51,7 +51,6 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
 import {queryClient} from "../utility/query-client.ts";
 
-const LATEST_TRANSACTION_COUNT = 4;
 const CONFIG_QUER_KEY = ["appConfig"];
 
 const useConfigContext = () => {
@@ -252,7 +251,7 @@ const useConfigContext = () => {
         chartInfo: chartInfo,
         total: totalBalances,
         banksWithAccounts: banksWithAllAccounts,
-        transactions: (configData?.transactions ?? []).slice(0, LATEST_TRANSACTION_COUNT),
+        transactions: (configData?.transactions ?? []),
         standingOrderList: configData?.standingOrders ?? [],
         payeesData: configData?.payees ?? [],
         useCases: configData?.types ?? [],
