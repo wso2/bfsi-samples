@@ -22,7 +22,7 @@
  * base URL (`/configurations`). It wraps the native `fetch` API, handles basic
  * HTTP error checking, and uses TypeScript generics for type-safe data retrieval.
  */
-// export const baseUrl = 'https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/configurations';
+// export const baseUrl = 'base url for config json file location';
 export const baseUrl = '/configurations';
 
 /**
