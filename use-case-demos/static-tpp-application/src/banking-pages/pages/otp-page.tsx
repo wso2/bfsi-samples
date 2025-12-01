@@ -46,7 +46,7 @@ const OtpPage = ()=>{
         }
     })
     const onSubmitHandler=(data:OtpFormData)=>{
-        if(data.code==='55555'){
+        if(data.code){
             onSuccessHandler()
         }else{
             alert("Check your Otp and re-enter")
