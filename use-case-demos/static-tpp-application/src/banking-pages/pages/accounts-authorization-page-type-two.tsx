@@ -19,7 +19,7 @@
 import {Box, Button, FormControl, FormControlLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
-import type {SelectedAccountEntry} from "./AccountsSelectionPageTypeTwo.tsx";
+import type {SelectedAccountEntry} from "./accounts-selection-page-two.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
 

@@ -30,7 +30,7 @@ import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-
 import LoginWithEmailPage from "./banking-pages/pages/login-with-email.tsx";
 import AccountsSelectionPageTypeOne from "./banking-pages/pages/accounts-selection-page-type-one.tsx";
 import AccountsAuthorizationPageTypeOne from "./banking-pages/pages/accounts-authorization-page-type-one.tsx";
-import AccountsSelectionPageTypeTwo from "./banking-pages/pages/AccountsSelectionPageTypeTwo.tsx";
+import AccountsSelectionPageTwo from "./banking-pages/pages/accounts-selection-page-two.tsx";
 import AccountsAuthorizationPageTypeTwo from "./banking-pages/pages/accounts-authorization-page-type-two.tsx";
 import AccountsSelectionPageTypeThree from "./banking-pages/pages/accounts-selection-page-type-three.tsx";
 import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx";
@@ -93,7 +93,7 @@ export function App() {
                             <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
                             <Route path={"account-select"} element={<AccountsSelectionPageTypeOne/>}/>
                             <Route path={"account-authorize"} element={<AccountsAuthorizationPageTypeOne/>}/>
-                            <Route path={"account-select-uc-2"} element={<AccountsSelectionPageTypeTwo/>}/>
+                            <Route path={"account-select-uc-2"} element={<AccountsSelectionPageTwo/>}/>
                             <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationPageTypeTwo/>}/>
                             <Route path={"account-select-uc-3"} element={<AccountsSelectionPageTypeThree/>}/>
                         </Route>
