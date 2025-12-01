@@ -41,12 +41,10 @@ const PaymentConfirmationPage = ()=>{
                 <Grid className="page-name-container">
                     <p>Please authorize following payment</p>
                 </Grid>
-
                 <Grid className={"form-login-one-container"}>
                    <Box sx={{width:'100%', marginTop:'1rem', display:'flex',flexDirection:'column',gap:'1rem'}}>
                         <p>Debited Account : <br />
                         <span style={{fontWeight:'600', marginLeft:'1rem'}}>{navigationData.current.formData.userAccount}</span></p>
-
                         <List sx={{listStyleType: 'disc', pl: 8, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Amount : {navigationData.current.formData?.amount}</ListItem>
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Currency : {navigationData.current.formData?.currency}</ListItem>
@@ -54,14 +52,12 @@ const PaymentConfirmationPage = ()=>{
                             <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Reference : {navigationData.current.formData?.reference}</ListItem>
                         </List>
                    </Box>
-
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
                         <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>
-
         </>
     )
 }

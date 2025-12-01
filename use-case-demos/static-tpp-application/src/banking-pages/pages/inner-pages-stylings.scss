@@ -24,11 +24,9 @@
   gap:1rem;
 
   .page-name-container{
-
     width: 100%;
     display: flex;
     justify-content: center;
-
   }
 
   .form-login-one-container{
@@ -36,49 +34,6 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    //.form-input-item {
-    //  // --- Hover Style (applied to the default state) ---
-    //  &:hover {
-    //    // This targets the default bottom border when hovered
-    //    border-bottom: 1px solid green !important; // Example color
-    //  }
-    //  &::after {
-    //    // 1. Kills any animated transition timing, forcing instant color/transform changes.
-    //    transition: all 30ms !important;
-    //
-    //    // 2. Ensures the line is completely hidden when unfocused.
-    //    border-bottom: 2px solid blue !important;
-    //  }
-    //
-    //}
-
-
-    //.switch-recurring {
-    //  // Target the component when it is both CHECKED and DISABLED
-    //  &.Mui-checked.Mui-disabled {
-    //
-    //    // 1. Target the THUMB (the circular part)
-    //    .MuiSwitch-thumb {
-    //      // Force background to a neutral color (e.g., light grey)
-    //      background-color: #A0A0A0 !important;
-    //    }
-    //
-    //    // 2. Target the TRACK (the rectangular bar)
-    //    .MuiSwitch-track {
-    //      // Force background to a lighter neutral color
-    //      background-color: #E0E0E0 !important;
-    //
-    //      // CRITICAL: Overrides the default MUI opacity reduction
-    //      opacity: 1 !important;
-    //    }
-    //  }
-    //}
-
-
-
-
-
 
     .form-buttons-container{
       display: flex;

@@ -19,18 +19,19 @@
 
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
-import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react";
-import {formatCurrency} from "../../utility/number-formatter.ts";
-import type {TransactionData} from "../../hooks/config-interfaces.ts";
+import {Box, IconButton,} from "@oxygen-ui/react";
+import type {TableConfigs, TransactionData} from "../../hooks/config-interfaces.ts";
 // @ts-ignore
 import {ArrowDownIcon, ArrowUpIcon} from "@oxygen-ui/react-icons";
 import {useState} from "react";
 import {ChevronRight} from "@mui/icons-material";
+import TableComponent from "../../components/table-component.tsx";
 
 
 interface AllTransactionsProps {
     name: string;
     transactions: TransactionData[];
+    transactionTableHeaderData?: TableConfigs[];
 }
 
 /**
@@ -39,63 +40,26 @@ interface AllTransactionsProps {
  * transaction data within the application layout. It handles state for pagination
  * and renders transaction details in a table, including credit/debit status.
  */
-const AllTransactionsPage = ({name,transactions}:AllTransactionsProps) => {
+const AllTransactionsPage = ({name,transactions, transactionTableHeaderData}:AllTransactionsProps) => {
 
     const [paginationIndex,setPaginatedIndex] = useState(10);
-
     const isDisabled =  transactions[paginationIndex+1] == null
-
     const onHandleNextButtonClick = () => {
         setPaginatedIndex(paginationIndex+10);
     }
-
     const transactionsToDisplay = transactions.slice(paginationIndex-10,paginationIndex)
-
     return (
         <>
             <ApplicationLayout name={name}>
-
                 <PaymentAccountPageLayout title={"Transactions"}>
-
                     <Box className={'table-container'}>
-                        <TableContainer >
-                            <Table>
-                                <TableHead>
-                                    <TableRow sx={{backgroundColor:'#F6F6F7'}}>
-                                        <TableCell sx={{color:'#6B7280'}}>id</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>date</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>reference</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>bank</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Account</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Amount</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {transactionsToDisplay.map((transactionData, index)=>{
-                                        const credDebitStatus = transactionData.status === "c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
-                                        return(
-                                            <TableRow key={index} hideBorder={true}>
-                                                <TableCell>{transactionData.id}</TableCell>
-                                                <TableCell>{transactionData.date}</TableCell>
-                                                <TableCell>{transactionData.reference}</TableCell>
-                                                <TableCell>{transactionData.bank}</TableCell>
-                                                <TableCell>{transactionData.account}</TableCell>
-                                                <TableCell><Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{transactionData.currency+" "+formatCurrency(transactionData.amount)} {credDebitStatus}</Box></TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <TableComponent tableData={transactionsToDisplay} tableType={"transaction"} dataConfigs={transactionTableHeaderData}/>
                     </Box>
-
                     <IconButton onClick={onHandleNextButtonClick} disabled={isDisabled}>
                         <p>Next</p>
                         <ChevronRight/>
                     </IconButton>
-
                 </PaymentAccountPageLayout>
-
             </ApplicationLayout>
         </>
     )

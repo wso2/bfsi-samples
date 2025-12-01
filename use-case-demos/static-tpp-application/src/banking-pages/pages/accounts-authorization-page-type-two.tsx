@@ -19,24 +19,22 @@
 import {Box, Button, FormControl, FormControlLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
-import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
+import type {SelectedAccountEntry} from "./AccountsSelectionPageTypeTwo.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
 
 /**
- * @function AccountsAuthorizationTwoPage
+ * @function AccountsAuthorizationPageTypeTwo
  * @description A page component simulating the final authorization step for **multiple** selected accounts.
  * It displays a summary of the accounts being authorized, the specific permissions granted
  * for each (e.g., 'Recurring'), and the consent expiry date, leading to either confirmation
  * via `onSuccessHandler` or cancellation.
  */
-const AccountsAuthorizationTwoPage = ()=>{
+const AccountsAuthorizationPageTypeTwo = ()=>{
 
     const { onSuccessHandler, accountsToAdd, themeColor } = useOutletContext<OutletContext>();
-
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
-
     const navigate = useNavigate();
 
     return(
@@ -45,27 +43,17 @@ const AccountsAuthorizationTwoPage = ()=>{
                 <Grid className="page-name-container">
                     <p>Please confirm the authorization to your selected accounts</p>
                 </Grid>
-
                 <Grid className={"form-login-one-container"}>
-
-                    {/*<FormControl>*/}
-                    {/*    <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>*/}
-                    {/*</FormControl>*/}
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
                         <FormControlLabel control={<Switch id={"account-one"} checked disabled={true} sx={{"--oxygen-palette-primary-main": themeColor}}/>} label={"Recurring"} labelPlacement={'start'}/>
                         <p>Expires in : 4 Days</p>
                     </Box>
-
                     <FormControl sx={{display:'flex', flexDirection:'column'}}>
-
                         {accountsToAdd.current.data[0].map((account:SelectedAccountEntry,index:number)=>{
-
                             return (
                                 <Box key={index} sx={{display:'flex', flexDirection:'column', gap:'1rem'}}>
                                     <p>Permission to :  {account.permission} </p>
-
                                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
-
                                         {account.accounts.map((iban, idx) => (
                                             <ListItem key={idx} sx={{display: 'list-item'}}>{iban}</ListItem>
                                         ))}
@@ -75,7 +63,6 @@ const AccountsAuthorizationTwoPage = ()=>{
                         })}
 
                     </FormControl>
-
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
                         <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
@@ -86,4 +73,5 @@ const AccountsAuthorizationTwoPage = ()=>{
     )
 }
 
-export default AccountsAuthorizationTwoPage;
+// @ts-ignore
+export default AccountsAuthorizationPageTypeTwo;

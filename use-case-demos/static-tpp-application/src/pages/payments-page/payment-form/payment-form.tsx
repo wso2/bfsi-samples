@@ -28,7 +28,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material";
 import type {BanksWithAccounts} from "../../../hooks/use-config-context.ts";
 
-
 export interface PaymentFormData {
     userAccount: string;
     payeeAccount: string;
@@ -63,9 +62,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsiveDirection = isSmallScreen ? 'column' : 'row';
-
     const navigate = useNavigate();
-
     const {control, handleSubmit, formState: {errors},reset} = useForm<PaymentFormData>({
         defaultValues: {
             userAccount: '',
@@ -77,28 +74,20 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
     });
 
     const [isConfirming, setIsConfirming] = useState(false);
-
     const [formDataToSubmit, setFormDataToSubmit] = useState<PaymentFormData | null>(null)
-
     const onSubmit = (data: PaymentFormData) => {
         setFormDataToSubmit(data);
         setIsConfirming(true);
 
     }
-
     const handleConfirmedAndRedirect = () => {
         if (formDataToSubmit){
             setIsConfirming(false);
-
             const bankName = formDataToSubmit.userAccount.split('-')[0];
-
-
             const target = appInfo.banksInfo.find((bank)=>{
                 return bank.name === bankName;
             })
-
             const relaventBank = banksList.find((bank)=>{return bank.name === bankName})
-
             navigate("/"+target?.route+"/login?type=payment",{
                 state:{
                     formData: formDataToSubmit,
@@ -106,7 +95,6 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                     bankInfo: relaventBank
                 }
             });
-
         }
     }
 
@@ -114,14 +102,11 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
         setIsConfirming(false);
         setFormDataToSubmit(null);
     }
-
     const paymentConfirmationMsg = `Are you sure you want to proceed with the payment of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formDataToSubmit?.payeeAccount}? `
-
     return (
         <>
             <h2 className={"payment-form-heading"}>Payment Information</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-
                 <FormControl fullWidth={true} margin={'dense'}>
                     <label>User Account</label>
                     <Controller name={'userAccount'} control={control} rules={{required: 'User required'}} render={({field}) => (
@@ -141,14 +126,11 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                                 bank.accounts.map((account,index)=>(
                                     <MenuItem key={index} value={`${bank.bank.name}-${account.id}`}>{bank.bank.name}-{account.id}</MenuItem>
                                 ))
-
                             )}
                         </Select>
                     )}/>
                     <ErrorMessage error={errors.userAccount}/>
                 </FormControl>
-
-
                 <FormControl fullWidth={true} margin={'dense'}>
                     <label>Biller Info</label>
                     <Controller name={'payeeAccount'} control={control} rules={{required:'Payee required'}} render={({field}) => (
@@ -171,12 +153,10 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                     )}/>
                     <ErrorMessage error={errors.payeeAccount}/>
                 </FormControl>
-
                 <div style={{display: 'flex',gap:'1rem'}}>
                     <FormControl fullWidth={true} margin={'dense'}>
                         <label>Currency</label>
                         <Controller name={'currency'} control={control} rules={{required:'Currency must select'}} render={({field}) => (
-
                             <Select {...field}
                                     displayEmpty
                                     renderValue={(value) => {
@@ -189,7 +169,6 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                                         return selected;
                                     }}
                                     error={!!errors.currency}>
-
                                 {currency.map((unit)=>(
                                     <MenuItem value={`${unit}`}>{unit}</MenuItem>
                                 ))}
@@ -197,7 +176,6 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                         )}/>
                         <ErrorMessage error={errors.currency}/>
                     </FormControl>
-
                     <FormControl fullWidth={true} margin={'dense'}>
                         <label>Amount</label>
                         <Controller name={'amount'} control={control} rules={{required:'Add amount to transfer',min: {
@@ -225,7 +203,6 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                         <ErrorMessage error={errors.amount}/>
                     </FormControl>
                 </div>
-
                 <FormControl fullWidth={true} margin={'dense'} sx={{height: '10vh'}}>
                     <label>Reference</label>
                     <Controller name={'reference'} control={control} rules={{required:'Reference need to be added'}} render={({field}) => (
@@ -246,11 +223,9 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                         <Button variant={"outlined"} type={"button"} onClick={()=>{reset()}}>Reset</Button>
                     </FormControl>
                 </Box>
-
                 {isConfirming && (
                     <OverlayConfirmation title={"Payment Confirmation"} content={paymentConfirmationMsg} onConfirm={handleConfirmedAndRedirect} onCancel={handleCancelConfirmation} mainButtonText={"Confirm"} secondaryButtonText={"Cancel"}/>
                 )}
-
             </form>
         </>
     );

@@ -31,7 +31,6 @@ export interface ApplicationLayoutProps {
  * and contains the main content (`children`) of the current page below it.
  */
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
-
     return (
         <>
             <Header name={name} />

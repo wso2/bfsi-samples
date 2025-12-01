@@ -39,73 +39,69 @@ interface ConnectedBanksAccountsProps{
 const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps)=>{
 
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-
     const responsiveDirections = isLargeScreen ? 'column' : 'row';
 
     return(
         <>
             <div className="main-connected-banks-outer" style={{display:"flex", flexDirection:"column"}}>
-            <Grid className="card-outer" sx={{flexDirection: responsiveDirections}}>
-                {bankAndAccountsInfo.map((bank,index)=>(
-                    <Card key={index} className={'card-inner-bank-info'} >
-                        <div className="card-top-container">
-                            <div className="logo">
-                                <img src={bank.bank.image} alt=""/>
-                            </div>
-                            <div className="bank-name-container">
-                                <p>{bank.bank.name}</p>
-                            </div>
-                        </div>
-
-                        <div className="card-total-container">
-                            <p>{bank.bank.currency}</p>
-                            <p>{formatCurrency(bank.total)}</p>
-                        </div>
-                    </Card>
-
-                ))}
-
-            </Grid>
-                <CustomTitle title={"Connected Accounts"}></CustomTitle>
-            <div>
-                {bankAndAccountsInfo.map((bank,index)=>{
-                    return (
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ChevronDownIcon/>} aria-controls={`${index}`} id= {`${index}-header`}>
-                                <div className="accordian-header-container">
-                                    <div className="bank-container">
-                                        <div className="bank-logo-container">
-                                            <img src={bank.bank.image} alt="bank logo" className={'bank-logo'} />
-                                        </div>
-                                        <Typography>{bank.bank.name} - Connected Accounts</Typography>
-                                    </div>
+                <Grid className="card-outer" sx={{flexDirection: responsiveDirections}}>
+                    {bankAndAccountsInfo.map((bank,index)=>(
+                        <Card key={index} className={'card-inner-bank-info'} >
+                            <div className="card-top-container">
+                                <div className="logo">
+                                    <img src={bank.bank.image} alt=""/>
                                 </div>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Table>
-                                    <TableBody >
-                                        {bank.accounts.map((account,index)=>{
-                                            let border = false
-                                            if (index === bank.accounts.length - 1) {
-                                                border = true
-                                            }
-                                            return(
-                                                <TableRow key={index} hideBorder={border} className={"table-row"}>
-                                                    <TableCell className={"table-body"}>{account.name}</TableCell>
-                                                    <TableCell className={"table-body"}>{account.id}</TableCell>
-                                                    <TableCell className={"table-body"}>{bank.bank.currency}</TableCell>
-                                                    <TableCell className={"table-body"}>{formatCurrency(account.balance)}</TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Table>
-                            </AccordionDetails>
-                        </Accordion>
-                    )
-                })}
-            </div>
+                                <div className="bank-name-container">
+                                    <p>{bank.bank.name}</p>
+                                </div>
+                            </div>
+                            <div className="card-total-container">
+                                <p>{bank.bank.currency}</p>
+                                <p>{formatCurrency(bank.total)}</p>
+                            </div>
+                        </Card>
+                    ))}
 
+                </Grid>
+                    <CustomTitle title={"Connected Accounts"}></CustomTitle>
+                <div>
+                    {bankAndAccountsInfo.map((bank,index)=>{
+                        return (
+                            <Accordion>
+                                <AccordionSummary expandIcon={<ChevronDownIcon/>} aria-controls={`${index}`} id= {`${index}-header`}>
+                                    <div className="accordian-header-container">
+                                        <div className="bank-container">
+                                            <div className="bank-logo-container">
+                                                <img src={bank.bank.image} alt="bank logo" className={'bank-logo'} />
+                                            </div>
+                                            <Typography>{bank.bank.name} - Connected Accounts</Typography>
+                                        </div>
+                                    </div>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Table>
+                                        <TableBody >
+                                            {bank.accounts.map((account,index)=>{
+                                                let border = false
+                                                if (index === bank.accounts.length - 1) {
+                                                    border = true
+                                                }
+                                                return(
+                                                    <TableRow key={index} hideBorder={border} className={"table-row"}>
+                                                        <TableCell className={"table-body"}>{account.name}</TableCell>
+                                                        <TableCell className={"table-body"}>{account.id}</TableCell>
+                                                        <TableCell className={"table-body"}>{bank.bank.currency}</TableCell>
+                                                        <TableCell className={"table-body"}>{formatCurrency(account.balance)}</TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                </AccordionDetails>
+                            </Accordion>
+                        )
+                    })}
+                </div>
             </div>
         </>
     );

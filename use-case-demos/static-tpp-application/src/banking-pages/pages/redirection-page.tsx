@@ -35,11 +35,9 @@ interface RedirectionPageProps {
 const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
-
     let data = null;
     let id = 2345;
     let state = null;
-
     if(navigationData.current?.formData != null){
         id = id+1;
         data = {
@@ -52,30 +50,24 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "currency":navigationData.current?.formData.currency,
             "status":"c"
         }
-
         state = {
             "type": "payment",
             "data": data
         }
     }else if(accountsToAdd.current?.data?.length > 0 && accountsToAdd.current?.type === "single" ){
-
         data={
             accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,
         }
-
         state = {
             "type": "single",
             "data": data
         }
-
     }else if(accountsToAdd.current?.data.length > 0 && accountsToAdd.current?.type === "multiple"){
-
         data={
             accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,
         }
-
         state = {
             "type": "multiple",
             "data": data

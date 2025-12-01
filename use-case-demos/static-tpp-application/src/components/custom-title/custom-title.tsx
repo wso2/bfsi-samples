@@ -36,7 +36,7 @@ interface TitleProps {
 const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
 
     const visibility = buttonName? "flex" : "none";
-    // const isDisabled = buttonName === "view more"? true : false;
+
     return(
         <>
             <Box className={'title-container'}>

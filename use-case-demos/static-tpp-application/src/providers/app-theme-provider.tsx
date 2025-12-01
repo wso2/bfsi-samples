@@ -17,6 +17,7 @@
  */
 
 import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
+import type {CustomColors} from "../hooks/config-interfaces.ts";
 
 
 /**
@@ -34,10 +35,13 @@ import {ThemeProvider, extendTheme} from '@oxygen-ui/react';
 
 interface ApplicationThemeProviderProps {
     children?: React.ReactNode;
+    color?: CustomColors[];
 }
 
-const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
-
+const AppThemeProvider = ({children,color}:ApplicationThemeProviderProps) => {
+    const customColors = (color || []).reduce((acc, currentObject) => {
+        return { ...acc, ...currentObject };
+    }, {});
     const theme = extendTheme({
         typography: {
             fontFamily: 'Inter',
@@ -46,19 +50,20 @@ const AppThemeProvider = ({children}:ApplicationThemeProviderProps) => {
             light: {
                 palette: {
                     primary: {
-                        main: '#FF5100',
-                        secondaryColor:'#EAA340',
-                        button: '#FFFFFF',
-                        backgroundColor: '#FFF5EE',
-                        tableBackground: '#FFFFFF',
-                        innerButtonBackground: '#bdc3c7',
-                        bankColor1:'#9b59b6',
-                        bankColor2:'#f1c40f',
-                        bankColor3:'#2ecc71',
-                        bankBackground:'#E5E4E2'
+                        main: customColors.primary,
+                        secondaryColor:customColors.secondaryColor,
+                        button: customColors.button,
+                        backgroundColor: customColors.backgroundColor,
+                        tableBackground: customColors.tableBackground,
+                        innerButtonBackground: customColors.innerButtonBackground,
+                        bankColor1:customColors.bankColor1,
+                        bankColor2:customColors.bankColor2,
+                        bankColor3:customColors.bankColor3,
+                        bankBackground:customColors.bankBackground,
+                        formValidationError: customColors.formValidationError,
                     },
                     fontColor: {
-                        white: '#FFFFFF',
+                        white: customColors.fontWhite,
                     },
                 },
             },

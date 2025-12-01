@@ -24,61 +24,48 @@ import {useMediaQuery} from "@mui/material";
 import './inner-pages-stylings.scss'
 
 /**
- * @function AccountsAuthorizationPage
+ * @function AccountsAuthorizationPageTypeOne
  * @description A dynamic component simulating the final step in a single account connection flow.
  * It prompts the user to **authorize specific permissions** for a selected account,
  * displays the consent duration, and uses `onSuccessHandler` to simulate the successful
  * authorization callback, or cancels the flow using `Maps(-1)`.
  */
-const AccountsAuthorizationPage = ()=>{
+const AccountsAuthorizationPageTypeOne = ()=>{
 
     const { onSuccessHandler, accountsToAdd,themeColor } = useOutletContext<OutletContext>();
-
-    console.log(accountsToAdd)
-
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
-
     const getFutureDate = () => {
         const futureDate = new Date();
         futureDate.setMonth(futureDate.getMonth() + 2);
         return futureDate.toLocaleDateString();
     };
-
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-
     const navigate = useNavigate();
-
     return(
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Please authorize the following permissions to your account</p>
                 </Grid>
-
                 <Grid className={"form-login-one-container"}>
-
                     <FormControl>
                         <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current.data[0]}</FormLabel>
                     </FormControl>
-
                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
                         {permissions.map((item, index) => {
                             return (<ListItem key={index} sx={{display: 'list-item'}}>{item}</ListItem>)
                         })}
                     </List>
-
                     <p>Permission expired on : {getFutureDate()}</p>
-
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={onSuccessHandler}  sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
                         <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>
-
         </>
     )
 }
 
-export default AccountsAuthorizationPage;
+export default AccountsAuthorizationPageTypeOne;

@@ -28,11 +28,11 @@ import OtpPage from "./banking-pages/pages/otp-page.tsx";
 import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
 import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-page.tsx";
 import LoginWithEmailPage from "./banking-pages/pages/login-with-email.tsx";
-import AccountsSelectionPage from "./banking-pages/pages/accounts-selection-page.tsx";
-import AccountsAuthorizationPage from "./banking-pages/pages/accounts-authorization-page.tsx";
-import AccountsSelectionTwoPage from "./banking-pages/pages/accounts-selection-two-page.tsx";
-import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authorization-two-page.tsx";
-import AccountsSelectionThreePage from "./banking-pages/pages/accounts-selection-three-page.tsx";
+import AccountsSelectionPageTypeOne from "./banking-pages/pages/accounts-selection-page-type-one.tsx";
+import AccountsAuthorizationPageTypeOne from "./banking-pages/pages/accounts-authorization-page-type-one.tsx";
+import AccountsSelectionPageTypeTwo from "./banking-pages/pages/AccountsSelectionPageTypeTwo.tsx";
+import AccountsAuthorizationPageTypeTwo from "./banking-pages/pages/accounts-authorization-page-type-two.tsx";
+import AccountsSelectionPageTypeThree from "./banking-pages/pages/accounts-selection-page-type-three.tsx";
 import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx";
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
 
@@ -45,9 +45,7 @@ import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.t
  */
 export function App() {
 
-    const {overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
-    console.log("appInfo",useCases);
-
+    const {accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
     if (!appInfo) {
         return (
             <div style={{ padding: '50px', textAlign: 'center', fontSize: '1.5em' }}>
@@ -56,54 +54,56 @@ export function App() {
         );
     }
 
-    return (<>
-        
-        <AppThemeProvider>
-            <Routes>
-                <Route path={`/${appInfo.route}/*`} element={
-                    <Routes>
-                        <Route index element={<Navigate to="home" replace />} />
-                        <Route path="home"
-                               element={
-                                   <Home userInfo={userInfo}
-                                         name={appInfo.applicationName}
-                                         total={total}
-                                         chartData={chartInfo}
-                                         banksWithAccounts={banksWithAccounts}
-                                         transactions={transactions}
-                                         standingOrderList={standingOrderList}
-                                         appInfo={appInfo}
-                                         banksList={banksList}
-                                         overlayInformation={overlayInformation}
-                                   />
-                               }/>
-                        <Route path="paybills" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
-                        <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
-                        <Route path="transactions" element={<AllTransactions name={appInfo.applicationName} transactions={transactions}/>}/>
-                        <Route path="standing-orders" element={<AllStandingOrders name={appInfo.applicationName} standingOrdersList={standingOrderList}/>}/>
-                    </Routes>
-                } />
+    return (
+        <>
+            <AppThemeProvider color={colors}>
+                <Routes>
+                    <Route path={`/${appInfo.route}/*`} element={
+                        <Routes>
+                            <Route index element={<Navigate to="home" replace />} />
+                            <Route path="home"
+                                   element={
+                                       <Home userInfo={userInfo}
+                                             name={appInfo.applicationName}
+                                             total={total}
+                                             chartData={chartInfo}
+                                             banksWithAccounts={banksWithAccounts}
+                                             transactions={transactions}
+                                             standingOrderList={standingOrderList}
+                                             appInfo={appInfo}
+                                             banksList={banksList}
+                                             overlayInformation={overlayInformation}
+                                             transactionTableHeaderData={transactionTableHeaderData}
+                                             standingOrdersTableHeaderData={standingOrdersTableHeaderData}
+                                       />
+                                   }/>
+                            <Route path="paybills" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
+                            <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
+                            <Route path="transactions" element={<AllTransactions name={appInfo.applicationName} transactions={transactions} transactionTableHeaderData={transactionTableHeaderData}/>}/>
+                            <Route path="standing-orders" element={<AllStandingOrders name={appInfo.applicationName} standingOrdersList={standingOrderList} standingOrdersTableHeaderData={standingOrdersTableHeaderData}/>}/>
+                        </Routes>
+                    } />
 
-                {appInfo.banksInfo.map((bank,index)=>(
-                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
-                        <Route path={"login"} element={<LoginPage />}/>
-                        <Route path={"otp"} element={<OtpPage />}/>
-                        <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
-                        <Route path={"redirecting"} element={<RedirectionPage appConfig={appInfo} />}/>
-                        <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
-                        <Route path={"account-select"} element={<AccountsSelectionPage/>}/>
-                        <Route path={"account-authorize"} element={<AccountsAuthorizationPage/>}/>
-                        <Route path={"account-select-uc-2"} element={<AccountsSelectionTwoPage/>}/>
-                        <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationTwoPage/>}/>
-                        <Route path={"account-select-uc-3"} element={<AccountsSelectionThreePage/>}/>
-                    </Route>
-                ))}
+                    {appInfo.banksInfo.map((bank,index)=>(
+                        <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank} accountsNumbersToAdd={accountsNumbersToAdd}/>}>
+                            <Route path={"login"} element={<LoginPage />}/>
+                            <Route path={"otp"} element={<OtpPage />}/>
+                            <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
+                            <Route path={"redirecting"} element={<RedirectionPage appConfig={appInfo} />}/>
+                            <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
+                            <Route path={"account-select"} element={<AccountsSelectionPageTypeOne/>}/>
+                            <Route path={"account-authorize"} element={<AccountsAuthorizationPageTypeOne/>}/>
+                            <Route path={"account-select-uc-2"} element={<AccountsSelectionPageTypeTwo/>}/>
+                            <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationPageTypeTwo/>}/>
+                            <Route path={"account-select-uc-3"} element={<AccountsSelectionPageTypeThree/>}/>
+                        </Route>
+                    ))}
 
-                <Route path="/" element={<Navigate to={`/${appInfo.route}`} replace />} />
-            </Routes>
-        </AppThemeProvider>
-
-        </>)
+                    <Route path="/" element={<Navigate to={`/${appInfo.route}`} replace />} />
+                </Routes>
+            </AppThemeProvider>
+        </>
+    )
 
 }
 

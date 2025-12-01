@@ -34,27 +34,19 @@ interface BankingHookProps {
 export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
 
     const initialTypeIndex = usecase.findIndex(item => item.id === type);
-
     const mainUseecaseAction = initialTypeIndex !== -1 ? initialTypeIndex : 0;
-
     const routeType =  useRef(mainUseecaseAction)
-
     const initialUsecaseItem = usecase[routeType.current];
-
     const initialSteps = initialUsecaseItem?.useCases[0]?.steps || [];
-
     const [sequence, setSequence] = useState<Step[]>(initialSteps);
     const [steps, setSteps] = useState<number>(0);
     const [currentStep, setCurrentStep] = useState<Step >(sequence[0]);
-
     const [usecasesList, setUseCasesList] = useState<UseCase[]>(initialUsecaseItem?.useCases || []);
     const [selectedUsecaseIndex, setSelectedUsecaseIndex] = useState<number>(0);
 
     const usecaseSelectionHandler = useCallback(
         (indexOfUsecase: number = 0) => {
-
             const newSteps = usecase[routeType.current]?.useCases[indexOfUsecase]?.steps;
-
             if (newSteps) {
                 setSelectedUsecaseIndex(indexOfUsecase);
                 setSequence(newSteps);
@@ -62,25 +54,19 @@ export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
                 setCurrentStep(newSteps[0]);
             }
         },
-
         [usecase, routeType.current]
     );
 
     useEffect(() => {
-
         const list = usecase[routeType.current]?.useCases || [];
-
         setUseCasesList(list);
-
     }, [selectedUsecaseIndex,sequence]);
 
     const onSuccessHandler =()=>{
-
         if (steps < sequence.length-1) {
             setSteps((steps)=> steps+1)
         }
         const step = sequence[steps+1];
-
         setCurrentStep(step);
     }
     return {usecasesList, onSuccessHandler,currentStep,selectedUsecaseIndex,usecaseSelectionHandler}

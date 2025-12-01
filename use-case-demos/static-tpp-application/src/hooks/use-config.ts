@@ -21,8 +21,6 @@ import type { Config } from "./config-interfaces";
 import { api } from "../utility/api";
 import {queryClient} from "../utility/query-client.ts";
 
-export const STORAGE_KEY = "appConfig";
-
 /**
  * @function useConfig
  * @description A custom hook utilizing **@tanstack/react-query** to fetch the application's

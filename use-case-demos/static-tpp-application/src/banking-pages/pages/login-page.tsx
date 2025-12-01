@@ -32,8 +32,7 @@ export interface OutletContext {
     appInfo: AppInfo;
     themeColor: string;
     selectedAccountNumber:string;
-
-
+    accountsNumbersToAdd: string[];
 }
 
 interface loginformData {
@@ -52,9 +51,6 @@ const LoginPage = () => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-
-
-
     const navigate = useNavigate();
     const { onSuccessHandler,appInfo,themeColor } = useOutletContext<OutletContext>();
     const { control, handleSubmit, formState: { errors } } = useForm<loginformData>({
@@ -62,7 +58,6 @@ const LoginPage = () => {
             email: '', password: ''
         }
     })
-
     const onSubmitHandler = (data: loginformData) => {
         console.log("Submitting...")
         if (data.email === 'john@gmail.com' && data.password !== '') {
@@ -71,17 +66,14 @@ const LoginPage = () => {
             alert('wrong email or password')
         }
     }
-
     return (
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Login to your account</p>
                 </Grid>
-
                 <Grid className="form-login-one-container">
                     <form onSubmit={handleSubmit(onSubmitHandler)} style={{display:'flex', flexDirection:'column', justifyContent:'center', gap:'1rem'}}>
-
                         <FormControl fullWidth={true} >
                             <label>Email</label>
                             <Controller name={'email'} control={control} rules={{ required: 'Email address required' }} render={({ field }) => (
@@ -95,7 +87,6 @@ const LoginPage = () => {
                             )} />
                             <ErrorMessage error={errors.email} />
                         </FormControl>
-
                         <FormControl fullWidth={true}>
                             <label>password</label>
                             <Controller name={'password'} control={control} rules={{ required: 'Password required to proceed' }} render={({ field }) => (
@@ -110,7 +101,6 @@ const LoginPage = () => {
                             )} />
                             <ErrorMessage error={errors.password} />
                         </FormControl>
-
                         <Box className="form-buttons-container">
                             <Button className="button-styles " sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} variant={'contained'} type={'submit'}>Login</Button>
                             <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>

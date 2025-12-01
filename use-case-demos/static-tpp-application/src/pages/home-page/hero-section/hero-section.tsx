@@ -49,14 +49,11 @@ interface HeroSectionProps {
  */
 const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-
     const navigate = useNavigate();
-
     const responsiveDirections = isLargeScreen ? 'column' : 'row';
     const responsiveMinHeight = isLargeScreen ? '16vh' : '8vh';
     const responsiveDisplay = isLargeScreen ? 'none' : 'flex';
     const responsivePadding = isLargeScreen ? '1rem' : '2rem';
-
     const actionButtons: ActionButton[] = [
         {icon: <BoltIcon size={'medium'}/>, name: "Pay Bills"},
         {icon: <ArrowLeftArrowRightIcon size={'medium'}/>, name: "Transfer"},
@@ -67,13 +64,9 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const onClickHandlerActionButtons = (pathTo:string)=>{
         const absolutePath = "/"+appInfo.route+"/"+pathTo;
         navigate(absolutePath);
-
-        console.log(pathTo);
     }
-
     const greetingSelection = () => {
         const currentHour = new Date().getHours();
-
         if (currentHour >= 5 && currentHour < 12) {
             return ", Good Morning!";
         } else if (currentHour >= 0 && currentHour < 5) {

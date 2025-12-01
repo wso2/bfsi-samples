@@ -21,15 +21,21 @@ import ApplicationLayout from "../../layouts/application-layout/application-layo
 
 import { Grid } from "@mui/material";
 import HomePageLayout from "../../layouts/home-page-layout/home-page-layout.tsx";
-import type {AppInfo, Bank, StandingOrders, TransactionData, User} from "../../hooks/config-interfaces.ts";
+import type {
+    AppInfo,
+    Bank,
+    StandingOrders,
+    TableConfigs,
+    TransactionData,
+    User
+} from "../../hooks/config-interfaces.ts";
 import type {BanksWithAccounts, ChartData, OverlayDataProp} from "../../hooks/use-config-context.ts";
 import {InfographicsContent} from "./infographics-content/infographics-content.tsx";
 import ConnectedBanksAccounts from "./connected-banks-accounts/connected-banks-accounts.tsx";
 import CustomTitle from "../../components/custom-title/custom-title.tsx";
-import LatestTransactions from "./latest-transactions/latest-transactions.tsx";
-import StandingOrdersTable from "./standing-orders/standing-orders.tsx";
 import {useNavigate} from "react-router-dom";
 import OverlayConfirmation from "../../components/overlay-confirmation/overlay-confirmation.tsx";
+import TableComponent from "../../components/table-component.tsx";
 
 interface AccountsCentralLayoutProps {
     name: string;
@@ -42,6 +48,8 @@ interface AccountsCentralLayoutProps {
     appInfo: AppInfo;
     banksList: Bank[];
     overlayInformation: OverlayDataProp;
+    transactionTableHeaderData?:TableConfigs[];
+    standingOrdersTableHeaderData?:TableConfigs[];
 }
 
 export interface SideButtonProps {
@@ -55,15 +63,10 @@ export interface SideButtonProps {
  * central application layout. It handles specific button clicks to navigate
  * to other functional pages (e.g., 'Add Account', 'view more').
  */
-const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation}:AccountsCentralLayoutProps)=>{
+const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation,transactionTableHeaderData}:AccountsCentralLayoutProps)=>{
 
     const navigate = useNavigate();
-
-    console.log(overlayInformation)
-
     const onButtonHandler = (buttonName:string,title?:string) => {
-
-        console.log(buttonName)
         if(buttonName === "Add Account"){
             navigate(`/${appInfo.route}/accounts`,{
                 state:{
@@ -90,13 +93,14 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
                     </Grid>
                     <Grid className={'transactions-container'}>
                         <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        <LatestTransactions transactions={transactions}/>
+                        {/*<LatestTransactions transactions={transactions}/>*/}
+                        <TableComponent tableData={transactions} tableType={"transaction"} dataConfigs={transactionTableHeaderData}/>
                     </Grid>
                     <Grid className={'standing-orders-container'}>
                         <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        <StandingOrdersTable standingOrderList={standingOrderList}/>
+                        {/*<StandingOrdersTable standingOrderList={standingOrderList}/>*/}
+                        <TableComponent tableData={standingOrderList} dataConfigs={standingOrdersTableHeaderData} tableType={""}/>
                     </Grid>
-
                 </HomePageLayout>
             </ApplicationLayout>
 

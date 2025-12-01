@@ -44,6 +44,10 @@ export interface Bank {
     border: string;
     bankNumber: number;
     startingAccountNumbers: string;
+    accounts:Account[];
+    transactions:TransactionData[];
+    standingOrders:StandingOrders[]
+
 }
 
 export interface Account {
@@ -71,13 +75,13 @@ export interface TransactionData{
 }
 
 export interface StandingOrders{
-    "ID": string,
-    "Reference": string,
-    "Bank": string,
-    "NextDate": string,
-    "Status": string,
-    "Amount": string,
-    "Currency": string,
+    "id": string,
+    "reference": string,
+    "bank": string,
+    "nextDate": string,
+    "status": string,
+    "amount": string,
+    "currency": string,
 }
 
 export interface Step {
@@ -98,45 +102,23 @@ export interface Type {
     useCases: UseCase[];
 }
 
+export interface TableConfigs{
+    [key: string]: string;
+
+}
+
+export interface CustomColors{
+    [key: string]: string;
+}
 
 export interface Config {
     user: User;
     name: AppInfo;
     banks: Bank[];
-    accounts: Account[];
     payees: Payee[];
-    transactions: TransactionData[];
-    standingOrders: StandingOrders[];
     types: Type[];
+    transactionTableHeaderData: TableConfigs[];
+    standingOrdersTableHeaderData: TableConfigs[];
+    colors: CustomColors[];
+    accountNumbersToAdd: string[];
 }
-
-interface PaymentData {
-    type: "payment";
-    data: { 
-        id: string; 
-        amount: string; 
-        currency: string; 
-        account:string;
-        bank:string;
-        date:string;
-        reference:string;
-    };
-}
-
-interface SingleAccountState {
-    type: "single";
-    data: { 
-        accountDetails: any; 
-        bankInfo: string; 
-    };
-}
-
-interface MultipleAccountState {
-    type: "multiple";
-    data: { 
-        accountDetails: any; 
-        bankInfo: string; 
-    };
-}
-
-export type OperationState = PaymentData | SingleAccountState | MultipleAccountState;

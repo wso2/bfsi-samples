@@ -41,13 +41,8 @@ interface InfographicsContentProps {
 export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-
-    // const position = isSmallScreen ? 'top' : 'right';
-
     const displayDirection = isSmallScreen ? 'column' : 'row';
-
     const responsiveGap = isSmallScreen ? '0.2rem' : '1rem';
-
     const chartjsData = {
         labels: chartInfo.labels,
         datasets: [
@@ -59,7 +54,6 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
                 borderWidth: 2,
             }
         ]
-
     }
 
     const options: ChartOptions<'doughnut'> = {

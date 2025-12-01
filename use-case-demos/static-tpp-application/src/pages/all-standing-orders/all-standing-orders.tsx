@@ -16,17 +16,18 @@
  * under the License.
  */
 
-import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react";
-import {formatCurrency} from "../../utility/number-formatter.ts";
-import type {StandingOrders} from "../../hooks/config-interfaces.ts";
+import {Box, IconButton, } from "@oxygen-ui/react";
+import type {StandingOrders, TableConfigs} from "../../hooks/config-interfaces.ts";
 import {useState} from "react";
 import {ChevronRight} from "@mui/icons-material";
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
+import TableComponent from "../../components/table-component.tsx";
 
 interface StandingOrdersTableProps {
     name:string;
-    standingOrdersList:StandingOrders[]
+    standingOrdersList:StandingOrders[];
+    standingOrdersTableHeaderData?:TableConfigs[];
 }
 
 /**
@@ -36,16 +37,13 @@ interface StandingOrdersTableProps {
  * It manages the pagination state to show 10 items at a time and integrates
  * into the main application layout.
  */
-const AllStandingOrders = ({name, standingOrdersList}:StandingOrdersTableProps)=>{
+const AllStandingOrders = ({standingOrdersTableHeaderData,name, standingOrdersList}:StandingOrdersTableProps)=>{
 
     const [paginationIndex,setPaginatedIndex] = useState(10);
-
     const isDisabled =  standingOrdersList[paginationIndex+1] == null
-
     const onHandleNextButtonClick = () => {
         setPaginatedIndex(paginationIndex+10);
     }
-
     const standingOrdersToDisplay = standingOrdersList.slice(paginationIndex-10,paginationIndex)
 
     return (
@@ -53,33 +51,7 @@ const AllStandingOrders = ({name, standingOrdersList}:StandingOrdersTableProps)=
             <ApplicationLayout name={name}>
                 <PaymentAccountPageLayout title={"Standing Orders"}>
                     <Box className={'standing-orders-container-outer'}>
-                        <TableContainer>
-                            <Table>
-                                <TableHead>
-                                    <TableRow sx={{backgroundColor:'#F6F6F7'}}>
-                                        <TableCell sx={{color:'#6B7280'}}>ID</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Reference</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Bank</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Next Date</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Status</TableCell>
-                                        <TableCell sx={{color:'#6B7280'}}>Amount</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {standingOrdersToDisplay.map((standingOrder) => (
-                                        <TableRow hideBorder={true}>
-                                            <TableCell>{standingOrder.ID}</TableCell>
-                                            <TableCell>{standingOrder.Reference}</TableCell>
-                                            <TableCell>{standingOrder.Bank}</TableCell>
-                                            <TableCell>{standingOrder.NextDate}</TableCell>
-                                            <TableCell>{standingOrder.Status}</TableCell>
-                                            <TableCell>{formatCurrency(standingOrder.Amount)}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-
-                        </TableContainer>
+                        <TableComponent tableData={standingOrdersToDisplay} tableType={""} dataConfigs={standingOrdersTableHeaderData}/>
                     </Box>
                     <IconButton onClick={onHandleNextButtonClick} disabled={isDisabled}>
                         <p>Next</p>
@@ -87,9 +59,6 @@ const AllStandingOrders = ({name, standingOrdersList}:StandingOrdersTableProps)=
                     </IconButton>
                 </PaymentAccountPageLayout>
             </ApplicationLayout>
-
-
-
         </>
     )
 }

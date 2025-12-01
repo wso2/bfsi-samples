@@ -36,7 +36,6 @@ interface ActionButtonProps {
 const QuickActionButton = ({icon,name, onClick} : ActionButtonProps)=>{
 
     if (!onClick) return null;
-
     const isDisabled = name === "Pay Bills"? false : true;
 
     return (

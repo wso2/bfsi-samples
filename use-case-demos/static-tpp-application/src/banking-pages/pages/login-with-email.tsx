@@ -48,7 +48,6 @@ const LoginWithEmailPage = ()=>{
             email:''
         }
     })
-
     const onSubmit = (data:loginformData)=>{
         if (data.email === 'john@gmail.com'){
             onSuccessHandler()
@@ -56,19 +55,15 @@ const LoginWithEmailPage = ()=>{
             alert("Email not matched")
         }
     }
-
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-
     const navigate = useNavigate();
-
     return (
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>Please login to your account</p>
                 </Grid>
-
                 <Grid className={"form-login-one-container"}>
                     <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
                         <FormControl fullWidth={true} margin={'normal'} >
@@ -84,7 +79,6 @@ const LoginWithEmailPage = ()=>{
                             )}/>
                             <ErrorMessage error={errors.email}/>
                         </FormControl>
-
                         <Box className="form-buttons-container">
                             <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Login</Button>
                             <Button variant={'outlined'} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>

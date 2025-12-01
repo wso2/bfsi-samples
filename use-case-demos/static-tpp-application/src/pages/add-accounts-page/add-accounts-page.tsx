@@ -49,13 +49,10 @@ const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
     const banksList = navigationState?.banksWithAccounts;
 
     const onAddAccoutsHandler = (bankName:string)=>{
-
         const relaventBank = banks.find((bank)=>{return bank.name === bankName})
-
         const target = appInfo.banksInfo.find((bank) => {
             return bank.name === bankName;
         });
-
         navigate("/"+target?.route+"/?type=account",{
             state:{
                 formData: null,
@@ -70,8 +67,6 @@ const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
             <ApplicationLayout name={appName}>
                 <PaymentAccountPageLayout title={"Add Account"}>
                     <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
-
-
                     <div className="accounts-buttons-container">
                         {banksList?.map((account, index) => (
                             <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}} >
@@ -84,13 +79,9 @@ const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
                             </IconButton>
                         ))}
                     </div>
-
-
-
                 </PaymentAccountPageLayout>
             </ApplicationLayout>
         </>
-
     )
 }
 

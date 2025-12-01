@@ -44,7 +44,6 @@ const OverlayConfirmationComponent: React.FC<ConfirmationOverlayProps> = ({onCon
                 <Card className="overlay-inner">
                     <h4>{title}</h4>
                     <p>{content}</p>
-
                     <Box className="button-container">
                         <Button variant={"contained"} onClick={onConfirm}>{mainButtonText}</Button>
                         {shouldShowSecondaryButton &&

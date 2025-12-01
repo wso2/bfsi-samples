@@ -39,33 +39,26 @@ const OtpPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-
     const { onSuccessHandler, themeColor } = useOutletContext<OutletContext>();
-
     const {control,handleSubmit,formState:{errors}} = useForm<OtpFormData>({
         defaultValues:{
             code:''
         }
     })
-
     const onSubmitHandler=(data:OtpFormData)=>{
         if(data.code==='55555'){
             onSuccessHandler()
         }else{
             alert("Check your Otp and re-enter")
         }
-
     }
-
     const navigate = useNavigate();
-
     return(
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
                 <Grid className="page-name-container">
                     <p>SMS Authentication</p>
                 </Grid>
-                
                 <Grid className={"form-login-one-container"} >
                     <form onSubmit={handleSubmit(onSubmitHandler)} style={{gap:'2rem', display:'flex', flexDirection:'column'}}>
                         <FormControl fullWidth={true} margin={'normal'} >
@@ -81,7 +74,6 @@ const OtpPage = ()=>{
                             )}/>
                             <ErrorMessage error={errors.code}/>
                         </FormControl>
-
                         <Box className="form-buttons-container">
                             <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} className="button-styles" type={'submit'}>Confirm</Button>
                             <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
