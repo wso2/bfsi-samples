@@ -284,10 +284,10 @@
   ],
 
   "transactionTableHeaderData": [
-    {"id":"id"},
+    {"ID":"id"},
     {"Date": "date"},
-    {"reference": "reference"},
-    {"bank": "bank"},
+    {"Reference": "reference"},
+    {"Bank": "bank"},
     {"Account": "account"},
     {"Amount": "amount"}
   ],

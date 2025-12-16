@@ -21,16 +21,36 @@ import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead,
 import {formatCurrency} from "../utility/number-formatter.ts";
 // @ts-ignore
 import {ArrowDownIcon, ArrowUpIcon} from "@oxygen-ui/react-icons";
+import type {JSX} from "react";
 
 interface TableComponentProps {
     tableData: TransactionData[] | StandingOrders[];
     dataConfigs?: TableConfigs[];
-    tableType: string;
+    tableType: "transaction" | "standing-order";
 }
 
 
 
 const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>{
+
+    const renderAmount = (dataRow: TransactionData | StandingOrders, credDebitStatus: JSX.Element | null) => {
+            const currency = 'currency' in dataRow ? dataRow.currency : '';
+            const amount = 'amount' in dataRow ? dataRow.amount : '0';
+            const formattedAmount = `${currency} ${formatCurrency(amount)}`;
+
+                if (tableType === "transaction" && credDebitStatus) {
+                    return (
+                            <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
+                                {formattedAmount} {credDebitStatus}
+                            </Box>
+                        );
+               }
+            return (
+                    <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
+                           {formattedAmount}
+                    </Box>
+                );
+        };
 
     const keysList: string[] = dataConfigs?dataConfigs.flatMap(dataKey=> {
         return Object.keys(dataKey);
@@ -44,21 +64,29 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
                 <Table>
                     <TableHead>
                         <TableRow sx={{backgroundColor:'#F6F6F7'}}>
-                            {keysList.map(headerKey=>
-                                <TableCell sx={{color:'#6B7280'}}>{headerKey}</TableCell>
+                            {keysList.map((headerKey,index)=>
+                                <TableCell key={index} sx={{color:'#6B7280'}}>{headerKey}</TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody sx={{backgroundColor:'white'}}>
                         {tableData.slice(0, 4).map((dataRow:TransactionData|StandingOrders, index:number)=>{
-                            const credDebitStatus = (dataRow as TransactionData).creditDebitStatus==="c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
 
-                            const amount = tableType === "transaction"? <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{(dataRow as any).currency+" "+formatCurrency((dataRow as any).amount)} {credDebitStatus}</Box> : <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{(dataRow as any).currency+" "+formatCurrency((dataRow as any).amount)}</Box>
+                            const isTransactionData = (data: TransactionData | StandingOrders): data is TransactionData => {
+                                return 'creditDebitStatus' in data;
+                                };
 
+                            const credDebitStatus = tableType === "transaction" && isTransactionData(dataRow)
+                            ? (dataRow.creditDebitStatus === "c"
+                                ? <IconButton style={{color: '#2ecc71'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></IconButton>
+                                    : <IconButton style={{color: '#c0392b'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></IconButton>)
+                                : null;
+
+                            const amount = renderAmount(dataRow, credDebitStatus);
                             return(
                                 <TableRow key={index} hideBorder={true}>
-                                    {valuesList.map(valuesData=>
-                                        <TableCell>{valuesData === "amount" ? amount : (dataRow as any)[valuesData]}</TableCell>
+                                    {valuesList.map((valuesData,cellIndex)=>
+                                        <TableCell key={cellIndex}>{valuesData === "amount" ? amount : (dataRow as any)[valuesData]}</TableCell>
                                     )}
                                 </TableRow>
                             );

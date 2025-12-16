@@ -54,22 +54,13 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "type": "payment",
             "data": data
         }
-    }else if(accountsToAdd.current?.data?.length > 0 && accountsToAdd.current?.type === "single" ){
-        data={
+    }else if(accountsToAdd.current?.data?.length > 0 && (accountsToAdd.current?.type === "single" || accountsToAdd.current?.type === "multiple")){
+        data = {
             accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,
         }
         state = {
-            "type": "single",
-            "data": data
-        }
-    }else if(accountsToAdd.current?.data.length > 0 && accountsToAdd.current?.type === "multiple"){
-        data={
-            accountDetails : accountsToAdd.current.data,
-            bankInfo : navigationData.current?.bankInfo.name,
-        }
-        state = {
-            "type": "multiple",
+            "type": accountsToAdd.current.data?.type,
             "data": data
         }
     }
