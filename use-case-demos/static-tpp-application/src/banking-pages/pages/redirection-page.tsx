@@ -36,12 +36,12 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
     let data = null;
-    let id = 2345;
+
     let state = null;
     if(navigationData.current?.formData != null){
-        id = id+1;
+
         data = {
-            "id": "T0000"+ id,
+            "id": `T${Date.now()}`,
             "date": new Date().toLocaleDateString(),
             "reference": navigationData.current?.formData.reference,
             "bank": navigationData.current?.bankInfo.name,

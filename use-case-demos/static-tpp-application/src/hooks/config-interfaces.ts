@@ -71,7 +71,7 @@ export interface TransactionData{
     "account": string,
     "amount": string,
     "currency": string,
-    "status": string
+    "creditDebitStatus": string
 }
 
 export interface StandingOrders{

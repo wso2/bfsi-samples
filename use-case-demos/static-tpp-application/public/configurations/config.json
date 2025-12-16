@@ -1,8 +1,8 @@
 {
   "user": {
     "name": "James Smith",
-    "image": "https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/resources/assets/images/profile/dp_image.webp",
-    "background":"https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/resources/assets/images/background/bg-image.webp"
+    "image": "/resources/assets/images/profile/dp_image.webp",
+    "background":"/resources/assets/images/background/bg-image.webp"
   },
   "name": {
     "route": "accounts-central",
@@ -31,7 +31,7 @@
   "banks": [
     {
       "name": "Ascend Global Bank",
-      "image": "https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/resources/assets/images/logos/assend_global_bank_logo.png",
+      "image": "/resources/assets/images/logos/assend_global_bank_logo.png",
       "currency": "GBP",
       "color": "#FF5100",
       "border": "#FF5100",
@@ -59,7 +59,7 @@
           "account": "1234-5678-9012-3456",
           "amount": "1250.75",
           "currency": "USD",
-          "status": "c"
+          "creditDebitStatus": "c"
         },
         {
           "id": "T00123459",
@@ -69,7 +69,7 @@
           "account": "5555-6666-7777-8888",
           "amount": "25.50",
           "currency": "USD",
-          "status": "d"
+          "creditDebitStatus": "d"
         }
       ],
       "standingOrders": [
@@ -95,7 +95,7 @@
     },
     {
       "name": "Global Asset Trust",
-      "image": "https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/resources/assets/images/logos/global_asset_trust_logo.png",
+      "image": "/resources/assets/images/logos/global_asset_trust_logo.png",
       "currency": "GBP",
       "color": "#FFCC66",
       "border": "#FFCC66",
@@ -117,7 +117,7 @@
           "account": "1111-2222-3333-4444",
           "amount": "99.99",
           "currency": "GBP",
-          "status": "d"
+          "creditDebitStatus": "d"
         }
       ],
       "standingOrders": [
@@ -134,7 +134,7 @@
     },
     {
       "name": "Trust Union",
-      "image": "https://lasithlri.github.io/open_banking_demo_test/demos/usecases/dist/resources/assets/images/logos/trust_union_logo.png",
+      "image": "/resources/assets/images/logos/trust_union_logo.png",
       "currency": "GBP",
       "color": "#8E4714",
       "border": "#8E4714",
@@ -156,7 +156,7 @@
           "account": "9876-5432-1098-7654",
           "amount": "500.00",
           "currency": "EUR",
-          "status": "c"
+          "creditDebitStatus": "c"
         }
       ],
       "standingOrders": [
@@ -317,8 +317,3 @@
 
   "accountNumbersToAdd": ["-0566-1212","-0045-2020","-0400-1010"]
 }
-
-
-
-
-

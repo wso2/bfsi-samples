@@ -37,7 +37,7 @@ export interface SelectedAccountEntry {
 const AccountsSelectionPageTypeThree = ()=>{
 
     const {accountsNumbersToAdd, onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();
-    const accountsList = accountsNumbersToAdd.map((account) => {selectedAccountNumber+account});
+    const accountsList = accountsNumbersToAdd.map((account) => selectedAccountNumber + account);
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';

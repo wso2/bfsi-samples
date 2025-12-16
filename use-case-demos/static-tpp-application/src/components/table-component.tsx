@@ -49,9 +49,9 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
                             )}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody sx={{backgroundColor:'white'}}>
                         {tableData.slice(0, 4).map((dataRow:TransactionData|StandingOrders, index:number)=>{
-                            const credDebitStatus = (dataRow as TransactionData).status==="c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
+                            const credDebitStatus = (dataRow as TransactionData).creditDebitStatus==="c"? <IconButton style={{color: '#2ecc71'}}><ArrowDownIcon size={24} /></IconButton> : <IconButton style={{color: '#c0392b'}}><ArrowUpIcon size={24} /></IconButton>
 
                             const amount = tableType === "transaction"? <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{(dataRow as any).currency+" "+formatCurrency((dataRow as any).amount)} {credDebitStatus}</Box> : <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>{(dataRow as any).currency+" "+formatCurrency((dataRow as any).amount)}</Box>
 

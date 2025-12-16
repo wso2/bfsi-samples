@@ -58,8 +58,10 @@ const AccountsSelectionPageTwo = ()=>{
             });
         });
     };
+
+    const hasSelectedAccounts = selectedData.some(entry => entry.accounts.length > 0);
     const handleSubmit = () => {
-        if(selectedData.length>0){
+        if(hasSelectedAccounts){
             accountsToAdd.current = {type:"multiple",data:[selectedData]};
             onSuccessHandler();
         }else{
