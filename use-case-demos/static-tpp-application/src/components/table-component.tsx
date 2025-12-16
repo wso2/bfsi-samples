@@ -29,8 +29,6 @@ interface TableComponentProps {
     tableType: "transaction" | "standing-order";
 }
 
-
-
 const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>{
 
     const renderAmount = (dataRow: TransactionData | StandingOrders, credDebitStatus: JSX.Element | null) => {
@@ -38,20 +36,13 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
             const amount = 'amount' in dataRow ? dataRow.amount : '0';
             const formattedAmount = `${currency} ${formatCurrency(amount)}`;
 
-                if (tableType === "transaction" && credDebitStatus) {
-                    return (
-                            <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
-                                {formattedAmount} {credDebitStatus}
-                            </Box>
-                        );
-               }
             return (
-                    <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
-                           {formattedAmount}
-                    </Box>
+                <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
+                    {formattedAmount}
+                    {tableType === "transaction" && credDebitStatus}
+                </Box>
                 );
         };
-
     const keysList: string[] = dataConfigs?dataConfigs.flatMap(dataKey=> {
         return Object.keys(dataKey);
     }): []
