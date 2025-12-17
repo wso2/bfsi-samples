@@ -49,7 +49,7 @@ const AccountsAuthorizationPage = ()=>{
                 </Grid>
                 <Grid className={"form-login-one-container"}>
                     <FormControl>
-                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current.data[0]?? 'N/A'}</FormLabel>
+                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd?.current?.data?.[0]?? 'N/A'}</FormLabel>
                     </FormControl>
                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
                         {permissions.map((item, index) => {

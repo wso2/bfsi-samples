@@ -18,15 +18,11 @@
 
 import {Box, Button, Checkbox, FormControl, FormControlLabel, Grid, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
+import type { SelectedAccountEntry } from "./accounts-selection-with-permissions-page.tsx";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
-
-export interface SelectedAccountEntry {
-    permission: string;
-    accounts: string[];
-}
 
 /**
  * @function MultipleAccountsSelectionPage
