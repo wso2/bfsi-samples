@@ -135,6 +135,9 @@ const useConfigContext = () => {
                             const updatedAccounts = bank.accounts.map((account: Account) => {
                                 if (account.id === formattedAccountNumber || account.id === fullAccountNumber) {
                                     const newBalance = (account.balance ?? 0) - transactionAmount;
+                                    if (newBalance < 0) {
+                                        throw new Error(`Insufficient funds: cannot process payment of ${transactionAmount} from account with balance ${account.balance}`);
+                                    }
                                     const currentTransactions = account.transactions || [];
                                     return {
                                         ...account,

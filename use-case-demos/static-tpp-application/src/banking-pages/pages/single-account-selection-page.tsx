@@ -43,7 +43,7 @@ const SingleAccountSelectionPage = ()=>{
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
     const { accountsNumbersToAdd,onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber,themeColor } = useOutletContext<OutletContext>();
-    const accountsList = accountsNumbersToAdd.map((account) => {return selectedAccountNumber+account});
+    const accountsList = (accountsNumbersToAdd || []).map((account) => {return selectedAccountNumber+account});
     const [selectedAccount, setSelectedAccount] = useState<string>('');
 
     const handleAccountSelection = () => {

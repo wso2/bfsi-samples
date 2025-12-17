@@ -125,9 +125,9 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                                     return selected;
                                 }}
                                 error={!!errors.userAccount}>
-                            {banksWithAllAccounts.map((bank)=>
-                                bank.accounts.map((account,index)=>(
-                                    <MenuItem key={index} value={`${bank.bank.name}-${account.id}`}>{bank.bank.name}-{account.id}</MenuItem>
+                            {banksWithAllAccounts.map((bankWithAccounts)=>
+                                bankWithAccounts.accounts.map((account)=>(
+                                    <MenuItem key={`${bankWithAccounts.bank.name}-${account.id}`} value={`${bankWithAccounts.bank.name}-${account.id}`}>{bankWithAccounts.bank.name}-{account.id}</MenuItem>
                                 ))
                             )}
                         </Select>

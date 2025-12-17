@@ -65,7 +65,7 @@ const MultipleAccountsSelectionPage = ()=>{
             accountsToAdd.current = {type:"multiple",data:[selectedData]};
             onSuccessHandler();
         }else{
-            alert("You must select account to add")
+            alert("You must select an account to add")
         }
     };
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));

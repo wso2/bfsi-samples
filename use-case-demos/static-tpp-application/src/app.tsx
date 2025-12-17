@@ -29,7 +29,7 @@ import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
 import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-page.tsx";
 import LoginWithEmailPage from "./banking-pages/pages/login-with-email.tsx";
 import SingleAccountSelectionPage from "./banking-pages/pages/single-account-selection-page.tsx";
-import AccountsAuthorizationPageType from "./banking-pages/pages/accounts-authorization-page-type.tsx";
+import AccountsAuthorizationPage from "./banking-pages/pages/accounts-authorization-page.tsx";
 import MultipleAccountsSelectionPage from "./banking-pages/pages/multiple-accounts-selection-page.tsx";
 import MultipleAccountsAuthorizationPage from "./banking-pages/pages/multiple-accounts-authorization-page.tsx";
 import AccountsSelectionWithPermissionsPage from "./banking-pages/pages/accounts-selection-with-permissions-page.tsx";
@@ -47,7 +47,7 @@ import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.t
 export function App() {
 
     const {banksInfomation, accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
-    if (!appInfo) {
+    if (!appInfo || !banksInfomation) {
         return (
             <div style={{ padding: '50px', textAlign: 'center', fontSize: '1.5em' }}>
                 Loading application configuration...
@@ -94,7 +94,7 @@ export function App() {
                             <Route path={"redirecting"} element={<RedirectionPage appConfig={appInfo} />}/>
                             <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
                             <Route path={"account-select"} element={<SingleAccountSelectionPage/>}/>
-                            <Route path={"account-authorize"} element={<AccountsAuthorizationPageType/>}/>
+                            <Route path={"account-authorize"} element={<AccountsAuthorizationPage/>}/>
                             <Route path={"account-select-uc-2"} element={<MultipleAccountsSelectionPage/>}/>
                             <Route path={"account-authorization-uc-2"} element={<MultipleAccountsAuthorizationPage/>}/>
                             <Route path={"account-select-uc-3"} element={<AccountsSelectionWithPermissionsPage/>}/>

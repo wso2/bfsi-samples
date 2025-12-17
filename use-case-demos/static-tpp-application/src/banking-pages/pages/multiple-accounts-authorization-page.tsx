@@ -49,7 +49,7 @@ const MultipleAccountsAuthorizationPage = ()=>{
                         <p>Expires in : 4 Days</p>
                     </Box>
                     <FormControl sx={{display:'flex', flexDirection:'column'}}>
-                        {accountsToAdd.current.data[0].map((account:SelectedAccountEntry,index:number)=>{
+                        {(accountsToAdd?.current?.data?.[0] || []).map((account:SelectedAccountEntry,index:number)=>{
                             return (
                                 <Box key={index} sx={{display:'flex', flexDirection:'column', gap:'1rem'}}>
                                     <p>Permission to :  {account.permission} </p>

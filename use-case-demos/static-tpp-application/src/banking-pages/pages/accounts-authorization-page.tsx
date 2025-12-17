@@ -21,16 +21,15 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
-import './inner-pages-stylings.scss'
 
 /**
- * @function AccountsAuthorizationPageType
+ * @function AccountsAuthorizationPage
  * @description A dynamic component simulating the final step in a single account connection flow.
  * It prompts the user to **authorize specific permissions** for a selected account,
  * displays the consent duration, and uses `onSuccessHandler` to simulate the successful
  * authorization callback, or cancels the flow using `Maps(-1)`.
  */
-const AccountsAuthorizationPageType = ()=>{
+const AccountsAuthorizationPage = ()=>{
 
     const { onSuccessHandler, accountsToAdd,themeColor } = useOutletContext<OutletContext>();
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
@@ -50,7 +49,7 @@ const AccountsAuthorizationPageType = ()=>{
                 </Grid>
                 <Grid className={"form-login-one-container"}>
                     <FormControl>
-                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current.data[0]}</FormLabel>
+                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current.data[0]?? 'N/A'}</FormLabel>
                     </FormControl>
                     <List sx={{ listStyleType: 'disc', pl: 4 }}>
                         {permissions.map((item, index) => {
@@ -68,4 +67,4 @@ const AccountsAuthorizationPageType = ()=>{
     )
 }
 
-export default AccountsAuthorizationPageType;
+export default AccountsAuthorizationPage;
