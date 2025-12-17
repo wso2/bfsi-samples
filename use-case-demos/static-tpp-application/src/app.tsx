@@ -37,6 +37,7 @@ import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx"
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
 
 
+
 /**
  * @function App
  * @description The root component that sets up global theming and
@@ -45,7 +46,7 @@ import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.t
  */
 export function App() {
 
-    const {accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
+    const {banksInfomation, accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
     if (!appInfo) {
         return (
             <div style={{ padding: '50px', textAlign: 'center', fontSize: '1.5em' }}>
@@ -53,6 +54,8 @@ export function App() {
             </div>
         );
     }
+
+    console.log(banksInfomation)
 
     return (
         <>
@@ -75,16 +78,17 @@ export function App() {
                                              overlayInformation={overlayInformation}
                                              transactionTableHeaderData={transactionTableHeaderData}
                                              standingOrdersTableHeaderData={standingOrdersTableHeaderData}
+
                                        />
                                    }/>
-                            <Route path="paybills" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
-                            <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
+                            <Route path="paybills" element={<PaymentsPage banksList={banksInfomation} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
+                            <Route path="accounts" element={<AddAccountsPage bankInformations={banksInfomation}/>}/>
                             <Route path="transactions" element={<AllTransactions name={appInfo.applicationName} transactions={transactions} transactionTableHeaderData={transactionTableHeaderData}/>}/>
                             <Route path="standing-orders" element={<AllStandingOrders name={appInfo.applicationName} standingOrdersList={standingOrderList} standingOrdersTableHeaderData={standingOrdersTableHeaderData}/>}/>
                         </Routes>
                     } />
 
-                    {appInfo.banksInfo.map((bank,index)=>(
+                    {banksInfomation.map((bank,index)=>(
                         <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank} accountsNumbersToAdd={accountsNumbersToAdd}/>}>
                             <Route path={"login"} element={<LoginPage />}/>
                             <Route path={"otp"} element={<OtpPage />}/>

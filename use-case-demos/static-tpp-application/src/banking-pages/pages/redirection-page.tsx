@@ -36,10 +36,8 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
     let data = null;
-
     let state = null;
     if(navigationData.current?.formData != null){
-
         data = {
             "id": `T${Date.now()}`,
             "date": new Date().toLocaleDateString(),
@@ -48,25 +46,24 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "account":navigationData.current?.formData.userAccount,
             "amount": navigationData.current?.formData.amount.toString().replace(/[^\d.-]/g, ''),
             "currency":navigationData.current?.formData.currency,
-            "status":"c"
+            "creditDebitStatus":"c"
         }
         state = {
             "type": "payment",
             "data": data
         }
-    }else if(accountsToAdd.current?.data?.length > 0 && (accountsToAdd.current?.type === "single" || accountsToAdd.current?.type === "multiple")){
+    }else if(accountsToAdd.current?.data?.length > 0 && (accountsToAdd.current.type === "single" || accountsToAdd.current?.type === "multiple")){
+
         data = {
             accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,
         }
         state = {
-            "type": accountsToAdd.current.data?.type,
+            "type": accountsToAdd.current.type,
             "data": data
         }
     }
-
     const navigate = useNavigate();
-
     useEffect(() => {
         const timer = setTimeout(()=>{
             navigate(`/${appConfig.route}/home`,{

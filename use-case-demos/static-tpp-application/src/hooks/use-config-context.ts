@@ -112,56 +112,69 @@ const useConfigContext = () => {
     }, [configData]);
 
     useEffect(() => {
-
         if (!configData || (!location.state && !redirectState)) {
             return;
         }
+
         if (redirectState?.type === "payment") {
             const newTransactionData = redirectState.data;
             const fullAccountNumber = newTransactionData.account;
             const firstHyphenIndex = fullAccountNumber.indexOf('-');
-            newTransactionData.account = fullAccountNumber.substring(firstHyphenIndex + 1);
+            const formattedAccountNumber = fullAccountNumber.substring(firstHyphenIndex + 1);
+            newTransactionData.account = formattedAccountNumber;
+
             const transactionAmount = parseFloat(newTransactionData.amount);
             const sourceBankName = newTransactionData.bank;
-            const sourceAccountNumber = newTransactionData.account;
-                const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
-                    const baseConfig = oldConfig || configData;
-                    const updatedBanks = baseConfig.banks.map(bank => {
 
-                        if (bank.name === sourceBankName) {
-                            const currentTransaction = bank.transactions || [];
-                            const updatedTransactionData = [newTransactionData, ...currentTransaction];
-                            const updatedAccounts = (bank.accounts || []).map((account: Account) => {
-                                if ( account.id === sourceAccountNumber) {
-                                    const newBalance = (account.balance ?? 0) - transactionAmount;
-                                    return {
-                                        ...account,
-                                        balance: newBalance,
-                                    };
-                                }
-                                return account;
-                            });
-                            return {
-                                ...bank,
-                                accounts: updatedAccounts,
-                                transactions: updatedTransactionData,
-                            };
-                        }
-                        return bank;
-                    });
-                    return {
-                        ...baseConfig!,
-                        banks: updatedBanks,
-                    };
+            const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
+                const baseConfig = oldConfig || configData;
+                const updatedBanks = baseConfig.banks.map(bank => {
+                    if (bank.name === sourceBankName) {
+                        const updatedAccounts = bank.accounts.map((account: Account) => {
+                            if (account.id === formattedAccountNumber || account.id === fullAccountNumber) {
+                                const newBalance = (account.balance ?? 0) - transactionAmount;
+                                const currentTransactions = account.transactions || [];
+                                return {
+                                    ...account,
+                                    balance: newBalance,
+                                    transactions: [newTransactionData, ...currentTransactions]
+                                };
+                            }
+                            return account;
+                        });
+                        return {
+                            ...bank,
+                            accounts: updatedAccounts
+                        };
+                    }
+                    return bank;
                 });
+                return {
+                    ...baseConfig!,
+                    banks: updatedBanks,
+                };
+            });
+
             queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
             updateSessionStorage(newConfig as Config);
-            const paymentOverlayText = `your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
-            setOverlayInformation({flag:true, overlayData:{context: paymentOverlayText,secondaryButtonText:"", title:"Payment Success",onMainButtonClick:handleOverlayClose, mainButtonText:"OK"}})
+
+            const paymentOverlayText = `Your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
+            setOverlayInformation({
+                flag: true,
+                overlayData: {
+                    context: paymentOverlayText,
+                    secondaryButtonText: "",
+                    title: "Payment Success",
+                    onMainButtonClick: handleOverlayClose,
+                    mainButtonText: "OK"
+                }
+            });
+
             navigate(location.pathname, { replace: true, state: {} });
 
         }else if(redirectState?.type === "single"){
             const newAccountData = redirectState.data;
+            console.log(newAccountData)
             const bankName = newAccountData.bankInfo;
             const newAccountId = newAccountData.accountDetails[0];
             const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
@@ -239,14 +252,18 @@ const useConfigContext = () => {
         }
     },[redirectState])
 
+    console.log(configData)
+
     return {
-        appInfo: configData?.name as AppInfo,
+        appInfo: configData?.name as AppInfo ,
         userInfo: configData?.user as User,
         bankTotals: totals,
         chartInfo: chartInfo,
         total: totalBalances,
         banksWithAccounts: banksWithAllAccounts,
-        transactions: configData?.banks.flatMap(bank=>bank.transactions||[]) ?? [],
+        transactions: configData?.banks.flatMap(bank =>
+            bank.accounts.flatMap(account => account.transactions || [])
+        ) ?? [],
         standingOrderList: configData?.banks.flatMap(bank=>bank.standingOrders||[]) ?? [],
         payeesData: configData?.payees ?? [],
         useCases: configData?.types ?? [],
@@ -255,7 +272,8 @@ const useConfigContext = () => {
         transactionTableHeaderData:configData?.transactionTableHeaderData,
         standingOrdersTableHeaderData:configData?.standingOrdersTableHeaderData,
         colors: configData?.colors,
-        accountsNumbersToAdd: configData?.accountNumbersToAdd
+        accountsNumbersToAdd: configData?.accountNumbersToAdd,
+        banksInfomation: configData?.banks ?? []
     };
 };
 

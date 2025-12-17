@@ -66,6 +66,7 @@ export interface SideButtonProps {
 const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation,transactionTableHeaderData}:AccountsCentralLayoutProps)=>{
 
     const navigate = useNavigate();
+
     const onButtonHandler = (buttonName:string,title?:string) => {
         if(buttonName === "Add Account"){
             navigate(`/${appInfo.route}/accounts`,{
@@ -93,12 +94,10 @@ const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banks
                     </Grid>
                     <Grid className={'transactions-container'}>
                         <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        {/*<LatestTransactions transactions={transactions}/>*/}
                         <TableComponent tableData={transactions} tableType={"transaction"} dataConfigs={transactionTableHeaderData}/>
                     </Grid>
                     <Grid className={'standing-orders-container'}>
                         <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        {/*<StandingOrdersTable standingOrderList={standingOrderList}/>*/}
                         <TableComponent tableData={standingOrderList} dataConfigs={standingOrdersTableHeaderData} tableType={""}/>
                     </Grid>
                 </HomePageLayout>

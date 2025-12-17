@@ -21,13 +21,14 @@ import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.t
 import {useEffect, useRef} from "react";
 import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
 import BankingMainContentLayout from "../banking-layouts/banking-main-content-layout.tsx";
-import type {AppInfo, DynamicBanks, Type} from "../../hooks/config-interfaces.ts";
+import type {AppInfo, Bank, Type} from "../../hooks/config-interfaces.ts";
 
 export interface BankingHomePageProps {
     useCases: Type[];
-    bank: DynamicBanks
+    bank: Bank
     appInfo: AppInfo;
     accountsNumbersToAdd?: string[];
+
 }
 
 export interface  accountsToAddContent {
@@ -51,17 +52,19 @@ const BankingHomePage = ({ accountsNumbersToAdd,useCases,bank,appInfo }: Banking
     const [params] = useSearchParams();
     const type = params.get("type") || '';
     const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex} = useBankNavigationHook({usecase: useCases, type: type });
+
     let themeColor;
-    if (bank.bankNumber === 1){
+    if (bank.bankThemeId === 1){
         themeColor = "var(--oxygen-palette-primary-bankColor1)";
-    }else if(bank.bankNumber === 2){
+    }else if(bank.bankThemeId === 2){
         themeColor = "var(--oxygen-palette-primary-bankColor2)"
-    }else if(bank.bankNumber === 3){
+    }else if(bank.bankThemeId === 3){
         themeColor = "var(--oxygen-palette-primary-bankColor3)"
     }else{
         themeColor = "var(--oxygen-palette-primary-bankColor4)"
     }
     const selectedAccountNumber = bank.startingAccountNumbers;
+
     useEffect(() => {
         const path = currentStep?.component
         navigate(`/${bank.route}/`+path)
@@ -69,7 +72,7 @@ const BankingHomePage = ({ accountsNumbersToAdd,useCases,bank,appInfo }: Banking
     return(
         <>
             <BankingMainContentLayout usecasesList={usecasesList} selectedUsecaseIndex={selectedUsecaseIndex} usecaseSelectionHandler={usecaseSelectionHandler} themeColor={themeColor} >
-                <BankingOuterLayout image={navigationData.current?.bankInfo.image} bankName={bank.name} themeColor={themeColor?themeColor:"black"}>
+                <BankingOuterLayout image={navigationData.current?.bankInfo.image} bankName={bank.name} themeColor={themeColor}>
                     <Outlet context={{accountsNumbersToAdd,onSuccessHandler, navigationData,accountsToAdd,appInfo,themeColor,selectedAccountNumber}} />
                 </BankingOuterLayout>
             </BankingMainContentLayout>

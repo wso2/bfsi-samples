@@ -45,6 +45,10 @@ const AccountsSelectionPageTypeOne = ()=>{
     const { accountsNumbersToAdd,onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber,themeColor } = useOutletContext<OutletContext>();
     const accountsList = accountsNumbersToAdd.map((account) => {return selectedAccountNumber+account});
     const [selectedAccount, setSelectedAccount] = useState<string>('');
+
+    console.log("*******************")
+    console.log(accountsToAdd)
+
     const handleAccountSelection = () => {
         if(selectedAccount.length>0){
             accountsToAdd.current = {type:"single",data:[selectedAccount]};

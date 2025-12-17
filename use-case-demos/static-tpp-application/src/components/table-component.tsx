@@ -26,7 +26,7 @@ import type {JSX} from "react";
 interface TableComponentProps {
     tableData: TransactionData[] | StandingOrders[];
     dataConfigs?: TableConfigs[];
-    tableType: "transaction" | "standing-order";
+    tableType: "transaction" | "standing-order"|"";
 }
 
 const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>{

@@ -6,27 +6,7 @@
   },
   "name": {
     "route": "accounts-central",
-    "applicationName": "Accounts Central",
-    "banksInfo": [
-      {
-        "name": "Ascend Global Bank",
-        "route": "ascend-global",
-        "bankNumber": 1,
-        "startingAccountNumbers": "0066"
-      },
-      {
-        "name": "Trust Union",
-        "route": "trust-union",
-        "bankNumber": 2,
-        "startingAccountNumbers": "0055"
-      },
-      {
-        "name": "Global Asset Trust",
-        "route": "global-asset-trust",
-        "bankNumber": 3,
-        "startingAccountNumbers": "0044"
-      }
-    ]
+    "applicationName": "Accounts Central"
   },
   "banks": [
     {
@@ -36,40 +16,45 @@
       "color": "#FF5100",
       "border": "#FF5100",
       "bankNumber": 1,
+      "route": "ascend-global",
+      "bankThemeId": 1,
+      "startingAccountNumbers": "0066",
       "accounts": [
         {
           "id": "0066-1123-7724",
           "bank": "Ascend Global Bank",
           "name": "savings account",
-          "balance": 1350
+          "balance": 1350,
+          "transactions": [
+            {
+              "id": "T00123456",
+              "date": "2025-10-17",
+              "reference": "INV-4521/ABC",
+              "bank": "Ascend Global",
+              "account": "1234-5678-9012-3456",
+              "amount": "1250.75",
+              "currency": "USD",
+              "creditDebitStatus": "c"
+            }
+          ]
         },
         {
           "id": "0066-4435-9454",
           "bank": "Ascend Global Bank",
           "name": "Current account",
-          "balance": 450
-        }
-      ],
-      "transactions": [
-        {
-          "id": "T00123456",
-          "date": "2025-10-17",
-          "reference": "INV-4521/ABC",
-          "bank": "Ascend Global",
-          "account": "1234-5678-9012-3456",
-          "amount": "1250.75",
-          "currency": "USD",
-          "creditDebitStatus": "c"
-        },
-        {
-          "id": "T00123459",
-          "date": "2025-10-15",
-          "reference": "FEE-7765/PQR",
-          "bank": "Ascend Global",
-          "account": "5555-6666-7777-8888",
-          "amount": "25.50",
-          "currency": "USD",
-          "creditDebitStatus": "d"
+          "balance": 450,
+          "transactions": [
+            {
+              "id": "T00123459",
+              "date": "2025-10-15",
+              "reference": "FEE-7765/PQR",
+              "bank": "Ascend Global",
+              "account": "5555-6666-7777-8888",
+              "amount": "25.50",
+              "currency": "USD",
+              "creditDebitStatus": "d"
+            }
+          ]
         }
       ],
       "standingOrders": [
@@ -100,24 +85,27 @@
       "color": "#FFCC66",
       "border": "#FFCC66",
       "bankNumber": 2,
+      "route": "global-asset-trust",
+      "bankThemeId": 3,
+      "startingAccountNumbers": "0044",
       "accounts": [
         {
           "id": "0044-4435-9454",
           "bank": "Global Asset Trust",
           "name": "Current account",
-          "balance": 750
-        }
-      ],
-      "transactions": [
-        {
-          "id": "T00123458",
-          "date": "2025-10-17",
-          "reference": "DEP-3321/LMN",
-          "bank": "Global Asset Trust",
-          "account": "1111-2222-3333-4444",
-          "amount": "99.99",
-          "currency": "GBP",
-          "creditDebitStatus": "d"
+          "balance": 750,
+          "transactions": [
+            {
+              "id": "T00123458",
+              "date": "2025-10-17",
+              "reference": "DEP-3321/LMN",
+              "bank": "Global Asset Trust",
+              "account": "1111-2222-3333-4444",
+              "amount": "99.99",
+              "currency": "GBP",
+              "creditDebitStatus": "d"
+            }
+          ]
         }
       ],
       "standingOrders": [
@@ -139,24 +127,27 @@
       "color": "#8E4714",
       "border": "#8E4714",
       "bankNumber": 3,
+      "route": "trust-union",
+      "bankThemeId": 2,
+      "startingAccountNumbers": "0055",
       "accounts": [
         {
           "id": "0055-4435-9454",
           "bank": "Trust Union",
           "name": "Current account",
-          "balance": 1265.20
-        }
-      ],
-      "transactions": [
-        {
-          "id": "T00123457",
-          "date": "2025-10-16",
-          "reference": "PAY-9876/XYZ",
-          "bank": "Trust Union",
-          "account": "9876-5432-1098-7654",
-          "amount": "500.00",
-          "currency": "EUR",
-          "creditDebitStatus": "c"
+          "balance": 1265.20,
+          "transactions": [
+            {
+              "id": "T00123457",
+              "date": "2025-10-16",
+              "reference": "PAY-9876/XYZ",
+              "bank": "Trust Union",
+              "account": "9876-5432-1098-7654",
+              "amount": "500.00",
+              "currency": "EUR",
+              "creditDebitStatus": "c"
+            }
+          ]
         }
       ],
       "standingOrders": [
@@ -181,7 +172,6 @@
       ]
     }
   ],
-
   "payees": [
     {
       "name": "A.C.ME.",

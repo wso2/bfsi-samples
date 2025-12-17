@@ -33,13 +33,13 @@ interface BankingOuterLayoutProps {
  * and acts as a wrapper for the dynamic process content (`children`).
  */
 const BankingOuterLayout = ({children, image,bankName,themeColor}:BankingOuterLayoutProps)=>{
-
+    console.log(themeColor)
     return(
         <>
             <Grid container className="banks-pages-inner-container">
                     <Grid className="banking-logo-container">
                         <img src={image} alt="" />
-                        <h3 style={{color:themeColor}}>{bankName}</h3>
+                        <h3 style={{color: themeColor}}>{bankName}</h3>
                     </Grid>
                     <Grid className={'banking-dynemic-content'}>
                         {children}

@@ -58,7 +58,7 @@ export const ErrorMessage = ({error}:{error:any})=>{
  * It collects payment details and, upon confirmation, redirects the user to the
  * corresponding bank's authorization flow (via `react-router` state).
  */
-const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
+const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsiveDirection = isSmallScreen ? 'column' : 'row';
@@ -84,7 +84,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
         if (formDataToSubmit){
             setIsConfirming(false);
             const bankName = formDataToSubmit.userAccount.split('-')[0];
-            const target = appInfo.banksInfo.find((bank)=>{
+            const target = banksList.find((bank)=>{
                 return bank.name === bankName;
             })
             const relaventBank = banksList.find((bank)=>{return bank.name === bankName})

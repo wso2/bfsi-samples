@@ -19,19 +19,18 @@
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
 import {useLocation, useNavigate} from 'react-router-dom';
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
-import type {AppInfo, Bank} from "../../hooks/config-interfaces.ts";
+import type {Bank} from "../../hooks/config-interfaces.ts";
 import {Box, IconButton} from "@oxygen-ui/react";
 import './add-account.scss'
 
 
 interface NavigationState {
     name: string;
-    banksWithAccounts: Bank[];
+    banksWithAccounts: Bank;
 }
 
 interface AddAccountsPageProps {
-    appInfo: AppInfo;
-    banks: Bank[];
+    bankInformations: Bank[];
 }
 
 /**
@@ -40,27 +39,30 @@ interface AddAccountsPageProps {
  * a new bank account. It lists available banks and, upon selection, redirects the
  * user to the specific bank's authorization flow (via `react-router` state).
  */
-const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
+const AddAccountsPage = ({bankInformations}:AddAccountsPageProps)=>{
 
     const navigate = useNavigate();
     const location = useLocation();
     const navigationState = location.state as NavigationState;
     const appName = navigationState?.name;
-    const banksList = navigationState?.banksWithAccounts;
+    // const banksList = navigationState?.banksWithAccounts;
 
     const onAddAccoutsHandler = (bankName:string)=>{
-        const relaventBank = banks.find((bank)=>{return bank.name === bankName})
-        const target = appInfo.banksInfo.find((bank) => {
-            return bank.name === bankName;
-        });
+        const target = bankInformations.find((bank) =>
+             bank.name === bankName
+        );
+        console.log(bankInformations)
+        console.log(target)
         navigate("/"+target?.route+"/?type=account",{
             state:{
                 formData: null,
                 message: "confirmed payment information",
-                bankInfo: relaventBank
+                bankInfo: target
             }
         });
     }
+
+
 
     return (
         <>
@@ -68,7 +70,7 @@ const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
                 <PaymentAccountPageLayout title={"Add Account"}>
                     <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
                     <div className="accounts-buttons-container">
-                        {banksList?.map((account, index) => (
+                        {bankInformations?.map((account, index) => (
                             <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}} >
                                 <Box className={"account-button-outer"}>
                                     <Box className={"logo-container"} sx={{marginLeft:'2rem'}}>

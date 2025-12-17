@@ -33,7 +33,6 @@ export interface DynamicBanks {
 export interface AppInfo {
     route: string;
     applicationName: string;
-    banksInfo: DynamicBanks[];
 }
 
 export interface Bank {
@@ -45,7 +44,8 @@ export interface Bank {
     bankNumber: number;
     startingAccountNumbers: string;
     accounts:Account[];
-    transactions:TransactionData[];
+    route: string;
+    bankThemeId: number;
     standingOrders:StandingOrders[]
 
 }
@@ -55,6 +55,7 @@ export interface Account {
     bank: string;
     name: string;
     balance: number;
+    transactions:TransactionData[];
 }
 
 export interface Payee {

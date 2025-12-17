@@ -18,7 +18,7 @@
     "@oxygen-ui/react": "2.4.6",
     "@tanstack/query-sync-storage-persister": "5.90.9",
     "@tanstack/react-query": "5.90.7",
-    "@tanstack/react-query-devtools": "5.90.7",
+    "@tanstack/react-query-devtools": "5.91.1",
     "chart.js": "4.5.1",
     "react": "19.2.0",
     "react-chartjs-2": "5.3.1",
