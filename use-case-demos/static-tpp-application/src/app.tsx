@@ -55,8 +55,6 @@ export function App() {
         );
     }
 
-    console.log(banksInfomation)
-
     return (
         <>
             <AppThemeProvider color={colors}>

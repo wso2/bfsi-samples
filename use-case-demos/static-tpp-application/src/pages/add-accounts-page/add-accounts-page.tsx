@@ -45,14 +45,11 @@ const AddAccountsPage = ({bankInformations}:AddAccountsPageProps)=>{
     const location = useLocation();
     const navigationState = location.state as NavigationState;
     const appName = navigationState?.name;
-    // const banksList = navigationState?.banksWithAccounts;
 
-    const onAddAccoutsHandler = (bankName:string)=>{
+    const onAddAccountsHandler = (bankName:string)=>{
         const target = bankInformations.find((bank) =>
              bank.name === bankName
         );
-        console.log(bankInformations)
-        console.log(target)
         navigate("/"+target?.route+"/?type=account",{
             state:{
                 formData: null,
@@ -61,9 +58,6 @@ const AddAccountsPage = ({bankInformations}:AddAccountsPageProps)=>{
             }
         });
     }
-
-
-
     return (
         <>
             <ApplicationLayout name={appName}>
@@ -71,10 +65,10 @@ const AddAccountsPage = ({bankInformations}:AddAccountsPageProps)=>{
                     <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
                     <div className="accounts-buttons-container">
                         {bankInformations?.map((account, index) => (
-                            <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}} >
+                            <IconButton key={index} onClick={()=>{onAddAccountsHandler(account.name)}} >
                                 <Box className={"account-button-outer"}>
                                     <Box className={"logo-container"} sx={{marginLeft:'2rem'}}>
-                                        <img src={account.image} alt=""/>
+                                        <img src={account.image} alt={`${account.name} logo`}/>
                                     </Box>
                                     <p>{account.name}</p>
                                 </Box>

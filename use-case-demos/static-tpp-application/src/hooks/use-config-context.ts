@@ -174,7 +174,6 @@ const useConfigContext = () => {
 
         }else if(redirectState?.type === "single"){
             const newAccountData = redirectState.data;
-            console.log(newAccountData)
             const bankName = newAccountData.bankInfo;
             const newAccountId = newAccountData.accountDetails[0];
             const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
@@ -208,9 +207,8 @@ const useConfigContext = () => {
 
         }else if(redirectState?.type === "multiple"){
             const newAccounts = redirectState.data;
-            const CONFIG_QUER_KEY = ["appConfig"];
             let generatedAccounts:Account[] = [];
-            const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+            const newConfigWithAccount = queryClient.setQueryData(["appConfig"], (oldConfig:Config | undefined)=> {
                 const baseConfig = oldConfig || configData;
                 const structuredPermissionsData = newAccounts.accountDetails[0];
                 const bankName = newAccounts.bankInfo;
@@ -251,8 +249,6 @@ const useConfigContext = () => {
             navigate(location.pathname, { replace: true, state: {} });
         }
     },[redirectState])
-
-    console.log(configData)
 
     return {
         appInfo: configData?.name as AppInfo ,

@@ -46,20 +46,15 @@ const AccountsSelectionPageTypeOne = ()=>{
     const accountsList = accountsNumbersToAdd.map((account) => {return selectedAccountNumber+account});
     const [selectedAccount, setSelectedAccount] = useState<string>('');
 
-    console.log("*******************")
-    console.log(accountsToAdd)
-
     const handleAccountSelection = () => {
         if(selectedAccount.length>0){
             accountsToAdd.current = {type:"single",data:[selectedAccount]};
             onSuccessHandler();
         }
     }
-
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedAccount(event.target.value);
     };
-
     const navigate = useNavigate();
 
     return(

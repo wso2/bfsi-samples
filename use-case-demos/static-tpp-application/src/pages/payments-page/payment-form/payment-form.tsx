@@ -38,7 +38,6 @@ export interface PaymentFormData {
 }
 
 interface PaymentFormProps {
-    appInfo: AppInfo;
     banksWithAllAccounts: BanksWithAccounts[];
     payeeData: Payee[];
     banksList: Bank[];
