@@ -19,18 +19,18 @@
 import {Box, Button, FormControl, FormControlLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
-import type {SelectedAccountEntry} from "./accounts-selection-page-two.tsx";
+import type {SelectedAccountEntry} from "./multiple-accounts-selection-page.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
 
 /**
- * @function AccountsAuthorizationPageTypeTwo
+ * @function MultipleAccountsAuthorizationPage
  * @description A page component simulating the final authorization step for **multiple** selected accounts.
  * It displays a summary of the accounts being authorized, the specific permissions granted
  * for each (e.g., 'Recurring'), and the consent expiry date, leading to either confirmation
  * via `onSuccessHandler` or cancellation.
  */
-const AccountsAuthorizationPageTypeTwo = ()=>{
+const MultipleAccountsAuthorizationPage = ()=>{
 
     const { onSuccessHandler, accountsToAdd, themeColor } = useOutletContext<OutletContext>();
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
@@ -74,4 +74,4 @@ const AccountsAuthorizationPageTypeTwo = ()=>{
 }
 
 // @ts-ignore
-export default AccountsAuthorizationPageTypeTwo;
+export default MultipleAccountsAuthorizationPage;

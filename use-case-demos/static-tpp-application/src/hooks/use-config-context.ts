@@ -117,136 +117,154 @@ const useConfigContext = () => {
         }
 
         if (redirectState?.type === "payment") {
-            const newTransactionData = redirectState.data;
-            const fullAccountNumber = newTransactionData.account;
-            const firstHyphenIndex = fullAccountNumber.indexOf('-');
-            const formattedAccountNumber = fullAccountNumber.substring(firstHyphenIndex + 1);
-            newTransactionData.account = formattedAccountNumber;
 
-            const transactionAmount = parseFloat(newTransactionData.amount);
-            const sourceBankName = newTransactionData.bank;
+            try {
+                const newTransactionData = redirectState.data;
+                const fullAccountNumber = newTransactionData.account;
+                const firstHyphenIndex = fullAccountNumber.indexOf('-');
+                const formattedAccountNumber = fullAccountNumber.substring(firstHyphenIndex + 1);
+                newTransactionData.account = formattedAccountNumber;
 
-            const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
-                const baseConfig = oldConfig || configData;
-                const updatedBanks = baseConfig.banks.map(bank => {
-                    if (bank.name === sourceBankName) {
-                        const updatedAccounts = bank.accounts.map((account: Account) => {
-                            if (account.id === formattedAccountNumber || account.id === fullAccountNumber) {
-                                const newBalance = (account.balance ?? 0) - transactionAmount;
-                                const currentTransactions = account.transactions || [];
-                                return {
-                                    ...account,
-                                    balance: newBalance,
-                                    transactions: [newTransactionData, ...currentTransactions]
-                                };
-                            }
-                            return account;
-                        });
-                        return {
-                            ...bank,
-                            accounts: updatedAccounts
-                        };
-                    }
-                    return bank;
-                });
-                return {
-                    ...baseConfig!,
-                    banks: updatedBanks,
-                };
-            });
+                const transactionAmount = parseFloat(newTransactionData.amount);
+                const sourceBankName = newTransactionData.bank;
 
-            queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
-            updateSessionStorage(newConfig as Config);
-
-            const paymentOverlayText = `Your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
-            setOverlayInformation({
-                flag: true,
-                overlayData: {
-                    context: paymentOverlayText,
-                    secondaryButtonText: "",
-                    title: "Payment Success",
-                    onMainButtonClick: handleOverlayClose,
-                    mainButtonText: "OK"
-                }
-            });
-
-            navigate(location.pathname, { replace: true, state: {} });
-
-        }else if(redirectState?.type === "single"){
-            const newAccountData = redirectState.data;
-            const bankName = newAccountData.bankInfo;
-            const newAccountId = newAccountData.accountDetails[0];
-            const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
-                const baseConfig = oldConfig || configData;
-                const accountToBeAdded = {
-                    id: newAccountId,
-                    bank: bankName,
-                    name: "savings account",
-                    balance: 500
-                };
-                const updatedBanks = baseConfig.banks.map(bank => {
-                    if (bank.name === bankName) {
-                        return {
-                            ...bank,
-                            accounts: [...(bank.accounts || []), accountToBeAdded]
-                        };
-                    }
-                    return bank;
-                });
-                return {
-                    ...baseConfig!,
-                    banks: updatedBanks,
-                };
-            }) as Config;
-            queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
-            updateSessionStorage(newConfigWithAccount);
-            const newAccounts = newConfigWithAccount.banks.find(bank => bank.name===newAccountData.bankInfo)?.accounts || [];
-            const singleAccountOverlay = `The new account ${newAccounts[newAccounts.length-1]?.id} was added successfully. You can now access it and start making transactions.`;
-            setOverlayInformation({flag:true,overlayData:{context:singleAccountOverlay,secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
-            navigate(location.pathname, { replace: true, state: {} });
-
-        }else if(redirectState?.type === "multiple"){
-            const newAccounts = redirectState.data;
-            let generatedAccounts:Account[] = [];
-            const newConfigWithAccount = queryClient.setQueryData(["appConfig"], (oldConfig:Config | undefined)=> {
-                const baseConfig = oldConfig || configData;
-                const structuredPermissionsData = newAccounts.accountDetails[0];
-                const bankName = newAccounts.bankInfo;
-                const accNumbers = structuredPermissionsData.flatMap((permissionEntry: {
-                    permission: "",
-                    accounts: string[]
-                }) => {
-                    return permissionEntry.accounts || [];
-                });
-                const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
+                const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
+                    const baseConfig = oldConfig || configData;
+                    const updatedBanks = baseConfig.banks.map(bank => {
+                        if (bank.name === sourceBankName) {
+                            const updatedAccounts = bank.accounts.map((account: Account) => {
+                                if (account.id === formattedAccountNumber || account.id === fullAccountNumber) {
+                                    const newBalance = (account.balance ?? 0) - transactionAmount;
+                                    const currentTransactions = account.transactions || [];
+                                    return {
+                                        ...account,
+                                        balance: newBalance,
+                                        transactions: [newTransactionData, ...currentTransactions]
+                                    };
+                                }
+                                return account;
+                            });
+                            return {
+                                ...bank,
+                                accounts: updatedAccounts
+                            };
+                        }
+                        return bank;
+                    });
                     return {
-                        id: entry,
-                        bank: bankName,
-                        name: "savings (M)",
-                        balance: 500,
+                        ...baseConfig!,
+                        banks: updatedBanks,
                     };
                 });
-                generatedAccounts = generatedNewAccounts; //scope issue
-                const updatedBanks = baseConfig.banks.map(bank => {
-                    if (bank.name === bankName) {
-                        return {
-                            ...bank,
-                            accounts: [...(bank.accounts || []), ...generatedNewAccounts]
-                        };
+
+                queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
+                updateSessionStorage(newConfig as Config);
+
+                const paymentOverlayText = `Your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
+                setOverlayInformation({
+                    flag: true,
+                    overlayData: {
+                        context: paymentOverlayText,
+                        secondaryButtonText: "",
+                        title: "Payment Success",
+                        onMainButtonClick: handleOverlayClose,
+                        mainButtonText: "OK"
                     }
-                    return bank;
                 });
-                return {
-                    ...baseConfig!,
-                    banks: updatedBanks
-                }
-            });
-            const config = newConfigWithAccount as Config;
-            queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
-            updateSessionStorage(config);
-            const multipleAccountOverlayContext = `The new account ${generatedAccounts?.map((account)=>account.id).join(", ") } were added successfully. You can now access it and start making transactions.`;
-            setOverlayInformation({flag:true,overlayData:{context:multipleAccountOverlayContext,secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
-            navigate(location.pathname, { replace: true, state: {} });
+
+                navigate(location.pathname, { replace: true, state: {} });
+            }catch (error){
+                console.error(error);
+            }
+
+
+        }else if(redirectState?.type === "single"){
+
+            try{
+                const newAccountData = redirectState.data;
+                const bankName = newAccountData.bankInfo;
+                const newAccountId = newAccountData.accountDetails[0];
+                const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                    const baseConfig = oldConfig || configData;
+                    const accountToBeAdded = {
+                        id: newAccountId,
+                        bank: bankName,
+                        name: "savings account",
+                        balance: 500
+                    };
+                    const updatedBanks = baseConfig.banks.map(bank => {
+                        if (bank.name === bankName) {
+                            return {
+                                ...bank,
+                                accounts: [...(bank.accounts || []), accountToBeAdded]
+                            };
+                        }
+                        return bank;
+                    });
+                    return {
+                        ...baseConfig!,
+                        banks: updatedBanks,
+                    };
+                }) as Config;
+                queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
+                updateSessionStorage(newConfigWithAccount);
+                const newAccounts = newConfigWithAccount.banks.find(bank => bank.name===newAccountData.bankInfo)?.accounts || [];
+                const singleAccountOverlay = `The new account ${newAccounts[newAccounts.length-1]?.id} was added successfully. You can now access it and start making transactions.`;
+                setOverlayInformation({flag:true,overlayData:{context:singleAccountOverlay,secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
+                navigate(location.pathname, { replace: true, state: {} });
+            }catch (error){
+                console.error(error);
+            }
+
+
+        }else if(redirectState?.type === "multiple"){
+
+            try{
+                const newAccounts = redirectState.data;
+                let generatedAccounts:Account[] = [];
+                const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                    const baseConfig = oldConfig || configData;
+                    const structuredPermissionsData = newAccounts.accountDetails[0];
+                    const bankName = newAccounts.bankInfo;
+                    const accNumbers = structuredPermissionsData.flatMap((permissionEntry: {
+                        permission: "",
+                        accounts: string[]
+                    }) => {
+                        return permissionEntry.accounts || [];
+                    });
+                    const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
+                        return {
+                            id: entry,
+                            bank: bankName,
+                            name: "savings (M)",
+                            balance: 500,
+                        };
+                    });
+                    generatedAccounts = generatedNewAccounts; //scope issue
+                    const updatedBanks = baseConfig.banks.map(bank => {
+                        if (bank.name === bankName) {
+                            return {
+                                ...bank,
+                                accounts: [...(bank.accounts || []), ...generatedNewAccounts]
+                            };
+                        }
+                        return bank;
+                    });
+                    return {
+                        ...baseConfig!,
+                        banks: updatedBanks
+                    }
+                });
+                const config = newConfigWithAccount as Config;
+                queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
+                updateSessionStorage(config);
+                const multipleAccountOverlayContext = `The new account ${generatedAccounts?.map((account)=>account.id).join(", ") } were added successfully. You can now access it and start making transactions.`;
+                setOverlayInformation({flag:true,overlayData:{context:multipleAccountOverlayContext,secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
+                navigate(location.pathname, { replace: true, state: {} });
+            }catch (error){
+                console.error(error);
+            }
+
         }
     },[redirectState])
 

@@ -54,9 +54,9 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
             <TableContainer >
                 <Table>
                     <TableHead>
-                        <TableRow sx={{backgroundColor:'#F6F6F7'}}>
+                        <TableRow sx={{backgroundColor:'var(--oxygen-palette-primary-tableHeaderBackground)'}}>
                             {keysList.map((headerKey,index)=>
-                                <TableCell key={index} sx={{color:'#6B7280'}}>{headerKey}</TableCell>
+                                <TableCell key={index} sx={{color:'var(--oxygen-palette-primary-tableHeaderFontColor)'}}>{headerKey}</TableCell>
                             )}
                         </TableRow>
                     </TableHead>
@@ -69,8 +69,8 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
 
                             const credDebitStatus = tableType === "transaction" && isTransactionData(dataRow)
                             ? (dataRow.creditDebitStatus === "c"
-                                ? <IconButton style={{color: '#2ecc71'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></IconButton>
-                                    : <IconButton style={{color: '#c0392b'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></IconButton>)
+                                ? <IconButton style={{color: 'var(--oxygen-palette-primary-greenArrowColor)'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></IconButton>
+                                    : <IconButton style={{color: 'var(--oxygen-palette-primary-redArrowColor)'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></IconButton>)
                                 : null;
 
                             const amount = renderAmount(dataRow, credDebitStatus);

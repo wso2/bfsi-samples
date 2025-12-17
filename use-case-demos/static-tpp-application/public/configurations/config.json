@@ -302,7 +302,12 @@
     {"bankColor3":"#2ecc71"},
     {"bankBackground":"#E5E4E2"},
     {"fontWhite": "#FFFFFF"},
-    {"formValidationError": "#c0392b"}
+    {"formValidationError": "#c0392b"},
+    {"tableHeaderFontColor": "#6B7280"},
+    {"tableHeaderBackground": "#F6F6F7"},
+    {"tableBackgroundColor": "#FFFFF0"},
+    {"greenArrowColor": "#2ecc71"},
+    {"redArrowColor": "#c0392b"}
   ],
 
   "accountNumbersToAdd": ["-0566-1212","-0045-2020","-0400-1010"]

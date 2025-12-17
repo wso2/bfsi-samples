@@ -37,6 +37,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
     const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
     let data = null;
     let state = null;
+
     if(navigationData.current?.formData != null){
         data = {
             "id": `T${Date.now()}`,
@@ -53,7 +54,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
     }else if(accountsToAdd.current?.data?.length > 0 && (accountsToAdd.current.type === "single" || accountsToAdd.current?.type === "multiple")){
-
         data = {
             accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,

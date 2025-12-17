@@ -86,12 +86,16 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
             const target = banksList.find((bank)=>{
                 return bank.name === bankName;
             })
-            const relaventBank = banksList.find((bank)=>{return bank.name === bankName})
-            navigate("/"+target?.route+"/login?type=payment",{
+            if(!target){
+                console.log(`Bank "${bankName}" not found in banksList`)
+                return;
+            }
+
+            navigate("/"+target.route+"/login?type=payment",{
                 state:{
                     formData: formDataToSubmit,
                     message: "payment",
-                    bankInfo: relaventBank
+                    bankInfo: target,
                 }
             });
         }
@@ -169,7 +173,7 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                                     }}
                                     error={!!errors.currency}>
                                 {currency.map((unit)=>(
-                                    <MenuItem value={`${unit}`}>{unit}</MenuItem>
+                                    <MenuItem key={unit} value={`${unit}`}>{unit}</MenuItem>
                                 ))}
                             </Select>
                         )}/>

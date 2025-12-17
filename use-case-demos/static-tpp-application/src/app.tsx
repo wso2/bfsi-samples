@@ -28,11 +28,11 @@ import OtpPage from "./banking-pages/pages/otp-page.tsx";
 import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
 import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-page.tsx";
 import LoginWithEmailPage from "./banking-pages/pages/login-with-email.tsx";
-import AccountsSelectionPageTypeOne from "./banking-pages/pages/accounts-selection-page-type-one.tsx";
-import AccountsAuthorizationPageTypeOne from "./banking-pages/pages/accounts-authorization-page-type-one.tsx";
-import AccountsSelectionPageTwo from "./banking-pages/pages/accounts-selection-page-two.tsx";
-import AccountsAuthorizationPageTypeTwo from "./banking-pages/pages/accounts-authorization-page-type-two.tsx";
-import AccountsSelectionPageTypeThree from "./banking-pages/pages/accounts-selection-page-type-three.tsx";
+import SingleAccountSelectionPage from "./banking-pages/pages/single-account-selection-page.tsx";
+import AccountsAuthorizationPageType from "./banking-pages/pages/accounts-authorization-page-type.tsx";
+import MultipleAccountsSelectionPage from "./banking-pages/pages/multiple-accounts-selection-page.tsx";
+import MultipleAccountsAuthorizationPage from "./banking-pages/pages/multiple-accounts-authorization-page.tsx";
+import AccountsSelectionWithPermissionsPage from "./banking-pages/pages/accounts-selection-with-permissions-page.tsx";
 import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx";
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
 
@@ -93,11 +93,11 @@ export function App() {
                             <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
                             <Route path={"redirecting"} element={<RedirectionPage appConfig={appInfo} />}/>
                             <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
-                            <Route path={"account-select"} element={<AccountsSelectionPageTypeOne/>}/>
-                            <Route path={"account-authorize"} element={<AccountsAuthorizationPageTypeOne/>}/>
-                            <Route path={"account-select-uc-2"} element={<AccountsSelectionPageTwo/>}/>
-                            <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationPageTypeTwo/>}/>
-                            <Route path={"account-select-uc-3"} element={<AccountsSelectionPageTypeThree/>}/>
+                            <Route path={"account-select"} element={<SingleAccountSelectionPage/>}/>
+                            <Route path={"account-authorize"} element={<AccountsAuthorizationPageType/>}/>
+                            <Route path={"account-select-uc-2"} element={<MultipleAccountsSelectionPage/>}/>
+                            <Route path={"account-authorization-uc-2"} element={<MultipleAccountsAuthorizationPage/>}/>
+                            <Route path={"account-select-uc-3"} element={<AccountsSelectionWithPermissionsPage/>}/>
                         </Route>
                     ))}
 

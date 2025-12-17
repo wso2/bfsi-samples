@@ -49,7 +49,7 @@ const LoginWithEmailPage = ()=>{
         }
     })
     const onSubmit = (data:loginformData)=>{
-        if (data.email === 'john@gmail.com'){
+        if (data.email != ''){
             onSuccessHandler()
         }else{
             alert("Email not matched")

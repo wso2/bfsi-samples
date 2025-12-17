@@ -32,13 +32,13 @@ import {useMediaQuery} from "@mui/material";
 import './inner-pages-stylings.scss'
 
 /**
- * @function AccountsSelectionPageTypeOne
+ * @function SingleAccountSelectionPage
  * @description A dynamic component simulating an account selection step during a bank connection flow.
  * It presents a list of mock accounts for the user to select using radio buttons.
  * Upon successful selection, it updates the `accountsToAdd` context and proceeds to the
  * next authorization step via `onSuccessHandler`.
  */
-const AccountsSelectionPageTypeOne = ()=>{
+const SingleAccountSelectionPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
@@ -68,7 +68,7 @@ const AccountsSelectionPageTypeOne = ()=>{
                         <RadioGroup aria-label="select-account" name="account-selection-group" value={selectedAccount} onChange={handleRadioChange}>
                             {accountsList.map((account, index) => {
                                 return (
-                                    <FormControlLabel key={index} control={<Radio sx={{'--oxygen-palette-primary-main': themeColor}} />} label={`${navigationData.current.bankInfo.name}-${account}`} value={account}/>
+                                    <FormControlLabel key={index} control={<Radio sx={{'--oxygen-palette-primary-main': themeColor}} />} label={`${navigationData.current.bankInfo.name || 'Bank'}-${account}`} value={account}/>
                                 );
                             })}
                         </RadioGroup>
@@ -83,4 +83,4 @@ const AccountsSelectionPageTypeOne = ()=>{
     )
 }
 
-export default AccountsSelectionPageTypeOne;
+export default SingleAccountSelectionPage;

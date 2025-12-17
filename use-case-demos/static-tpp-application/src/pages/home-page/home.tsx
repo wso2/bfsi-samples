@@ -67,17 +67,26 @@ const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banks
 
     const navigate = useNavigate();
 
+    const addAccount =()=>{
+        navigate(`/${appInfo.route}/accounts`,{
+            state:{
+                name:appInfo.applicationName,
+                banksWithAccounts:banksList,
+            }
+        });
+    }
+
+    const viewMore=(title?:string)=>{
+        const route = title === "Latest Transactions"? "transactions": "standing-orders";
+        navigate(`/${appInfo.route}/${route}`);
+    }
+
     const onButtonHandler = (buttonName:string,title?:string) => {
         if(buttonName === "Add Account"){
-            navigate(`/${appInfo.route}/accounts`,{
-                state:{
-                    name:appInfo.applicationName,
-                    banksWithAccounts:banksList,
-                }
-            });
+            addAccount();
         }else if(buttonName === "view more"){
-            const route = title === "Latest Transactions"? "transactions": "standing-orders";
-            navigate(`/${appInfo.route}/${route}`);
+            viewMore(title);
+
         }
     }
 

@@ -61,6 +61,11 @@ const AppThemeProvider = ({children,color}:ApplicationThemeProviderProps) => {
                         bankColor3:customColors.bankColor3,
                         bankBackground:customColors.bankBackground,
                         formValidationError: customColors.formValidationError,
+                        tableHeaderBackground: customColors.tableHeaderBackground,
+                        tableHeaderFontColor: customColors.tableHeaderFontColor,
+                        tableBodyColor: customColors.tableBackgroundColor,
+                        greenArrowColor: customColors.greenArrowColor,
+                        redArrowColor: customColors.redArrowColor,
                     },
                     fontColor: {
                         white: customColors.fontWhite,

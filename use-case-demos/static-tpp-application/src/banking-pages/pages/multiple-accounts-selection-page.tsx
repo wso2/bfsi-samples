@@ -29,13 +29,13 @@ export interface SelectedAccountEntry {
 }
 
 /**
- * @function AccountsSelectionPageTwo
+ * @function MultipleAccountsSelectionPage
  * @description A complex selection component simulating a multi-account consent process.
  * It allows the user to select multiple accounts and define which specific **permissions**
  * (e.g., read/write) apply to each selected account using checkboxes, before submitting
  * the data to proceed via `onSuccessHandler`.
  */
-const AccountsSelectionPageTwo = ()=>{
+const MultipleAccountsSelectionPage = ()=>{
 
     const { accountsNumbersToAdd,onSuccessHandler, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();
     const multiAccounts = accountsNumbersToAdd.map((account) => {return selectedAccountNumber+account});
@@ -109,4 +109,4 @@ const AccountsSelectionPageTwo = ()=>{
     )
 }
 
-export default AccountsSelectionPageTwo;
+export default MultipleAccountsSelectionPage;
