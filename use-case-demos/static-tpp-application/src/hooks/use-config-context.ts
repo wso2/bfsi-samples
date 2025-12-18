@@ -72,7 +72,7 @@ const useConfigContext = () => {
         try {
             queryClient.setQueryData(CONFIG_QUER_KEY, updatedConfig);
         } catch (e) {
-            console.error("Failed to update session storage:");
+            console.error("Failed to update session storage");
         }
     }
 
