@@ -44,7 +44,7 @@ export interface Bank {
     accounts:Account[];
     route: string;
     bankThemeId: number;
-    standingOrders:StandingOrders[]
+    standingOrders:StandingOrders[];
 
 }
 
