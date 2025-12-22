@@ -63,7 +63,7 @@ const OtpPage = ()=>{
                     <form onSubmit={handleSubmit(onSubmitHandler)} style={{gap:'2rem', display:'flex', flexDirection:'column'}}>
                         <FormControl fullWidth={true} margin={'normal'} >
                             <label>OTP code</label>
-                            <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
+                            <Controller name={'code'} control={control} rules={{required:'Otp required'}}  render={({field}) => (
                                 <Input
                                     {...field}
                                     placeholder={"Enter otp code"}
