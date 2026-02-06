@@ -1,0 +1,10 @@
+[package]
+org = "bfsi"
+name = "ai_banking_agent"
+version = "0.1.0"
+
+[build-options]
+sticky = true
+
+[ballerina.http]
+traceLogConsole = true

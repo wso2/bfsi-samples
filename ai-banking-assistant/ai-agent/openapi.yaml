@@ -1,0 +1,197 @@
+openapi: 3.1.0
+info:
+  title: AI Banking Assistant API
+  description: |
+    AI-powered banking assistant service that provides intelligent chat interactions
+    for banking operations and account management through Open Banking APIs.
+  version: 1.0.0
+  contact:
+    name: WSO2 LLC
+    url: https://www.wso2.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: http://localhost:9090/api
+    description: Local development server
+  - url: https://api.banking-assistant.example.com/api
+    description: Production server
+
+security:
+  - oauth2_auth_code: []
+
+paths:
+  /chat:
+    post:
+      summary: Chat with AI Banking Assistant
+      description: |
+        Send a message to the AI banking assistant and receive an intelligent response.
+        The assistant can help with account inquiries, transaction history, balance checks,
+        and other banking operations through Open Banking APIs.
+      operationId: postChat
+      security:
+        - oauth2_auth_code: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Successful chat response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /health:
+    get:
+      summary: Health Check
+      description: Check the health and status of the AI banking assistant service
+      operationId: getHealth
+      security: []  # No security required for health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  securitySchemes:
+    oauth2_auth_code:
+      type: oauth2
+      description: |
+        OAuth 2.0 Authorization Code flow for secure access to banking data.
+        Users must authenticate through their bank's authorization server.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.example-bank.com/oauth2/authorize
+          tokenUrl: https://auth.example-bank.com/oauth2/token
+          refreshUrl: https://auth.example-bank.com/oauth2/refresh
+          scopes:
+            ai:read: Read-only access to banking data
+
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - message
+        - sessionId
+      properties:
+        message:
+          type: string
+          description: The user's message or query to the AI assistant
+          example: "What's my account balance?"
+          minLength: 1
+          maxLength: 1000
+        sessionId:
+          type: string
+          description: Unique identifier for the chat session to maintain conversation context
+          example: "session_123456"
+          pattern: '^[a-zA-Z0-9_-]+$'
+          minLength: 1
+          maxLength: 100
+
+    ChatResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The AI assistant's response to the user's query
+          example: "Your current account balance is $2,500.75"
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [OK, UNAVAILABLE, ERROR]
+          description: Current health status of the service
+          example: "OK"
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the health check was performed
+          example: "2025-09-25T10:30:00Z"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          description: Error code or type
+          example: "UNAUTHORIZED"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Access token is missing or invalid"
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+
+  responses:
+    Unauthorized:
+      description: Authentication required or invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Forbidden:
+      description: Access denied - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    TooManyRequests:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying
+          schema:
+            type: integer
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+tags:
+  - name: Chat
+    description: AI-powered chat interactions for banking operations
+  - name: Health
+    description: Service health and monitoring endpoints

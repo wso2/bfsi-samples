@@ -1,0 +1,2 @@
+OB_MCP_SERVER_URL = "http://localhost:8000/mcp"
+ANTHROPIC_API_KEY = ""
