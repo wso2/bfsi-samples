@@ -35,8 +35,7 @@ interface HomePageLayoutProps {
  */
 const HomePageLayout = ({children,userInfo, appInfo}:HomePageLayoutProps)=>{
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isLargeScreen ? "2rem 1rem": "2rem 5rem";
-
+    const responsivePadding = isLargeScreen ? "16px 8px": "16px 24px";
     return(
         <>
             <Box className='home-page-outer'>

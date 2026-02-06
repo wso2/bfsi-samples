@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import {Box, Button, Checkbox, FormControl, FormControlLabel, Grid, Switch, useTheme} from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
-import type { SelectedAccountEntry } from "./accounts-selection-with-permissions-page.tsx";
+import {Box, Button, Checkbox, FormControl, FormControlLabel, Grid, Switch} from "@oxygen-ui/react";
+import {useOutletContext} from "react-router-dom";
+import type {SelectedAccountEntry} from "./accounts-selection-with-permissions-page.tsx";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
 import './inner-pages-stylings.scss'
-import {useMediaQuery} from "@mui/material";
 
 /**
  * @function MultipleAccountsSelectionPage
@@ -31,22 +30,45 @@ import {useMediaQuery} from "@mui/material";
  * (e.g., read/write) apply to each selected account using checkboxes, before submitting
  * the data to proceed via `onSuccessHandler`.
  */
+
+export const getExpiryDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 5);
+
+    const day = date.getDate();
+    const month = date.toLocaleString('en-GB', { month: 'long' });
+    const year = date.getFullYear();
+
+    const getOrdinalSuffix = (n: number) => {
+        if (n > 3 && n < 21) return 'th';
+        switch (n % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
+    };
+
+    return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
+};
+
 const MultipleAccountsSelectionPage = ()=>{
 
-    const { accountsNumbersToAdd,onSuccessHandler, accountsToAdd,selectedAccountNumber, themeColor } = useOutletContext<OutletContext>();
-    const multiAccounts = accountsNumbersToAdd.map((account) => {return selectedAccountNumber+account});
-    const listOfPermissions = ["Accounts read", "Accounts write", "Accounts basics"];
+    const { accountsNumbersToAdd, onSuccessHandler, accountsToAdd, selectedAccountNumber, themeColor, handleCancel, setToggleButtonState, toggleButtonState } = useOutletContext<OutletContext>();
+    const multiAccounts = accountsNumbersToAdd.map((account) => selectedAccountNumber + account);
+    const listOfPermissions = ["Read Accounts", "Read Balances", "Read Transactions"];
+
     const [selectedData, setSelectedData] = useState<SelectedAccountEntry[]>(() => {
         return listOfPermissions.map(permission => ({
             permission: permission,
             accounts: [] as string[]
         }));
     });
+
     const handleAccountChange = (permission: string, accountId: string, checked: boolean) => {
         setSelectedData(prevData => {
             return prevData.map(entry => {
                 if (entry.permission === permission) {
-
                     const accounts = checked ? [...entry.accounts, accountId] : entry.accounts.filter(id => id !== accountId);
                     return { ...entry, accounts };
                 }
@@ -55,49 +77,115 @@ const MultipleAccountsSelectionPage = ()=>{
         });
     };
 
+    const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setToggleButtonState(event.target.checked);
+    };
+
     const hasSelectedAccounts = selectedData.some(entry => entry.accounts.length > 0);
+
     const handleSubmit = () => {
         if(hasSelectedAccounts){
-            accountsToAdd.current = {type:"multiple",data:[selectedData]};
+            accountsToAdd.current = {type:"multiple", data:[selectedData]};
             onSuccessHandler();
         }else{
             alert("You must select an account to add")
         }
     };
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
-    const navigate = useNavigate();
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding, flexGrow:1}}>
-                <Grid className="page-name-container">
-                    <p>Please select your accounts to add</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>Accounts Central requests the consent to access following details</p>
                 </Grid>
-                <Grid className={"form-login-one-container"}>
-                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
-                        <FormControlLabel control={<Switch   id={"account-one"} checked disabled={true} sx={{"--oxygen-palette-primary-main": themeColor}}/>} label={"Recurring"} labelPlacement={'start'}/>
-                        <p>Expire in : 4 Days</p>
+                <Grid className={'form-login-one-container'}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <Box sx={{ marginBottom: '0.5rem' }}>
+                            <FormControlLabel
+                                sx={{ ml: 0, pl: 0 }}
+                                control={
+                                    <Switch
+                                        checked={toggleButtonState ?? true}
+                                        sx={{ "--oxygen-palette-primary-main": themeColor }}
+                                        onChange={handleToggleChange}
+                                    />
+                                }
+                                label={"Recurring"}
+                                labelPlacement={'start'}
+                            />
+                            <p style={{ fontSize: '0.95rem' }}><strong>Expires on:</strong> {getExpiryDate()}</p>
+                        </Box>
+
+                        <FormControl sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            {listOfPermissions.map((item, index) => {
+                                const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
+                                return (
+                                    <Box key={index} sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <p style={{ fontSize: '0.95rem' }}><strong>Permission to:</strong> {item}</p>
+                                        <p style={{ fontSize: '0.95rem' }}>Select the accounts you wish to authorize</p>
+                                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                            {multiAccounts.map((account, index2) => {
+                                                const isChecked = currentAccounts.includes(account);
+                                                return (
+                                                    <FormControlLabel
+                                                        key={index2}
+                                                        control={
+                                                            <Checkbox
+                                                                checked={isChecked}
+                                                                onChange={(e) => handleAccountChange(item, account, e.target.checked)}
+                                                                sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                                            />
+                                                        }
+                                                        label={account}
+                                                        sx={{ fontSize: '0.95rem' }}
+                                                    />
+                                                );
+                                            })}
+                                        </Box>
+                                    </Box>
+                                );
+                            })}
+                        </FormControl>
                     </Box>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', gap:'2rem'}}>
-                        {listOfPermissions.map((item, index) => {
-                            const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
-                            return (
-                                <Box key={index} sx={{display: 'flex', flexDirection: 'column'}}>
-                                    <p>Permission to :  {item}</p>
-                                    {multiAccounts.map((account, index2) => {
-                                        const isChecked = currentAccounts.includes(account);
-                                        return (
-                                            <FormControlLabel key={index2} control={<Checkbox id={account} sx={{'--oxygen-palette-primary-main':themeColor}} checked={isChecked} onChange={(e) => handleAccountChange(item, account, e.target.checked)}/>} label={account}/>
-                                        )
-                                })}
-                            </Box>)
-                        })}
-                    </FormControl>
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={handleSubmit} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
+                        <Button
+                            variant={'contained'}
+                            onClick={handleSubmit}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-gradients-primary-stop2': themeColor,
+                                '--oxygen-palette-gradients-primary-stop1': themeColor
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-primary-main': themeColor,
+                                borderColor: themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
                     </Box>
                 </Grid>
             </Grid>

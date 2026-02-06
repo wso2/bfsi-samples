@@ -17,35 +17,33 @@
  */
 
 import type {StandingOrders, TableConfigs, TransactionData} from "../hooks/config-interfaces.ts";
-import {Box, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react";
 import {formatCurrency} from "../utility/number-formatter.ts";
 // @ts-ignore
 import {ArrowDownIcon, ArrowUpIcon} from "@oxygen-ui/react-icons";
-import type {JSX} from "react";
 
 interface TableComponentProps {
     tableData: TransactionData[] | StandingOrders[];
     dataConfigs?: TableConfigs[];
     tableType: "transaction" | "standing-order"|"";
+    dataLimit?: number;
 }
 
-const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>{
+const TableComponent =
+    ({tableData,dataConfigs,tableType, dataLimit=4}:TableComponentProps)=>{
 
-    const renderAmount = (dataRow: TransactionData | StandingOrders, credDebitStatus: JSX.Element | null) => {
-            const currency = 'currency' in dataRow ? dataRow.currency : '';
-            const amount = 'amount' in dataRow ? dataRow.amount : '0';
-            const formattedAmount = `${currency} ${formatCurrency(amount)}`;
-
-            return (
-                <Box style={{width:"60%", justifyContent:"space-between", display:'flex', gap:'1rem'}}>
-                    {formattedAmount}
-                    {tableType === "transaction" && credDebitStatus}
-                </Box>
-                );
-        };
+    const renderAmount = (dataRow: TransactionData | StandingOrders) => {
+        const currency = 'currency' in dataRow ? dataRow.currency : '';
+        const amount = 'amount' in dataRow ? dataRow.amount : '0';
+        const formattedAmount = `${currency} ${formatCurrency(amount)}`;
+        return formattedAmount;
+    };
     const keysList: string[] = dataConfigs?dataConfigs.flatMap(dataKey=> {
         return Object.keys(dataKey);
     }): []
+    if (tableType === "transaction") {
+        keysList.push("");
+    }
     const valuesList:string[] = dataConfigs?dataConfigs.flatMap(dataValues=>{
         return Object.values(dataValues)
     }):[]
@@ -54,30 +52,44 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
             <TableContainer >
                 <Table>
                     <TableHead>
-                        <TableRow sx={{backgroundColor:'var(--oxygen-palette-primary-tableHeaderBackground)'}}>
-                            {keysList.map((headerKey,index)=>
-                                <TableCell key={index} sx={{color:'var(--oxygen-palette-primary-tableHeaderFontColor)'}}>{headerKey}</TableCell>
+                        <TableRow sx={{backgroundColor:'var(--oxygen-palette-primary-tableHeaderBackground)'}}
+                                  hideBorder={false}>
+                            {keysList.map((headerKey,index)=>{
+                                    const isHeaderAmount = headerKey === "Amount"
+                                    return(
+                                        <TableCell key={index}
+                                                   sx={{color:'var(--oxygen-palette-primary-tableHeaderFontColor)',
+                                            textAlign:isHeaderAmount?"right":"left",
+                                                       paddingRight: isHeaderAmount? "2rem":""}}>{headerKey}</TableCell>
+                                    );
+                                }
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody sx={{backgroundColor:'white'}}>
-                        {tableData.slice(0, 4).map((dataRow:TransactionData|StandingOrders, index:number)=>{
-
+                        {tableData.slice(0, dataLimit).map((dataRow:TransactionData|StandingOrders, index:number)=>{
                             const isTransactionData = (data: TransactionData | StandingOrders): data is TransactionData => {
                                 return 'creditDebitStatus' in data;
-                                };
-
+                            };
                             const credDebitStatus = tableType === "transaction" && isTransactionData(dataRow)
-                            ? (dataRow.creditDebitStatus === "c"
-                                ? <IconButton style={{color: 'var(--oxygen-palette-primary-greenArrowColor)'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></IconButton>
-                                    : <IconButton style={{color: 'var(--oxygen-palette-primary-redArrowColor)'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></IconButton>)
+                                ? (dataRow.creditDebitStatus === "c"
+                                    ? <Box style={{color: 'var(--oxygen-palette-primary-redArrowColor)'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></Box>
+                                    : <Box style={{color: 'var(--oxygen-palette-primary-greenArrowColor)'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></Box>)
                                 : null;
-
-                            const amount = renderAmount(dataRow, credDebitStatus);
+                            const amount = renderAmount(dataRow);
                             return(
-                                <TableRow key={index} hideBorder={true}>
-                                    {valuesList.map((valuesData,cellIndex)=>
-                                        <TableCell key={cellIndex}>{valuesData === "amount" ? amount : (dataRow as any)[valuesData]}</TableCell>
+                                <TableRow key={index} hideBorder={false}>
+                                    {valuesList.map((valuesData,cellIndex)=>{
+                                            const isAmountColumn = valuesData === "amount";
+                                            return (
+                                                <TableCell sx={{textAlign:isAmountColumn? "end": "left", paddingRight:"2rem"}} key={cellIndex}>{valuesData === "amount" ? amount : (dataRow as any)[valuesData]}</TableCell>
+                                            );
+                                        }
+                                    )}
+                                    {tableType === "transaction" && (
+                                        <TableCell sx={{textAlign: "center"}}>
+                                            {credDebitStatus}
+                                        </TableCell>
                                     )}
                                 </TableRow>
                             );
@@ -90,3 +102,13 @@ const TableComponent = ({tableData,dataConfigs,tableType}:TableComponentProps)=>
 }
 
 export default TableComponent;
+
+
+
+
+
+
+
+
+
+

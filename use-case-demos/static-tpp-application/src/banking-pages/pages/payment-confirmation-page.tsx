@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import {Box, Button, Grid, List, ListItem, useTheme,} from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {Box, Button, Grid, List, ListItem} from "@oxygen-ui/react";
+import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
-import { useMediaQuery } from "@mui/material";
 
 /**
  * @function PaymentConfirmationPage
@@ -28,33 +27,97 @@ import { useMediaQuery } from "@mui/material";
  * It displays a summary of the full payment details (amount, payee, reference, source account),
  * and requires the user to click "Confirm" to trigger `onSuccessHandler` and finalize the transaction.
  */
-const PaymentConfirmationPage = ()=>{
+const PaymentConfirmationPage = () => {
 
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const { onSuccessHandler,navigationData, themeColor } = useOutletContext<OutletContext>();
-    const navigate = useNavigate();
+    const { onSuccessHandler, navigationData, themeColor, handleCancel } =
+        useOutletContext<OutletContext>();
 
-    return(
+    return (
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>Please authorize following payment</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>
+                        Accounts Central requests the consent to perform the following payment</p>
                 </Grid>
-                <Grid className={"form-login-one-container"}>
-                   <Box sx={{width:'100%', marginTop:'1rem', display:'flex',flexDirection:'column',gap:'1rem'}}>
-                        <p>Debited Account : <br />
-                        <span style={{fontWeight:'600', marginLeft:'1rem'}}>{navigationData.current.formData.userAccount}</span></p>
-                        <List sx={{listStyleType: 'disc', pl: 8, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                            <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Amount : {navigationData.current.formData?.amount}</ListItem>
-                            <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Currency : {navigationData.current.formData?.currency}</ListItem>
-                            <ListItem sx={{display: 'list-item', padding:'0 1rem',}}>Reciver : <br /><span style={{ fontWeight:'600'}}>{navigationData.current.formData?.payeeAccount}</span></ListItem>
-                            <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Reference : {navigationData.current.formData?.reference}</ListItem>
+                <Grid className={'form-login-one-container'}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <Box sx={{ marginBottom: '0.5rem' }}>
+                            <strong>From Account:</strong> {navigationData.current?.formData?.userAccount ?? 'N/A'}
+                        </Box>
+                        <List
+                            sx={{
+                                listStyleType: 'disc',
+                                paddingLeft: '2rem',
+                                margin: 0
+                            }}
+                        >
+                            <ListItem
+                                sx={{
+                                    display: 'list-item',
+                                    padding: '0.25rem 0',
+                                    fontSize: '0.95rem'
+                                }}
+                            >
+                                Amount: {navigationData.current?.formData?.currency ?? ''} {navigationData.current?.formData?.amount ?? 'N/A'}
+                            </ListItem>
+                            <ListItem
+                                sx={{
+                                    display: 'list-item',
+                                    padding: '0.25rem 0',
+                                    fontSize: '0.95rem'
+                                }}
+                            >
+                                Biller Name: {navigationData.current?.formData?.payeeAccount ?? 'N/A'}
+                            </ListItem>
+                            <ListItem
+                                sx={{
+                                    display: 'list-item',
+                                    padding: '0.25rem 0',
+                                    fontSize: '0.95rem'
+                                }}
+                            >
+                                Reference: {navigationData.current?.formData?.reference ?? 'N/A'}
+                            </ListItem>
                         </List>
-                   </Box>
+                    </Box>
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
-                        <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
+                        <Button
+                            variant={'contained'}
+                            onClick={onSuccessHandler}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-gradients-primary-stop2': themeColor,
+                                '--oxygen-palette-gradients-primary-stop1': themeColor
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-primary-main': themeColor,
+                                borderColor: themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
                     </Box>
                 </Grid>
             </Grid>
@@ -62,5 +125,4 @@ const PaymentConfirmationPage = ()=>{
     )
 }
 
-// @ts-ignore
 export default PaymentConfirmationPage;

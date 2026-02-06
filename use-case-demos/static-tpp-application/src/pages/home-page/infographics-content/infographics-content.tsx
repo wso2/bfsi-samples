@@ -58,20 +58,28 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
 
     const options: ChartOptions<'doughnut'> = {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         cutout:chartInfo.cutout,
         layout:{
-            autoPadding:true,
+
+            padding:{
+                left:0,
+                right:0,
+            }
         },
         plugins: {
             legend: {
-                position: "right",
-                align: 'center',
-                labels: {
-                    usePointStyle: true,
-                    boxWidth: 20,
-                    padding: 25,
-                }
+                // position: "right",
+                // align: 'center',
+                // labels: {
+                //     usePointStyle: true,
+                //     boxWidth: 12,
+                //     padding: 15,
+                //     font:{
+                //         size: 12
+                //     }
+                // }
+                display: false,
             },
             tooltip: {}
         },
@@ -88,9 +96,21 @@ export const InfographicsContent = ({total,chartInfo}:InfographicsContentProps)=
                 </Card>
                 <Card className={'info-graphic-card'}>
                     <h3>Account Distribution</h3>
-                    <div className="chart-container">
-                        <Doughnut data={chartjsData} options={options}/>
+                    <div className="chart-wrapper">
+                        <div className="chart-container">
+                            <Doughnut data={chartjsData} options={options}/>
+                        </div>
+
+                        <div className="custom-legend">
+                            {chartInfo.labels.map((label, i) => (
+                                <div key={label} className="legend-item">
+                                    <span className="legend-dot" style={{ backgroundColor: chartInfo.backgroundColor[i] }}/>
+                                    <span>{label}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
+
                 </Card>
             </Box>
 

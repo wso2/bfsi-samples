@@ -31,9 +31,9 @@
 
     .card-top-container{
       display: flex;
-      justify-content:space-around;
+      justify-content:center;
       align-items: center;
-      gap: 1rem;
+      gap: 5vw;
 
       .logo{
         width: 4rem;
@@ -46,6 +46,7 @@
         }
       }
       .bank-name-container{
+        text-wrap: nowrap;
         font-size: 1rem;
       }
     }
@@ -60,4 +61,10 @@
 
   }
 
+}
+
+@media (max-width < 1280px) {
+  .card-top-container{
+    gap: 1rem;
+  }
 }

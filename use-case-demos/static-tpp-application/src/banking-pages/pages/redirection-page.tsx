@@ -34,11 +34,16 @@ interface RedirectionPageProps {
  */
 const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
-    const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
+    const { navigationData,accountsToAdd,isCancelled} = useOutletContext<OutletContext>();
     let data = null;
     let state = null;
 
-    if(navigationData.current?.formData != null){
+    if(isCancelled){
+        state = {
+            "type": "cancelled",
+            "data": null
+        }
+    }else if (navigationData.current?.formData != null){
         data = {
             "id": `T${Date.now()}`,
             "date": new Date().toLocaleDateString(),
@@ -77,7 +82,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     return (
         <>
-            <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
+            <div style={{width:'100%', display:'flex', justifyContent:'center', paddingBottom: '12vh'}}>
                 Redirecting...
             </div>
 

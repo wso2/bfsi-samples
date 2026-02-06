@@ -43,7 +43,8 @@ export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
     const [currentStep, setCurrentStep] = useState<Step >(sequence[0]);
     const [usecasesList, setUseCasesList] = useState<UseCase[]>(initialUsecaseItem?.useCases || []);
     const [selectedUsecaseIndex, setSelectedUsecaseIndex] = useState<number>(0);
-
+    const [toggleButtonState, setToggleButtonState] = useState<boolean>(true);
+     
     const usecaseSelectionHandler = useCallback(
         (indexOfUsecase: number = 0) => {
             const newSteps = usecase[routeType.current]?.useCases[indexOfUsecase]?.steps;
@@ -69,5 +70,22 @@ export const useBankNavigationHook = ({usecase,type,}:BankingHookProps)=>{
         const step = sequence[steps+1];
         setCurrentStep(step);
     }
-    return {usecasesList, onSuccessHandler,currentStep,selectedUsecaseIndex,usecaseSelectionHandler}
+
+    const onCancelHandler = () => {
+        const lastStepIndex = sequence.length - 1;
+        setSteps(lastStepIndex);
+        setCurrentStep(sequence[lastStepIndex]);
+    }
+
+    return {
+        usecasesList,
+        onSuccessHandler,
+        currentStep,
+        selectedUsecaseIndex,
+        usecaseSelectionHandler,
+        onCancelHandler,
+        toggleButtonState,
+        setToggleButtonState,
+    }
+
 }

@@ -18,6 +18,7 @@
 
 import {Grid } from "@oxygen-ui/react";
 import './banking-layouts-styles.scss'
+import { Card } from "@mui/material";
 
 interface BankingOuterLayoutProps {
     children: React.ReactNode;
@@ -35,7 +36,9 @@ interface BankingOuterLayoutProps {
 const BankingOuterLayout = ({children, image,bankName,themeColor}:BankingOuterLayoutProps)=>{
     return(
         <>
-            <Grid container className="banks-pages-inner-container">
+            <Grid container className="banks-pages-inner-container" sx={{ padding: 0, "&:last-child": { pb: 0 } }}>
+
+                <Card className="banking-logo-container-card">
                     <Grid className="banking-logo-container">
                         <img src={image} alt="banking logo" />
                         <h3 style={{color: themeColor}}>{bankName}</h3>
@@ -43,6 +46,8 @@ const BankingOuterLayout = ({children, image,bankName,themeColor}:BankingOuterLa
                     <Grid className={'banking-dynamic-content'}>
                         {children}
                     </Grid>
+                </Card>
+
             </Grid>
         </>
     )

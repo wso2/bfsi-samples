@@ -18,7 +18,7 @@
 
 import {useSearchParams, useNavigate, Outlet, useLocation} from "react-router-dom";
 import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.ts";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
 import BankingMainContentLayout from "../banking-layouts/banking-main-content-layout.tsx";
 import type {AppInfo, Bank, Type} from "../../hooks/config-interfaces.ts";
@@ -51,7 +51,8 @@ const BankingHomePage = ({ accountsNumbersToAdd,useCases,bank,appInfo }: Banking
     const accountsToAdd = useRef({type:"",data:[]});
     const [params] = useSearchParams();
     const type = params.get("type") || '';
-    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex} = useBankNavigationHook({usecase: useCases, type: type });
+    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex, onCancelHandler, toggleButtonState,setToggleButtonState} = useBankNavigationHook({usecase: useCases, type: type });
+    const [isCancelled, setIsCancelled] = useState(false);
 
     let themeColor;
     if (bank.bankThemeId === 1){
@@ -65,6 +66,11 @@ const BankingHomePage = ({ accountsNumbersToAdd,useCases,bank,appInfo }: Banking
     }
     const selectedAccountNumber = bank.startingAccountNumbers;
 
+    const handleCancel = () => {
+        setIsCancelled(true);
+        onCancelHandler();
+    }
+
     useEffect(() => {
         const path = currentStep?.component
         navigate(`/${bank.route}/`+path)
@@ -73,7 +79,7 @@ const BankingHomePage = ({ accountsNumbersToAdd,useCases,bank,appInfo }: Banking
         <>
             <BankingMainContentLayout usecasesList={usecasesList} selectedUsecaseIndex={selectedUsecaseIndex} usecaseSelectionHandler={usecaseSelectionHandler} themeColor={themeColor} >
                 <BankingOuterLayout image={navigationData.current?.bankInfo.image} bankName={bank.name} themeColor={themeColor}>
-                    <Outlet context={{accountsNumbersToAdd,onSuccessHandler, navigationData,accountsToAdd,appInfo,themeColor,selectedAccountNumber}} />
+                    <Outlet context={{accountsNumbersToAdd,onSuccessHandler, navigationData,accountsToAdd,appInfo,themeColor,selectedAccountNumber,isCancelled , handleCancel,toggleButtonState,setToggleButtonState}} />
                 </BankingOuterLayout>
             </BankingMainContentLayout>
         </>

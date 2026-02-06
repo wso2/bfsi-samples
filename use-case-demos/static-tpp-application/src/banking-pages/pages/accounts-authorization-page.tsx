@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import {Box, Button, FormControl, FormLabel, Grid, List, ListItem, useTheme} from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {Box, Button, Grid, List, ListItem} from "@oxygen-ui/react";
+import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
-import {useMediaQuery} from "@mui/material";
 
 /**
  * @function AccountsAuthorizationPage
@@ -31,35 +30,103 @@ import {useMediaQuery} from "@mui/material";
  */
 const AccountsAuthorizationPage = ()=>{
 
-    const { onSuccessHandler, accountsToAdd,themeColor } = useOutletContext<OutletContext>();
-    const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
+    const { onSuccessHandler, accountsToAdd, themeColor, handleCancel } = useOutletContext<OutletContext>();
+    const permissions = ["Read Account Details","Read Account Balances","Read Account Balances"];
     const getFutureDate = () => {
         const futureDate = new Date();
         futureDate.setMonth(futureDate.getMonth() + 2);
-        return futureDate.toLocaleDateString();
+
+        const day = futureDate.getDate();
+        const month = futureDate.toLocaleString('en-GB', { month: 'long' });
+        const year = futureDate.getFullYear();
+
+        // Helper to add st, nd, rd, or th
+        const getOrdinal = (n:any) => {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return n + (s[(v - 20) % 10] || s[v] || s[0]);
+        };
+
+        return `${getOrdinal(day)} ${month} ${year}`;
     };
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const navigate = useNavigate();
+
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>Please authorize the following permissions to your account</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12} >
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{whiteSpace:'balanced',fontSize:'0.8rem'}}>Accounts Central requests the consent to access following details </p>
                 </Grid>
                 <Grid className={"form-login-one-container"}>
-                    <FormControl>
-                        <FormLabel id={"check-box-group"}>Account : {accountsToAdd?.current?.data?.[0]?? 'N/A'}</FormLabel>
-                    </FormControl>
-                    <List sx={{ listStyleType: 'disc', pl: 4 }}>
-                        {permissions.map((item, index) => {
-                            return (<ListItem key={index} sx={{display: 'list-item'}}>{item}</ListItem>)
-                        })}
-                    </List>
-                    <p>Permission expired on : {getFutureDate()}</p>
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <Box sx={{ marginBottom: '0.5rem' }}>
+                            <strong>Account:</strong> {accountsToAdd?.current?.data?.[0] ?? 'N/A'}
+                        </Box>
+
+                        <List
+                            sx={{
+                                listStyleType: 'disc',
+                                paddingLeft: '2rem',
+                                margin: 0
+                            }}
+                        >
+                            {permissions.map((item, index) => (
+                                <ListItem
+                                    key={index}
+                                    sx={{
+                                        display: 'list-item',
+                                        padding: '0.25rem 0',
+                                        fontSize: '0.95rem'
+                                    }}
+                                >
+                                    {item}
+                                </ListItem>
+                            ))}
+                        </List>
+
+                        <Box sx={{ marginTop: '0.5rem' }}>
+                            <strong>Consent expires on:</strong> {getFutureDate()}
+                        </Box>
+                    </Box>
+
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={onSuccessHandler}  sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Confirm</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
+                        <Button
+                            variant={'contained'}
+                            onClick={onSuccessHandler}
+                            sx={{
+                                width:'6rem',
+                                height:'3rem',
+                                '--oxygen-palette-gradients-primary-stop2':themeColor,
+                                '--oxygen-palette-gradients-primary-stop1':themeColor
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width:'6rem',
+                                height:'3rem',
+                                '--oxygen-palette-primary-main':themeColor,
+                                borderColor:themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
                     </Box>
                 </Grid>
             </Grid>

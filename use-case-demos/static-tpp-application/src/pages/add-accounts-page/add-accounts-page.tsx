@@ -20,9 +20,10 @@ import ApplicationLayout from "../../layouts/application-layout/application-layo
 import {useLocation, useNavigate} from 'react-router-dom';
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
 import type {Bank} from "../../hooks/config-interfaces.ts";
-import {Box, IconButton} from "@oxygen-ui/react";
+import {Box, Button, Card} from "@oxygen-ui/react";
 import './add-account.scss'
-
+import {useState} from "react";
+import {RedirectionComponent} from "../../components/redirection-component.tsx";
 
 interface NavigationState {
     name: string;
@@ -39,42 +40,56 @@ interface AddAccountsPageProps {
  * a new bank account. It lists available banks and, upon selection, redirects the
  * user to the specific bank's authorization flow (via `react-router` state).
  */
-const AddAccountsPage = ({bankInformations}:AddAccountsPageProps)=>{
+const AddAccountsPage =
+    ({bankInformations}:AddAccountsPageProps)=>{
 
     const navigate = useNavigate();
     const location = useLocation();
     const navigationState = location.state as NavigationState;
     const appName = navigationState?.name;
 
+    const [isRedirecting, setIsRedirecting] = useState(false);
+
     const onAddAccountsHandler = (bankName:string)=>{
         const target = bankInformations.find((bank) =>
              bank.name === bankName
         );
-        navigate("/"+target?.route+"/?type=account",{
-            state:{
-                formData: null,
-                message: "confirmed payment information",
-                bankInfo: target
-            }
-        });
+            setIsRedirecting(true);
+            setTimeout(() => {
+                navigate("/" + target?.route + "/?type=account", {
+                    state: {
+                        formData: null,
+                        message: "confirmed payment information",
+                        bankInfo: target
+                    }
+                });
+            }, 1000);
+    }
+    if (isRedirecting){
+        return <RedirectionComponent />;
     }
     return (
         <>
             <ApplicationLayout name={appName}>
                 <PaymentAccountPageLayout title={"Add Account"}>
-                    <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
-                    <div className="accounts-buttons-container">
-                        {bankInformations?.map((account, index) => (
-                            <IconButton key={index} onClick={()=>{onAddAccountsHandler(account.name)}} >
-                                <Box className={"account-button-outer"}>
-                                    <Box className={"logo-container"} sx={{marginLeft:'2rem'}}>
-                                        <img src={account.image} alt={`${account.name} logo`}/>
-                                    </Box>
-                                    <p>{account.name}</p>
-                                </Box>
-                            </IconButton>
-                        ))}
-                    </div>
+                    <Box className="accounts-outer">
+                        <h3 style={{marginBottom:"1.5rem"}}>Select your Bank</h3>
+                        <div className="accounts-buttons-container">
+                            {bankInformations?.map((account, index) => (
+                                <Button key={index} onClick={()=>{onAddAccountsHandler(account.name)}} >
+                                    <Card>
+                                        <Box className={"account-button-outer"}>
+                                            <Box className={"logo-container"} sx={{marginLeft:'2rem'}}>
+                                                <img src={account.image} alt={`${account.name} logo`}/>
+                                            </Box>
+                                            <p>{account.name}</p>
+                                        </Box>
+                                    </Card>
+                                </Button>
+                            ))}
+                        </div>
+                    </Box>
+
                 </PaymentAccountPageLayout>
             </ApplicationLayout>
         </>

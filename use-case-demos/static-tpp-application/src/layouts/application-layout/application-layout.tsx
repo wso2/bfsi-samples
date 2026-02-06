@@ -33,10 +33,15 @@ export interface ApplicationLayoutProps {
 export const ApplicationLayout: FC<ApplicationLayoutProps> = ({ name,children }) => {
     return (
         <>
-            <Header name={name} />
-            <div className="product-content-outer">
-                {children}
+            <div className="application-layout">
+                <Header name={name} />
+                <div className="product-content-outer">
+                    {children}
+                </div>
             </div>
+
+
+
         </>
     );
 };

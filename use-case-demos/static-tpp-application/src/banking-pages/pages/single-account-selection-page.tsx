@@ -23,12 +23,11 @@ import {
     FormControlLabel,
     Grid,
     Radio,
-    RadioGroup, useTheme
+    RadioGroup
 } from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
-import type {OutletContext} from "./login-page.tsx";
-import {useState} from "react";
-import {useMediaQuery} from "@mui/material";
+import { useOutletContext } from "react-router-dom";
+import type { OutletContext } from "./login-page.tsx";
+import { useState } from "react";
 import './inner-pages-stylings.scss'
 
 /**
@@ -38,49 +37,112 @@ import './inner-pages-stylings.scss'
  * Upon successful selection, it updates the `accountsToAdd` context and proceeds to the
  * next authorization step via `onSuccessHandler`.
  */
-const SingleAccountSelectionPage = ()=>{
+const SingleAccountSelectionPage = () => {
 
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const { accountsNumbersToAdd,onSuccessHandler,navigationData, accountsToAdd,selectedAccountNumber,themeColor } = useOutletContext<OutletContext>();
-    const accountsList = (accountsNumbersToAdd || []).map((account) => {return selectedAccountNumber+account});
+    const {
+        accountsNumbersToAdd,
+        onSuccessHandler,
+        navigationData,
+        accountsToAdd,
+        selectedAccountNumber,
+        themeColor,
+        handleCancel
+    } = useOutletContext<OutletContext>();
+    const accountsList = (accountsNumbersToAdd || []).map(
+        (account) => selectedAccountNumber + account
+    );
     const [selectedAccount, setSelectedAccount] = useState<string>('');
-
     const handleAccountSelection = () => {
-        if(selectedAccount.length>0){
-            accountsToAdd.current = {type:"single",data:[selectedAccount]};
+        if (selectedAccount.length > 0) {
+            accountsToAdd.current = { type: "single", data: [selectedAccount] };
             onSuccessHandler();
         }
-    }
+    };
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedAccount(event.target.value);
     };
-    const navigate = useNavigate();
+    const bankName = navigationData.current?.bankInfo?.name || 'Bank';
 
-    return(
-        <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>Please select your account from the list</p>
-                </Grid>
-                <Grid className={"form-login-one-container"}>
-                    <FormControl sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'5%'}}>
-                        <RadioGroup aria-label="select-account" name="account-selection-group" value={selectedAccount} onChange={handleRadioChange}>
-                            {accountsList.map((account, index) => {
-                                return (
-                                    <FormControlLabel key={index} control={<Radio sx={{'--oxygen-palette-primary-main': themeColor}} />} label={`${navigationData.current.bankInfo.name || 'Bank'}-${account}`} value={account}/>
-                                );
-                            })}
+    return (
+        <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+            <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>
+                    Select the account you wish to authorize</p>
+            </Grid>
+            <Grid className={'form-login-one-container'}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        margin: '0 auto',
+                        width: '100%',
+                        maxWidth: '500px',
+                        padding: '1.5rem',
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        backgroundColor: '#f9f9f9'
+                    }}
+                >
+                    <FormControl>
+                        <RadioGroup
+                            aria-label="select-account"
+                            name="account-selection-group"
+                            value={selectedAccount}
+                            onChange={handleRadioChange}
+                        >
+                            {accountsList.map((account, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    control={
+                                        <Radio
+                                            sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                        />
+                                    }
+                                    label={`${bankName}-${account}`}
+                                    value={account}
+                                    sx={{ fontSize: '0.95rem' }}
+                                />
+                            ))}
                         </RadioGroup>
                     </FormControl>
-                    <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={handleAccountSelection} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Done</Button>
-                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}}>Cancel</Button>
-                    </Box>
-                </Grid>
+                </Box>
+
+                <Box className="form-buttons-container">
+                    <Button
+                        variant={'contained'}
+                        onClick={handleAccountSelection}
+                        disabled={selectedAccount.length === 0}
+                        sx={{
+                            width: '6rem',
+                            height: '3rem',
+                            '--oxygen-palette-gradients-primary-stop2': themeColor,
+                            '--oxygen-palette-gradients-primary-stop1': themeColor,
+                            '&.Mui-disabled': {
+                                opacity: 0.45,
+                                cursor: 'not-allowed',
+                                pointerEvents: 'auto'
+                            }
+                        }}
+                    >
+                        Next
+                    </Button>
+                    <Button
+                        variant={'outlined'}
+                        onClick={handleCancel}
+                        sx={{
+                            width: '6rem',
+                            height: '3rem',
+                            '--oxygen-palette-primary-main': themeColor,
+                            borderColor: themeColor
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                </Box>
             </Grid>
-        </>
-    )
+        </Grid>
+    );
 }
 
 export default SingleAccountSelectionPage;

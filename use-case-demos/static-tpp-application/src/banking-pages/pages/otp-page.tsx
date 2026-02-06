@@ -16,12 +16,11 @@
  * under the License.
  */
 
-import {Box, Button, FormControl, Grid, Input, useTheme} from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {Box, Button, FormControl, Grid, Input, Typography} from "@oxygen-ui/react";
+import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
-import { useMediaQuery } from "@mui/material";
 import './inner-pages-stylings.scss';
 
 interface OtpFormData{
@@ -37,48 +36,90 @@ interface OtpFormData{
  */
 const OtpPage = ()=>{
 
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const { onSuccessHandler, themeColor } = useOutletContext<OutletContext>();
-    const {control,handleSubmit,formState:{errors}} = useForm<OtpFormData>({
+    const { onSuccessHandler, themeColor, handleCancel } = useOutletContext<OutletContext>();
+    const {control, handleSubmit, formState:{errors}} = useForm<OtpFormData>({
         defaultValues:{
             code:''
         }
     })
-    const onSubmitHandler=(data:OtpFormData)=>{
+    const onSubmitHandler = (data: OtpFormData) => {
         if(data.code){
             onSuccessHandler()
         }else{
             alert("Check your Otp and re-enter")
         }
     }
-    const navigate = useNavigate();
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>SMS Authentication</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>OTP Verification</p>
                 </Grid>
-                <Grid className={"form-login-one-container"} >
-                    <form onSubmit={handleSubmit(onSubmitHandler)} style={{gap:'2rem', display:'flex', flexDirection:'column'}}>
-                        <FormControl fullWidth={true} margin={'normal'} >
-                            <label>OTP code</label>
-                            <Controller name={'code'} control={control} rules={{required:'Otp required'}}  render={({field}) => (
-                                <Input
-                                    {...field}
-                                    placeholder={"Enter otp code"}
-                                    type={"text"}
-                                    error={!!errors.code}
-                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
-                                />
-                            )}/>
-                            <ErrorMessage error={errors.code}/>
-                        </FormControl>
-                        <Box className="form-buttons-container">
-                            <Button variant={'contained'} sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} className="button-styles" type={'submit'}>Confirm</Button>
-                            <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
-                        </Box>
-                    </form>
+                <Grid className={'form-login-one-container'}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <Typography sx={{ opacity: 0.4, fontSize: '0.875rem' }}>
+                            A text message with the verification code was sent to (xxx) xxx 4098
+                        </Typography>
+                        <form onSubmit={handleSubmit(onSubmitHandler)} style={{ gap: '1rem', display: 'flex', flexDirection: 'column' }}>
+                            <FormControl fullWidth={true}>
+                                <label>Verification code <span style={{ color: "var(--oxygen-palette-primary-requiredStar)" }}>*</span></label>
+                                <Controller name={'code'} control={control} rules={{ required: true }} render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        placeholder={"Otp input field"}
+                                        type={"text"}
+                                        error={!!errors.code}
+                                        sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                    />
+                                )}/>
+                                <ErrorMessage error={errors.code}/>
+                            </FormControl>
+                            <Typography sx={{ fontWeight: 300, opacity: 0.4, fontSize: '0.875rem' }}>
+                                Code will expire after 01:00 min
+                            </Typography>
+                        </form>
+                    </Box>
+                    <Box className="form-buttons-container">
+                        <Button
+                            variant={'contained'}
+                            type={'submit'}
+                            form="otp-form"
+                            onClick={handleSubmit(onSubmitHandler)}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-gradients-primary-stop2': themeColor,
+                                '--oxygen-palette-gradients-primary-stop1': themeColor
+                            }}
+                        >
+                            Confirm
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-primary-main': themeColor,
+                                borderColor: themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
         </>

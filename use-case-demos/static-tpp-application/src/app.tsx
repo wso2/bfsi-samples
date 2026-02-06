@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
@@ -35,6 +35,7 @@ import MultipleAccountsAuthorizationPage from "./banking-pages/pages/multiple-ac
 import AccountsSelectionWithPermissionsPage from "./banking-pages/pages/accounts-selection-with-permissions-page.tsx";
 import AllTransactions from "./pages/all-transactions-page/all-transactions.tsx";
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
+import {useCallback, useEffect} from "react";
 
 
 
@@ -46,7 +47,71 @@ import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.t
  */
 export function App() {
 
-    const {banksInfomation, accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
+    const location = useLocation();
+    const sendHeight = useCallback(() => {
+        requestAnimationFrame(() => {
+            setTimeout(() => {
+                const bodyHeight = document.body.scrollHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                const bodyOffsetHeight = document.body.offsetHeight;
+                const documentOffsetHeight = document.documentElement.offsetHeight;
+                const height = Math.max(
+                    bodyHeight,
+                    documentHeight,
+                    bodyOffsetHeight,
+                    documentOffsetHeight
+                );
+                window.parent.postMessage({
+                    type: 'iframe-height',
+                    height: height
+                }, '*');
+            }, 600);
+        });
+    }, []);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'scroll-to-top' }, '*');
+        }
+        sendHeight();
+        const timers = [
+            setTimeout(sendHeight, 1000),
+            setTimeout(sendHeight, 1500),
+            setTimeout(sendHeight, 2000)
+        ];
+
+        return () => {
+            timers.forEach(timer => clearTimeout(timer));
+        };
+    }, [location.pathname, sendHeight]);
+
+    useEffect(() => {
+        const handleClick = () => {
+            setTimeout(sendHeight, 100);
+            setTimeout(sendHeight, 300);
+        };
+        let resizeTimer: number | undefined;
+        const handleResize = () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(sendHeight, 300);
+        };
+        window.addEventListener('click', handleClick);
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('load', sendHeight);
+
+        return () => {
+            window.removeEventListener('click', handleClick);
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('load', sendHeight);
+            clearTimeout(resizeTimer);
+        };
+    }, [sendHeight]);
+
+    const {banksInfomation, accountsNumbersToAdd,colors,standingOrdersTableHeaderData,transactionTableHeaderData,
+        overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,
+        payeesData,useCases,banksList} = useConfigContext();
+
     if (!appInfo || !banksInfomation) {
         return (
             <div style={{ padding: '50px', textAlign: 'center', fontSize: '1.5em' }}>
@@ -58,6 +123,7 @@ export function App() {
     return (
         <>
             <AppThemeProvider color={colors}>
+
                 <Routes>
                     <Route path={`/${appInfo.route}/*`} element={
                         <Routes>
@@ -76,7 +142,6 @@ export function App() {
                                              overlayInformation={overlayInformation}
                                              transactionTableHeaderData={transactionTableHeaderData}
                                              standingOrdersTableHeaderData={standingOrdersTableHeaderData}
-
                                        />
                                    }/>
                             <Route path="paybills" element={<PaymentsPage banksList={banksInfomation} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
@@ -85,7 +150,6 @@ export function App() {
                             <Route path="standing-orders" element={<AllStandingOrders name={appInfo.applicationName} standingOrdersList={standingOrderList} standingOrdersTableHeaderData={standingOrdersTableHeaderData}/>}/>
                         </Routes>
                     } />
-
                     {banksInfomation.map((bank,index)=>(
                         <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank} accountsNumbersToAdd={accountsNumbersToAdd}/>}>
                             <Route path={"login"} element={<LoginPage />}/>
@@ -100,7 +164,6 @@ export function App() {
                             <Route path={"account-select-uc-3"} element={<AccountsSelectionWithPermissionsPage/>}/>
                         </Route>
                     ))}
-
                     <Route path="/" element={<Navigate to={`/${appInfo.route}`} replace />} />
                 </Routes>
             </AppThemeProvider>
@@ -108,6 +171,3 @@ export function App() {
     )
 
 }
-
-
-

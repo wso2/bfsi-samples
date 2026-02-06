@@ -18,7 +18,7 @@
 
 .header-outer{
   background: linear-gradient(90deg, var(--oxygen-palette-primary-main) 0.06%, var(--oxygen-palette-primary-secondaryColor) 139.7%);
-  height: 6vh;
+  height: 48px;
   display: flex;
   align-items: center;
   padding: 0 2vw;
@@ -51,7 +51,7 @@
 .title-container{
   display: flex;
   width: 100%;
-  height: 5vh;
+  height: 24px;
   align-items: center;
   justify-content: space-between;
   font-size: 1.5rem;
@@ -62,8 +62,8 @@
 .title-and-back-container{
   display: flex;
   width: 100%;
-  height: 6vh;
-  gap: 2rem;
+  height: 64px;
+  gap: 32px;
   align-items: center;
   background: var(--oxygen-palette-primary-backgroundColor);
   padding-left: 1rem;
@@ -73,8 +73,8 @@
 .payments-layout{
   display: flex;
   justify-content: center;
-  height: calc(100vh - 12vh);
-  padding: 2rem;
+  width: 100%;
+  height: 95vh;
   background: var(--oxygen-palette-primary-backgroundColor);
 }
 
@@ -87,17 +87,18 @@
   background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
-
+  align-items: start;
   z-index: 1000;
 
   .overlay-inner{
+    position: absolute;
     display: flex;
     justify-content: space-between;
     padding: 4rem;
     max-width: 40rem;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 10rem;
 
     .button-container{
      flex: 1;

@@ -18,7 +18,7 @@
 
 import type { AppInfo, DynamicBanks, Type, UseCase } from "../../hooks/config-interfaces";
 import './banking-main-content-layout.scss';
-import { Button, Grid } from "@oxygen-ui/react";
+import { Box, Button, Grid } from "@oxygen-ui/react";
 
 export interface BankingHomePageProps {
     useCases: Type[];
@@ -48,18 +48,27 @@ interface BankingMainContentLayoutProps{
  */
 const BankingMainContentLayout = ({ children,usecasesList,selectedUsecaseIndex,usecaseSelectionHandler,themeColor}: BankingMainContentLayoutProps) => {
 
+    const useCase= usecasesList.find((_u,index:number)=> index===selectedUsecaseIndex )
+
     return (
         <Grid container className={'banking-outer-layout'}>
+
             <Grid className="banking-usecase-layout">
                 {usecasesList.map((useCase,index) => {
 
                     const isSelected = selectedUsecaseIndex === index;
 
                     return (
-                        <Button sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor, borderColor:themeColor,'--oxygen-palette-primary-main':themeColor}} key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
+                        <Button sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor, borderColor:themeColor,'--oxygen-palette-primary-main':themeColor, width:"8rem", textTransform:"capitalize"}} key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.id}</Button>
                     )
                 })}
+
             </Grid>
+            <Box sx={{display:"flex", flexDirection:'column', width:"90%"}}>
+                <Box className="usecase-title"> {useCase?.id} - {useCase?.title}</Box>
+                <Box className="usecase-descriptions"> <p>User verification: &nbsp;</p>  {useCase?.userVerification}</Box>
+                <Box className="usecase-descriptions"><p>Consent verification: &nbsp;</p>{useCase?.consentDisplay}</Box>
+            </Box>
 
             <Grid className={'banking-inner-component-container'}>
                 {children}

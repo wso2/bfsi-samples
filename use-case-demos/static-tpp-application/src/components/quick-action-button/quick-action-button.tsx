@@ -34,16 +34,20 @@ interface ActionButtonProps {
  * as the target path for navigation, and is disabled based on the button name.
  */
 const QuickActionButton = ({icon,name, onClick} : ActionButtonProps)=>{
-
     if (!onClick) return null;
     const isDisabled = name === "Pay Bills"? false : true;
 
     return (
         <>
-            <IconButton className={'action-button'} disabled={isDisabled} onClick={()=> onClick(`${name?.toLowerCase().replace(' ','')}`)}>
+            <div className={!isDisabled ? 'pay-bills-button' : ''}>
+                <IconButton className="action-button" disabled={isDisabled}
+                            onClick={()=> onClick(
+                                `${name?.toLowerCase().replace(' ','')}`)}>
                 {icon}
                 <p>{name}</p>
             </IconButton>
+            </div>
+
         </>
     );
 }

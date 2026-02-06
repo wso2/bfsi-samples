@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { Box, Button, FormControl, Grid, Input, useTheme } from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import { Box, Button, FormControl, Grid, Input } from "@oxygen-ui/react";
+import { useOutletContext } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { ErrorMessage } from "../../pages/payments-page/payment-form/payment-form.tsx";
 import './inner-pages-stylings.scss'
-import { useMediaQuery } from "@mui/material";
-import type {AppInfo} from "../../hooks/config-interfaces.ts";
+import type { AppInfo } from "../../hooks/config-interfaces.ts";
 
 
 export interface OutletContext {
@@ -31,8 +30,12 @@ export interface OutletContext {
     accountsToAdd: any;
     appInfo: AppInfo;
     themeColor: string;
-    selectedAccountNumber:string;
+    selectedAccountNumber: string;
     accountsNumbersToAdd: string[];
+    handleCancel: () => void;
+    isCancelled: boolean;
+    toggleButtonState: boolean;
+    setToggleButtonState: (state: boolean) => void;
 }
 
 interface loginformData {
@@ -49,15 +52,13 @@ interface loginformData {
  */
 const LoginPage = () => {
 
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const navigate = useNavigate();
-    const { onSuccessHandler,appInfo,themeColor } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, themeColor, handleCancel } = useOutletContext<OutletContext>();
     const { control, handleSubmit, formState: { errors } } = useForm<loginformData>({
         defaultValues: {
             email: '', password: ''
         }
     })
+
     const onSubmitHandler = (data: loginformData) => {
         console.log("Submitting...")
         if (data.email !== '' && data.password !== '') {
@@ -66,46 +67,85 @@ const LoginPage = () => {
             alert('wrong email or password')
         }
     }
+
     return (
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>Login to your account</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>Login to your account</p>
                 </Grid>
-                <Grid className="form-login-one-container">
-                    <form onSubmit={handleSubmit(onSubmitHandler)} style={{display:'flex', flexDirection:'column', justifyContent:'center', gap:'1rem'}}>
-                        <FormControl fullWidth={true} >
-                            <label>Email</label>
-                            <Controller name={'email'} control={control} rules={{ required: 'Email address required' }} render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    placeholder={"Enter your email"}
-                                    type={"text"}
-                                    error={!!errors.email}
-                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
-                                />
-                            )} />
-                            <ErrorMessage error={errors.email} />
-                        </FormControl>
-                        <FormControl fullWidth={true}>
-                            <label>password</label>
-                            <Controller name={'password'} control={control} rules={{ required: 'Password required to proceed' }} render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    placeholder={"Enter your password"}
-                                    type={"password"}
-                                    error={!!errors.password}
-                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
-                                    className={'form-input-item'}
-                                />
-                            )} />
-                            <ErrorMessage error={errors.password} />
-                        </FormControl>
-                        <Box className="form-buttons-container">
-                            <Button className="button-styles " sx={{'--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}} variant={'contained'} type={'submit'}>Login</Button>
-                            <Button variant={'outlined'} sx={{'--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} className="button-styles" onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
-                        </Box>
-                    </form>
+                <Grid className={'form-login-one-container'}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <FormControl fullWidth={true}>
+                                <label>Email <span style={{ color: "var(--oxygen-palette-primary-requiredStar)" }}>*</span></label>
+                                <Controller name={'email'} control={control} rules={{ required: true }} render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        placeholder={"Enter your email"}
+                                        type={"text"}
+                                        error={!!errors.email}
+                                        sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                    />
+                                )} />
+                                <ErrorMessage error={errors.email} />
+                            </FormControl>
+
+                            <FormControl fullWidth={true}>
+                                <label>Password <span style={{ color: "var(--oxygen-palette-primary-requiredStar)" }}>*</span></label>
+                                <Controller name={'password'} control={control} rules={{ required: true }} render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        placeholder={"Enter your password"}
+                                        type={"password"}
+                                        error={!!errors.password}
+                                        sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                    />
+                                )} />
+                                <ErrorMessage error={errors.password} />
+                            </FormControl>
+                        </form>
+                    </Box>
+
+                    <Box className="form-buttons-container">
+                        <Button
+                            variant={'contained'}
+                            onClick={handleSubmit(onSubmitHandler)}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-gradients-primary-stop2': themeColor,
+                                '--oxygen-palette-gradients-primary-stop1': themeColor
+                            }}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-primary-main': themeColor,
+                                borderColor: themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
         </>

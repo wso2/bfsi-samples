@@ -51,7 +51,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const navigate = useNavigate();
     const responsiveDirections = isLargeScreen ? 'column' : 'row';
-    const responsiveMinHeight = isLargeScreen ? '16vh' : '8vh';
+    const responsiveMinHeight = isLargeScreen ? '32px' : '12px';
     const responsiveDisplay = isLargeScreen ? 'none' : 'flex';
     const responsivePadding = isLargeScreen ? '1rem' : '2rem';
     const actionButtons: ActionButton[] = [
@@ -60,7 +60,6 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
         {icon: <ClockAsteriskIcon size={'medium'}/>, name: "Schedule"},
         {icon: <UserGroupIcon size={'medium'}/>, name: "Payees"},
     ];
-
     const onClickHandlerActionButtons = (pathTo:string)=>{
         const absolutePath = "/"+appInfo.route+"/"+pathTo;
         navigate(absolutePath);
@@ -70,7 +69,7 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
         if (currentHour >= 5 && currentHour < 12) {
             return ", Good Morning!";
         } else if (currentHour >= 0 && currentHour < 5) {
-            return "";
+            return ", Good Night!";
         } else if (currentHour >= 12 && currentHour < 18) {
             return  ", Good Afternoon!";
         } else {
@@ -80,7 +79,8 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
 
     return (
         <>
-            <Grid container className='hero-outer' direction={responsiveDirections} sx={{padding: responsivePadding, backgroundImage: `url(${userInfo.background})`}}>
+            <Grid container className='hero-outer' direction={responsiveDirections}
+                  sx={{padding: responsivePadding, backgroundImage: `url(${userInfo.background})`}}>
                 <Grid className='hero-inner-secton user-info'>
                     <Box className='avatar-container' sx={{display: responsiveDisplay}}>
                         <img src={userInfo.image} alt='avatar' className='avatar' />
@@ -90,7 +90,8 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
                 <Grid className='hero-inner-secton actions' sx={{minHeight: responsiveMinHeight}}>
                     {actionButtons.map((button, index) => {
                         return (
-                            <QuickActionButton icon={button.icon} name={button.name} key={index} onClick={onClickHandlerActionButtons}/>
+                            <QuickActionButton icon={button.icon} name={button.name} key={index}
+                                               onClick={onClickHandlerActionButtons}/>
                         );
                     })}
                 </Grid>

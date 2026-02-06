@@ -23,7 +23,7 @@
  * HTTP error checking, and uses TypeScript generics for type-safe data retrieval.
  */
 // export const baseUrl = 'base url for config json file location';
-export const baseUrl = '/configurations';
+export const baseUrl = './configurations';
 
 /**
  * Asynchronously fetches JSON data from a specific API endpoint.
@@ -36,14 +36,11 @@ export const baseUrl = '/configurations';
 const fetchData = async (endpoint:string, options?:RequestInit)=>{
 
     const url = `${baseUrl}/${endpoint}`;
-
     try{
         const response = await fetch(url,options);
-
         if (!response.ok) {
             throw new Error(response.statusText);
         }
-
         return await response.json();
     }catch (e) {
         console.error(`error in fetchData: ${e}`);
@@ -54,7 +51,6 @@ const fetchData = async (endpoint:string, options?:RequestInit)=>{
 interface ApiService {
     get: <T>(endpoint:string) => Promise<T>;
 }
-
 export const api: ApiService = {
     get: <T>(endpoint: string): Promise<T> => fetchData(endpoint),
 }

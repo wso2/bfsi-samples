@@ -16,8 +16,6 @@
  * under the License.
  */
 
-
-
 import {Box, Button} from "@oxygen-ui/react";
 
 interface TitleProps {
@@ -37,11 +35,23 @@ const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
 
     const visibility = buttonName? "flex" : "none";
 
+    let onboardingClass;
+
+    if (buttonName === "Add Account"){
+        onboardingClass = "add-account-btn"
+    }else if(buttonName === "View More" && title === "Latest Transactions"){
+        onboardingClass = "view-all-transactions"
+    }else if(buttonName === "View More" && title === "Standing Orders"){
+        onboardingClass = "view-all-standing-orders"
+    }else{
+        onboardingClass = ""
+    }
+
     return(
         <>
-            <Box className={'title-container'}>
+            <Box className={"title-container"}>
                 <p>{title}</p>
-                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'',title)}}>{buttonName}</Button>
+                <Button className={`${onboardingClass}`} sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'',title)}}>{buttonName}</Button>
             </Box>
         </>
     );

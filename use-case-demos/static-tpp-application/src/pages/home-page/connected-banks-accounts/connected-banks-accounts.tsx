@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import {Accordion, AccordionDetails, AccordionSummary, Card, Grid, Table, TableBody, TableCell, TableRow, Typography} from "@oxygen-ui/react";
+import {Accordion, AccordionDetails, AccordionSummary, Card, Grid, Table, TableBody, TableCell, TableRow,
+    Typography} from "@oxygen-ui/react";
 // @ts-ignore
 import {ChevronDownIcon} from "@oxygen-ui/react-icons";
 import type {BanksWithAccounts} from "../../../hooks/use-config-context.ts";
@@ -36,7 +37,8 @@ interface ConnectedBanksAccountsProps{
  * and their respective accounts. It displays an overview of bank totals using Cards
  * and details individual accounts within responsive Accordion components.
  */
-const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps)=>{
+const ConnectedBanksAccounts=
+    ({bankAndAccountsInfo}:ConnectedBanksAccountsProps)=>{
 
     const isLargeScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsiveDirections = isLargeScreen ? 'column' : 'row';
@@ -68,7 +70,8 @@ const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps
                     {bankAndAccountsInfo.map((bank,index)=>{
                         return (
                             <Accordion>
-                                <AccordionSummary expandIcon={<ChevronDownIcon/>} aria-controls={`${index}`} id= {`${index}-header`}>
+                                <AccordionSummary expandIcon={<ChevronDownIcon/>} aria-controls={`${index}`}
+                                                  id= {`${index}-header`}>
                                     <div className="accordian-header-container">
                                         <div className="bank-container">
                                             <div className="bank-logo-container">
@@ -90,8 +93,12 @@ const ConnectedBanksAccounts= ({bankAndAccountsInfo}:ConnectedBanksAccountsProps
                                                     <TableRow key={index} hideBorder={border} className={"table-row"}>
                                                         <TableCell className={"table-body"}>{account.name}</TableCell>
                                                         <TableCell className={"table-body"}>{account.id}</TableCell>
-                                                        <TableCell className={"table-body"}>{bank.bank.currency}</TableCell>
-                                                        <TableCell className={"table-body"}>{formatCurrency(account.balance)}</TableCell>
+                                                        <TableCell className={"table-body"}>
+                                                            {bank.bank.currency}
+                                                        </TableCell>
+                                                        <TableCell className={"table-body"}>
+                                                            {formatCurrency(account.balance)}
+                                                        </TableCell>
                                                     </TableRow>
                                                 );
                                             })}

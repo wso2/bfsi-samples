@@ -66,6 +66,7 @@ const AppThemeProvider = ({children,color}:ApplicationThemeProviderProps) => {
                         tableBodyColor: customColors.tableBackgroundColor,
                         greenArrowColor: customColors.greenArrowColor,
                         redArrowColor: customColors.redArrowColor,
+                        requiredStar: customColors.requiredStar
                     },
                     fontColor: {
                         white: customColors.fontWhite,

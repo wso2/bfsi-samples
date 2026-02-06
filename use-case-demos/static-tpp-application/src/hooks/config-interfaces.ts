@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 export interface User {
     name: string;
     image: string;
@@ -54,6 +53,7 @@ export interface Account {
     name: string;
     balance: number;
     transactions:TransactionData[];
+    notPermitedActions?:string[];
 }
 
 export interface Payee {
@@ -92,6 +92,8 @@ export interface Step {
 export interface UseCase {
     id: string;
     title: string;
+    userVerification: string;
+    consentDisplay: string;
     steps: Step[];
 }
 

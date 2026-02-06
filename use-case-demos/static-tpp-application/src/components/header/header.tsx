@@ -22,12 +22,6 @@ import type {FC} from "react";
 import {ArrowRightFromBracketIcon} from  '@oxygen-ui/react-icons'
 import '../components.scss'
 
-export interface HeaderContext {
-    routerName: {
-        applicationName: string;
-    };
-}
-
 export interface HeaderProps {
     name: string;
 }

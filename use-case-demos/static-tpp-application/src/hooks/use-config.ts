@@ -34,17 +34,14 @@ export const useConfig = () =>
         queryFn: async () => {
             try {
                 const raw = queryClient.getQueryData(["appConfig"]) as Config;
-
                 if (raw) {
                     return raw;
                 }
             } catch {
                 console.log("Error getting config query");
             }
-
             const res = await api.get<Config>("config.json");
             const data = ((res as any)?.data ?? res) as Config;
-
             try {
                 queryClient.setQueryData(["appConfig"],data as Config);
             } catch {

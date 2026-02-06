@@ -37,7 +37,8 @@ interface StandingOrdersTableProps {
  * It manages the pagination state to show 10 items at a time and integrates
  * into the main application layout.
  */
-const AllStandingOrders = ({standingOrdersTableHeaderData,name, standingOrdersList}:StandingOrdersTableProps)=>{
+const AllStandingOrders = ({standingOrdersTableHeaderData,
+                               name, standingOrdersList}:StandingOrdersTableProps)=>{
 
     const [paginationIndex,setPaginatedIndex] = useState(10);
     const isDisabled =  standingOrdersList[paginationIndex+1] == null
@@ -51,12 +52,13 @@ const AllStandingOrders = ({standingOrdersTableHeaderData,name, standingOrdersLi
             <ApplicationLayout name={name}>
                 <PaymentAccountPageLayout title={"Standing Orders"}>
                     <Box className={'standing-orders-container-outer'}>
-                        <TableComponent tableData={standingOrdersToDisplay} tableType={""} dataConfigs={standingOrdersTableHeaderData}/>
+                        <TableComponent dataLimit={9} tableData={standingOrdersToDisplay} tableType={""}
+                                        dataConfigs={standingOrdersTableHeaderData}/>
+                        <IconButton onClick={onHandleNextButtonClick} disabled={isDisabled}>
+                            <p>Next</p>
+                            <ChevronRight/>
+                        </IconButton>
                     </Box>
-                    <IconButton onClick={onHandleNextButtonClick} disabled={isDisabled}>
-                        <p>Next</p>
-                        <ChevronRight/>
-                    </IconButton>
                 </PaymentAccountPageLayout>
             </ApplicationLayout>
         </>

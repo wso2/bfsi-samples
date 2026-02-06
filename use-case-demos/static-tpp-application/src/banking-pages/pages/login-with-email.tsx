@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import {Box, Button, FormControl, Grid, Input, useTheme} from "@oxygen-ui/react";
-import {useNavigate, useOutletContext} from "react-router-dom";
+import {Box, Button, FormControl, Grid, Input} from "@oxygen-ui/react";
+import {useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
-import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
-import {useMediaQuery} from "@mui/material";
 import type {AppInfo} from "../../hooks/config-interfaces.ts";
+import './inner-pages-stylings.scss';
 
 export interface OutletContext{
     onSuccessHandler : () => void;
     navigationData : any;
     appInfo : AppInfo;
     themeColor : string;
+    handleCancel:()=>void;
 }
 
 interface loginformData{
@@ -42,12 +42,13 @@ interface loginformData{
  */
 const LoginWithEmailPage = ()=>{
 
-    const { onSuccessHandler, appInfo,themeColor} = useOutletContext<OutletContext>();
+    const { onSuccessHandler, themeColor, handleCancel } = useOutletContext<OutletContext>();
     const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
         defaultValues:{
             email:''
         }
     })
+
     const onSubmit = (data:loginformData)=>{
         if (data.email != ''){
             onSuccessHandler()
@@ -55,35 +56,70 @@ const LoginWithEmailPage = ()=>{
             alert("Email not matched")
         }
     }
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
-    const navigate = useNavigate();
+
     return (
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={6} sx={{padding:responsivePadding}}>
-                <Grid className="page-name-container">
-                    <p>Please login to your account</p>
+            <Grid container className={'content-page-container'} xs={12} sm={12} md={12} lg={12}>
+                <Grid className="page-name-container" sx={{ whiteSpace: 'balance' }}>
+                    <p style={{ whiteSpace: 'balanced', fontSize: '0.8rem' }}>Login to your account</p>
                 </Grid>
-                <Grid className={"form-login-one-container"}>
-                    <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
-                        <FormControl fullWidth={true} margin={'normal'} >
-                            <label>Email</label>
-                            <Controller name={'email'} control={control} render={({field}) => (
-                                <Input
-                                    {...field}
-                                    placeholder={"Enter your email"}
-                                    type={"text"}
-                                    error={!!errors.email}
-                                    sx={{marginLeft:'2rem', '--oxygen-palette-primary-main':themeColor}}
-                                />
-                            )}/>
-                            <ErrorMessage error={errors.email}/>
-                        </FormControl>
-                        <Box className="form-buttons-container">
-                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem','--oxygen-palette-gradients-primary-stop2':themeColor, '--oxygen-palette-gradients-primary-stop1':themeColor}}>Login</Button>
-                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem','--oxygen-palette-primary-main':themeColor, borderColor:themeColor}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
-                        </Box>
-                    </form>
+                <Grid className={'form-login-one-container'}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                            margin: '0 auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            padding: '1.5rem',
+                            border: '1px solid #e0e0e0',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9'
+                        }}
+                    >
+                        <form onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <FormControl fullWidth={true}>
+                                <label>Email <span style={{ color: "var(--oxygen-palette-primary-requiredStar)" }}>*</span></label>
+                                <Controller name={'email'} control={control} rules={{ required: true }} render={({ field }) => (
+                                    <Input
+                                        {...field}
+                                        placeholder={"Enter your email"}
+                                        type={"text"}
+                                        error={!!errors.email}
+                                        sx={{ '--oxygen-palette-primary-main': themeColor }}
+                                    />
+                                )}/>
+                            </FormControl>
+                        </form>
+                    </Box>
+
+                    <Box className="form-buttons-container">
+                        <Button
+                            variant={'contained'}
+                            onClick={handleSubmit(onSubmit)}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-gradients-primary-stop2': themeColor,
+                                '--oxygen-palette-gradients-primary-stop1': themeColor
+                            }}
+                        >
+                            Login
+                        </Button>
+                        <Button
+                            variant={'outlined'}
+                            onClick={handleCancel}
+                            sx={{
+                                width: '6rem',
+                                height: '3rem',
+                                '--oxygen-palette-primary-main': themeColor,
+                                borderColor: themeColor
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Grid>
             </Grid>
         </>

@@ -27,6 +27,7 @@ import '../payments-page.scss'
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material";
 import type {BanksWithAccounts} from "../../../hooks/use-config-context.ts";
+import { RedirectionComponent } from "../../../components/redirection-component.tsx";
 
 export interface PaymentFormData {
     userAccount: string;
@@ -44,10 +45,8 @@ interface PaymentFormProps {
 }
 
 const currency = ["GBP","EURO","USD"]
-
 export const ErrorMessage = ({error}:{error:any})=>{
     if (!error)return null;
-
     return <p className={"error-message-payments"}>{error.message}</p>
 }
 
@@ -57,7 +56,8 @@ export const ErrorMessage = ({error}:{error:any})=>{
  * It collects payment details and, upon confirmation, redirects the user to the
  * corresponding bank's authorization flow (via `react-router` state).
  */
-const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
+const PaymentForm = ({banksWithAllAccounts, payeeData,
+                         banksList}:PaymentFormProps) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsiveDirection = isSmallScreen ? 'column' : 'row';
@@ -66,19 +66,18 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
         defaultValues: {
             userAccount: '',
             payeeAccount: '',
-            currency: '',
+            currency: 'GBP',
             amount: 0,
             reference: ''
         }
     });
-
     const [isConfirming, setIsConfirming] = useState(false);
     const [formDataToSubmit, setFormDataToSubmit] = useState<PaymentFormData | null>(null)
     const onSubmit = (data: PaymentFormData) => {
         setFormDataToSubmit(data);
         setIsConfirming(true);
-
     }
+    const [isRedirecting, setIsRedirecting] = useState(false);
     const handleConfirmedAndRedirect = () => {
         if (formDataToSubmit){
             setIsConfirming(false);
@@ -90,14 +89,17 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                 console.log(`Bank "${bankName}" not found in banksList`)
                 return;
             }
-
-            navigate("/"+target.route+"/login?type=payment",{
-                state:{
+            setIsRedirecting(true);
+            const timer = setTimeout(()=>{
+                navigate("/"+target.route+"/login?type=payment",{
+                    state:{
                     formData: formDataToSubmit,
                     message: "payment",
                     bankInfo: target,
                 }
-            });
+                })
+                return () => clearTimeout(timer);
+            },1000);
         }
     }
 
@@ -105,21 +107,28 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
         setIsConfirming(false);
         setFormDataToSubmit(null);
     }
-    const paymentConfirmationMsg = `Are you sure you want to proceed with the payment of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formDataToSubmit?.payeeAccount}? `
+    const paymentConfirmationMsg = `Do you wish to proceed with the payment 
+    of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formDataToSubmit?.payeeAccount}? `
+
+    if(isRedirecting){
+        return(
+            <RedirectionComponent/>
+        );
+    }
     return (
         <>
             <h2 className={"payment-form-heading"}>Payment Information</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl fullWidth={true} margin={'dense'}>
-                    <label>User Account</label>
-                    <Controller name={'userAccount'} control={control} rules={{required: 'User required'}} render={({field}) => (
+                    <label>Select Account <span style={{color:"var(--oxygen-palette-primary-requiredStar)"}}>*</span></label>
+                    <Controller name={'userAccount'} control={control} rules={{required: true}} render={({field}) => (
                         <Select {...field}
                                 displayEmpty
                                 renderValue={(value) => {
                                     const selected = value as string
                                     if (selected === "") {
                                         return (
-                                            <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select payee account from here</span>
+                                            <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select your account</span>
                                         );
                                     }
                                     return selected;
@@ -127,7 +136,10 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                                 error={!!errors.userAccount}>
                             {banksWithAllAccounts.map((bankWithAccounts)=>
                                 bankWithAccounts.accounts.map((account)=>(
-                                    <MenuItem key={`${bankWithAccounts.bank.name}-${account.id}`} value={`${bankWithAccounts.bank.name}-${account.id}`}>{bankWithAccounts.bank.name}-{account.id}</MenuItem>
+                                    <MenuItem key={`${bankWithAccounts.bank.name}-${account.id}`}
+                                              value={`${bankWithAccounts.bank.name}-${account.id}`}>
+                                        {bankWithAccounts.bank.name}-{account.id}
+                                    </MenuItem>
                                 ))
                             )}
                         </Select>
@@ -135,22 +147,24 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                     <ErrorMessage error={errors.userAccount}/>
                 </FormControl>
                 <FormControl fullWidth={true} margin={'dense'}>
-                    <label>Biller Info</label>
-                    <Controller name={'payeeAccount'} control={control} rules={{required:'Payee required'}} render={({field}) => (
+                    <label>Biller <span style={{color:"var(--oxygen-palette-primary-requiredStar)"}}>*</span></label>
+                    <Controller name={'payeeAccount'} control={control} rules={{required:true}} render={({field}) => (
                         <Select {...field}
                                 displayEmpty
                                 renderValue={(value) => {
                                     const selected = value as string
                                     if (selected === "") {
                                         return (
-                                            <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select payee account from here</span>
+                                            <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select biller account</span>
                                         );
                                     }
                                     return selected;
                                 }}
                                 error={!!errors.payeeAccount}>
                             {payeeData.map((payee,index)=>(
-                                <MenuItem key={index} value={`${payee.name}-${payee.bank}`}>{payee.name}-{payee.bank}</MenuItem>
+                                <MenuItem key={index} value={`${payee.name}-${payee.accountNumber}`}>
+                                    {payee.name}-{payee.accountNumber}
+                                </MenuItem>
                             ))}
                         </Select>
                     )}/>
@@ -159,14 +173,15 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                 <div style={{display: 'flex',gap:'1rem'}}>
                     <FormControl fullWidth={true} margin={'dense'}>
                         <label>Currency</label>
-                        <Controller name={'currency'} control={control} rules={{required:'Currency must select'}} render={({field}) => (
+                        <Controller name={'currency'} control={control}
+                                    render={({field}) => (
                             <Select {...field}
                                     displayEmpty
                                     renderValue={(value) => {
                                         const selected = value as string
                                         if (selected === "") {
                                             return (
-                                                <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select currency</span>
+                                                <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>GBP</span>
                                             );
                                         }
                                         return selected;
@@ -180,11 +195,10 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                         <ErrorMessage error={errors.currency}/>
                     </FormControl>
                     <FormControl fullWidth={true} margin={'dense'}>
-                        <label>Amount</label>
-                        <Controller name={'amount'} control={control} rules={{required:'Add amount to transfer',min: {
-                                value: 0.01,
-                                message: 'Amount must be greater than 0.00'
-                            }}} render={({field}) => (
+                        <label>Amount <span style={{color:"var(--oxygen-palette-primary-requiredStar)"}}>*</span></label>
+                        <Controller name={'amount'} control={control}
+                                    rules={{required:true,min: 0.01}}
+                                    render={({field}) => (
                             <NumericFormat
                                 {...field}
                                 value={field.value === 0 ? '' : field.value}
@@ -206,9 +220,10 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                         <ErrorMessage error={errors.amount}/>
                     </FormControl>
                 </div>
-                <FormControl fullWidth={true} margin={'dense'} sx={{height: '10vh'}}>
-                    <label>Reference</label>
-                    <Controller name={'reference'} control={control} rules={{required:'Reference need to be added'}} render={({field}) => (
+                <FormControl fullWidth={true} margin={'dense'} sx={{height: '2vh'}}>
+                    <label>Reference <span style={{color:"var(--oxygen-palette-primary-requiredStar)"}}>*</span></label>
+                    <Controller name={'reference'} control={control} rules={{required:true}}
+                                render={({field}) => (
                         <OutlinedInput
                             {...field}
                             placeholder={"Enter your reference"}
@@ -227,7 +242,9 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}:PaymentFormPro
                     </FormControl>
                 </Box>
                 {isConfirming && (
-                    <OverlayConfirmation title={"Payment Confirmation"} content={paymentConfirmationMsg} onConfirm={handleConfirmedAndRedirect} onCancel={handleCancelConfirmation} mainButtonText={"Confirm"} secondaryButtonText={"Cancel"}/>
+                    <OverlayConfirmation title={"Payment Confirmation"} content={paymentConfirmationMsg}
+                                         onConfirm={handleConfirmedAndRedirect} onCancel={handleCancelConfirmation}
+                                         mainButtonText={"Confirm"} secondaryButtonText={"Cancel"}/>
                 )}
             </form>
         </>

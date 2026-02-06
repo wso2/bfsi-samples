@@ -21,11 +21,13 @@
 }
 
 .payment-button-container{
+  position: sticky;
   height:fit-content;
-  margin-top: 5%;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   gap:1rem;
+  margin-top: 4rem;
+
 }
 
 .error-message-payments{

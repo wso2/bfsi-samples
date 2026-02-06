@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {Box, Grid, IconButton} from "@oxygen-ui/react";
+import {Box, IconButton} from "@oxygen-ui/react";
 import { useNavigate } from "react-router-dom";
 // @ts-ignore
 import {ChevronLeftIcon} from "@oxygen-ui/react-icons";
@@ -34,26 +34,20 @@ interface PageLayoutProps {
  */
 const PaymentAccountPageLayout = ({children,title}:PageLayoutProps)=>{
     const navigate = useNavigate();
-
     const handleBackNavigation = ()=>{
         navigate(-1);
     }
-
-    const pagewidth = title === "Transactions" || title ==="Standing Orders" ? [12,12,12] : [12,6,4];
     return (
         <>
-            <Box className='title-and-back-container'>
-                <IconButton onClick={handleBackNavigation}>
-                    <ChevronLeftIcon size={'24'}/>
-                </IconButton>
-                <h3>{title}</h3>
-
-            </Box>
-            <Grid container className={'payments-layout'}>
-                <Grid xs={pagewidth[0]} sm={pagewidth[1]} md={pagewidth[2]}>
+                <Box className='title-and-back-container'>
+                    <IconButton onClick={handleBackNavigation}>
+                        <ChevronLeftIcon size={'24'}/>
+                    </IconButton>
+                    <h3>{title}</h3>
+                </Box>
+                <Box className={'payments-layout'}>
                     {children}
-                </Grid>
-            </Grid>
+                </Box>
         </>
     );
 }

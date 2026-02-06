@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,6 +36,10 @@ import CustomTitle from "../../components/custom-title/custom-title.tsx";
 import {useNavigate} from "react-router-dom";
 import OverlayConfirmation from "../../components/overlay-confirmation/overlay-confirmation.tsx";
 import TableComponent from "../../components/table-component.tsx";
+import { useEffect, useState } from "react";
+import Joyride from "react-joyride";
+import { DEMO_STEPS } from "../../utility/onboarding.ts";
+import type { CallBackProps } from 'react-joyride';
 
 interface AccountsCentralLayoutProps {
     name: string;
@@ -63,10 +67,11 @@ export interface SideButtonProps {
  * central application layout. It handles specific button clicks to navigate
  * to other functional pages (e.g., 'Add Account', 'view more').
  */
-const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation,transactionTableHeaderData}:AccountsCentralLayoutProps)=>{
+const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,
+                  banksWithAccounts,transactions,standingOrderList,appInfo,banksList,overlayInformation,
+                  transactionTableHeaderData}:AccountsCentralLayoutProps)=>{
 
     const navigate = useNavigate();
-
     const addAccount =()=>{
         navigate(`/${appInfo.route}/accounts`,{
             state:{
@@ -75,21 +80,40 @@ const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banks
             }
         });
     }
-
     const viewMore=(title?:string)=>{
         const route = title === "Latest Transactions"? "transactions": "standing-orders";
         navigate(`/${appInfo.route}/${route}`);
     }
-
     const onButtonHandler = (buttonName:string,title?:string) => {
         if(buttonName === "Add Account"){
             addAccount();
-        }else if(buttonName === "view more"){
+        }else if(buttonName === "View More"){
             viewMore(title);
 
         }
     }
-
+    const [runTour, setRunTour] = useState(false);
+    useEffect(() => {
+        const hasSeenTour = sessionStorage.getItem("hasCompletedTour");
+        if (hasSeenTour !== "true") {
+            const timer = setTimeout(() => {
+                setRunTour(true);
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, []);
+    const handleCallback = (data: CallBackProps) => {
+        const { status, action } = data;
+        if (action === 'close') {
+            setRunTour(false);
+            sessionStorage.setItem("hasCompletedTour", "true");
+            return;
+        }
+        if (status === 'finished' || status === 'skipped') {
+            setRunTour(false);
+            sessionStorage.setItem("hasCompletedTour", "true");
+        }
+    };
     return (
         <>
             <ApplicationLayout name={name}>
@@ -98,20 +122,24 @@ const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banks
                         <InfographicsContent total={total} chartInfo={chartData}/>
                     </Grid>
                     <Grid className={'accounts-container'}>
-                        <CustomTitle title={"Connected Banks"} buttonName={"Add Account"} buttonType={"contained"} onPress={onButtonHandler}/>
+                        <CustomTitle title={"Connected Banks"} buttonName={"Add Account"} buttonType={"contained"}
+                                     onPress={onButtonHandler}/>
                         <ConnectedBanksAccounts bankAndAccountsInfo={banksWithAccounts}/>
                     </Grid>
                     <Grid className={'transactions-container'}>
-                        <CustomTitle title={"Latest Transactions"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        <TableComponent tableData={transactions} tableType={"transaction"} dataConfigs={transactionTableHeaderData}/>
+                        <CustomTitle title={"Latest Transactions"} buttonName={"View More"} buttonType={"outlined"}
+                                     onPress={onButtonHandler}/>
+                        <TableComponent tableData={transactions} tableType={"transaction"}
+                                        dataConfigs={transactionTableHeaderData}/>
                     </Grid>
                     <Grid className={'standing-orders-container'}>
-                        <CustomTitle title={"Standing Orders"} buttonName={"view more"} buttonType={"outlined"} onPress={onButtonHandler}/>
-                        <TableComponent tableData={standingOrderList} dataConfigs={standingOrdersTableHeaderData} tableType={""}/>
+                        <CustomTitle title={"Standing Orders"} buttonName={"View More"} buttonType={"outlined"}
+                                     onPress={onButtonHandler}/>
+                        <TableComponent tableData={standingOrderList} dataConfigs={standingOrdersTableHeaderData}
+                                        tableType={""}/>
                     </Grid>
                 </HomePageLayout>
             </ApplicationLayout>
-
             {overlayInformation.flag &&
                 <OverlayConfirmation
                     onConfirm={overlayInformation.overlayData.onMainButtonClick}
@@ -120,8 +148,32 @@ const Home = ({standingOrdersTableHeaderData,name,userInfo,total,chartData,banks
                     secondaryButtonText={overlayInformation.overlayData.secondaryButtonText}
                     content={overlayInformation.overlayData.context}
                     title={overlayInformation.overlayData.title}/>
-
             }
+            <Joyride
+                steps={DEMO_STEPS}
+                run={runTour}
+                continuous
+                callback={handleCallback}
+                disableCloseOnEsc={false}
+                disableOverlayClose={true}
+                showSkipButton={true}
+                styles={{
+                    options: {
+                        zIndex: 99999,
+                        primaryColor: 'var(--oxygen-palette-primary-main)'
+                    },
+                    overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+                    },
+                    buttonSkip: {
+                        display: 'none'
+                    }
+                }}
+                locale={{
+                    next: 'Next',
+                    last: 'Finish',
+                }}
+            />
         </>
     );
 }

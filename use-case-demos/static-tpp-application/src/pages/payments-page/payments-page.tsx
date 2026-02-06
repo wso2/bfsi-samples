@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
 import type {AppInfo, Bank, Payee} from "../../hooks/config-interfaces.ts";
@@ -37,18 +36,18 @@ interface PaymentsPageProps {
  * application layout and the specific payment page layout, then wraps the core
  * payment form within a Card component, passing necessary configuration and data.
  */
-const PaymentsPage = ({appInfo,banksWithAccounts, payeeData, banksList}:PaymentsPageProps) => {
+const PaymentsPage = ({appInfo,banksWithAccounts, payeeData,
+                          banksList}:PaymentsPageProps) => {
     return (
         <>
             <ApplicationLayout name={appInfo.applicationName}>
                 <PaymentAccountPageLayout title={"Payments"}>
-                    <Card>
-                        <PaymentForm banksList={banksList} payeeData={payeeData} appInfo={appInfo} banksWithAllAccounts={banksWithAccounts}/>
+                    <Card sx={{height:'600px', overflow:'hidden', width: '500px'}}>
+                        <PaymentForm banksList={banksList} payeeData={payeeData}
+                                     banksWithAllAccounts={banksWithAccounts}/>
                     </Card>
-
                 </PaymentAccountPageLayout>
             </ApplicationLayout>
-
         </>
     );
 }

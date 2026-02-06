@@ -21,14 +21,15 @@
   background-size: cover;
   background-position: center;
   width: 100%;
-  height: fit-content;
+  height: 250px;
   display: flex;
   gap: 1rem;
 
   .hero-inner-secton{
-    height: 16vh;
+    height: 64px;
     flex: 0.5;
     display: flex;
+    margin: auto auto;
   }
 
   .user-info{
@@ -37,7 +38,7 @@
     gap: 1rem;
     color: var(--oxygen-palette-fontColor-white);
     font-weight: 600;
-    padding: 2vh 5vh;
+    padding: 64px 48px;
     font-size: 1.5rem;
 
     .avatar-container{
@@ -65,12 +66,13 @@
 .content-outer{
   background: var(--oxygen-palette-primary-backgroundColor);
   width: 100%;
+  height: fit-content;
 
   .info-graphic{
     display: flex;
     padding: 0;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 24px;
     width: 100%;
 
     .info-graphic-card{
@@ -104,11 +106,50 @@
       }
       .chart-container{
         display: flex;
-        width: 60%;
+        width: 100%;
         margin-top: 1rem;
+        justify-content: center;
+        align-items: center;
       }
     }
 
+  }
+
+  .chart-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .chart-container {
+    height: 160px;
+  }
+
+  .custom-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-wrap: nowrap;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.8rem;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
   }
 
   .accounts-container{
@@ -153,9 +194,10 @@
     }
 
     .table-row{
-      background: var(--oxygen-palette-primary-backgroundColor);
+      background: var(--oxygen-palette-primary-tableHeaderBackground);
       .table-body{
         font-size: 1.2rem;
+        text-transform: capitalize;
       }
     }
 
@@ -164,6 +206,8 @@
     width: 100%;
 
     .table-container{
+      display: flex;
+      flex-direction: column;
       background: var(--oxygen-palette-primary-tableBackground);
     }
   }
@@ -172,6 +216,8 @@
     width: 100%;
 
     .standing-orders-container-outer{
+      display: flex;
+      flex-direction: column;
       background: var(--oxygen-palette-primary-tableBackground);
     }
   }
