@@ -13,7 +13,6 @@ on:
       - main
     paths:
       - 'use-case-demos/static-tpp-application/**'
-  workflow_dispatch: # allows manual trigger from the Actions tab
 
 permissions:
   contents: read
