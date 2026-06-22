@@ -1,0 +1,550 @@
+openapi: 3.1.0
+info:
+  version: '6.5.0'
+  title: FDX V6.5.0 Recipient API
+  description: Financial Data Exchange V6.5.0 Recipient API
+  contact:
+    name: Financial Data Exchange
+    url: 'https://financialdataexchange.org/'
+    email: fdxsupport@financialdataexchange.org
+  license:
+    name: FDX API License Agreement (11-13-2019)
+    url: 'https://financialdataexchange.org/common/Uploaded%20files/Policies/FDX%20API%20License%20Agreement-(11-13-2019).pdf'
+servers:
+  - url: 'https://api.fi.com/fdx/v6'
+    description: Financial Data Exchange V6 Recipient API
+tags:
+  - name: Recipients
+    description: Manage recipients
+# security:
+#   - OAuthFapi1Baseline: []
+paths:
+  ############################################################
+  #
+  # Recipient Registration paths
+  #
+  ############################################################
+
+  /register:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+      - $ref: '#/components/parameters/FdxApiDataProviderIdHeader'
+    post:
+      summary: Recipient Registration Request
+      description: Request to Register Recipient by Creating a Recipient Record
+      operationId: createRecipient
+      tags:
+        - Recipients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientRequest'
+            examples:
+              Create Recipient Record at Provider:
+                value:
+                  client_name: My Example Client
+                  description: Recipient Application servicing financial use case requiring permissioned data sharing
+                  redirect_uris:
+                    - 'https://partner.example/callback'
+                  logo_uri: 'https://client.example.org/logo.png'
+                  client_uri: 'https://example.net/'
+                  contacts:
+                    - support@example.net
+                  scope: fdx:accountbasic:read fdx:transactions:read fdx:investments:read
+                  duration_type:
+                    - TIME_BOUND
+                  duration_period: 365
+                  lookback_period: 365
+                  registry_references:
+                    - registered_entity_name: Official recipient name
+                      registered_entity_id: 4HCHXIURY78NNH6JH
+                      registry: GLEIF
+                  intermediaries:
+                    - name: Data Access Platform Name
+                      description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+                      uri: 'https://partner.example/'
+                      logo_uri: 'https://partner.example/logo.png'
+                      contacts:
+                        - support@partner.com
+                      registry_references:
+                        - registered_entity_name: Data Access Platform listed company Name
+                          registered_entity_id: JJH7776512TGMEJSG
+                          registry: FDX
+                    - name: Digital Service Provider Name
+                      description: Digital Service Provider to the Recipient
+                      uri: 'https://sub-partner-one.example/'
+                      logo_uri: 'https://sub-partner-one.example/logo.png'
+                      contacts:
+                        - support@sub-partner-one.com
+                      registry_references:
+                        - registered_entity_name: Service Provider listed company Name
+                          registered_entity_id: 9LUQNDG778LI9D1
+                          registry: GLEIF
+      responses:
+        '201':
+          description: Created
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipient'
+              examples:
+                Provider Response With Full Record Of Recipient:
+                  value:
+                    client_id: V8tvEkZWhDAdxSaKGUJZ
+                    client_secret: SpsuwZIxnp8bBEhp5sk1EKiIKTZ4X4DKU
+                    grant_types:
+                      - authorization_code
+                      - refresh_token
+                    token_endpoint_auth_method: private_key_jwt
+                    registration_client_uri: 'https://server.example.com/register/V8tvEkZWhDAdxSaKGUJZ'
+                    status: Approved
+                    registration_access_token: V8tvEkZWhDAdxSaKGUJZ
+                    client_name: My Example Client
+                    description: Recipient Application servicing financial use case requiring permissioned data sharing
+                    redirect_uris:
+                      - 'https://partner.example/callback'
+                    logo_uri: 'https://client.example.org/logo.png'
+                    client_uri: 'https://example.net/'
+                    contacts:
+                      - support@example.net
+                    scope: fdx:accountbasic:read fdx:transactions:read fdx:investments:read
+                    duration_type:
+                      - TIME_BOUND
+                    duration_period: 365
+                    lookback_period: 365
+                    registry_references:
+                      - registered_entity_name: Official recipient name
+                        registered_entity_id: 4HCHXIURY78NNH6JH
+                        registry: GLEIF
+                    intermediaries:
+                      - name: Data Access Platform Name
+                        description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+                        uri: 'https://partner.example/'
+                        logo_uri: 'https://partner.example/logo.png'
+                        contacts:
+                          - support@partner.com
+                        registry_references:
+                          - registered_entity_name: Data Access Platform listed company Name
+                            registered_entity_id: JJH7776512TGMEJSG
+                            registry: FDX
+                      - name: Digital Service Provider Name
+                        description: Digital Service Provider to the Recipient
+                        uri: 'https://sub-partner-one.example/'
+                        logo_uri: 'https://sub-partner-one.example/logo.png'
+                        contacts:
+                          - support@sub-partner-one.com
+                        registry_references:
+                          - registered_entity_name: Service Provider listed company Name
+                            registered_entity_id: 9LUQNDG778LI9D1
+                            registry: GLEIF
+
+  /register/{clientId}:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+      - $ref: '#/components/parameters/FdxApiDataProviderIdHeader'
+      - $ref: '#/components/parameters/ClientIdPath'
+    get:
+      summary: Get Recipient
+      operationId: getRecipient
+      tags:
+        - Recipients
+      description: Get a specific recipient data identified with clientId
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipient'
+      security:
+        - OAuthFapi1Baseline: []
+    put:
+      summary: Update a Recipient
+      operationId: updateRecipient
+      tags:
+        - Recipients
+      description: Update data for a specific recipient identified with clientId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientRequest'
+            examples:
+              Update to same Recipient Record:
+                value:
+                  client_name: My Example Client
+                  description: Recipient Application servicing financial use case requiring permissioned data sharing
+                  redirect_uris:
+                    - 'https://partner.example/callback'
+                  logo_uri: 'https://client.example.org/logo.png'
+                  client_uri: 'https://example.net/'
+                  contacts:
+                    - support@example.net
+                  scope: fdx:accountbasic:read fdx:transactions:read fdx:investments:read
+                  duration_type:
+                    - TIME_BOUND
+                  duration_period: 365
+                  lookback_period: 365
+                  registry_references:
+                    - registered_entity_name: Official recipient name
+                      registered_entity_id: 4HCHXIURY78NNH6JH
+                      registry: GLEIF
+                  intermediaries:
+                    - name: Data Access Platform Name
+                      description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+                      uri: 'https://partner.example/'
+                      logo_uri: 'https://partner.example/logo.png'
+                      contacts:
+                        - support@partner.com
+                      registry_references:
+                        - registered_entity_name: Data Access Platform listed company Name
+                          registered_entity_id: JJH7776512TGMEJSG
+                          registry: FDX
+                    - name: Digital Service Provider Name
+                      description: Digital Service Provider to the Recipient
+                      uri: 'https://sub-partner-one.example/'
+                      logo_uri: 'https://sub-partner-one.example/logo.png'
+                      contacts:
+                        - support@sub-partner-one.com
+                      registry_references:
+                        - registered_entity_name: Service Provider listed company Name
+                          registered_entity_id: 9LUQNDG778LI9D1
+                          registry: GLEIF
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipient'
+      security:
+        - OAuthFapi1Baseline: []
+    delete:
+      summary: Delete Recipient
+      operationId: deleteRecipient
+      tags:
+        - Recipients
+      description: Delete data for a specific recipient identified with clientId
+      responses:
+        '204':
+          description: No Content
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+      security:
+        - OAuthFapi1Baseline: []
+
+components:
+
+  securitySchemes:
+    ############################################################
+    #
+    # Security Schemes
+    #
+    ############################################################
+
+    OAuthFapi1Baseline:
+      type: oauth2
+      description: >-
+        This authorization protocol uses FAPI Security Profile 1.0 Part One - Baseline.
+        To be used with the following FDX API domains: Event - Notification Subscription, Meta,
+        Data Recipient Registration, Tax (the two update endpoints), and FDX Participant Registry.
+        Client must comply with
+        [6.2.2 Client provisions](https://openid.net/specs/openid-financial-api-part-1-1_0.html#client-provisions).
+        Authorization server must comply with the
+        [5.2.2 Authorization server](https://openid.net/specs/openid-financial-api-part-1-1_0.html#authorization-server).
+        Client, authorization server and resource server requirements described in full by:
+          * [FAPI Security Profile 1.0 Part One - Baseline](https://openid.net/specs/openid-financial-api-part-1-1_0.html)
+          * FDX API Security Model specification published with the FDX API
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://auth.fi.com/fdx/v6/token'
+          scopes:
+            fdx:notifications:publish: Scope authorizing publishing of a new notification
+            fdx:notifications:subscribe: Scope authorizing creation of a new notification subscription
+            offline_access: Scope authorizing the client to refresh `access_tokens` without user present
+
+
+  parameters:
+    ############################################################
+    #
+    # Recipient Registration request parameters
+    #
+    ############################################################
+
+    ClientIdPath:
+      name: clientId
+      in: path
+      description: Client Identifier. Uniquely identifies a Client
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+      # Code generation using openapi-generator v3.3.4 as of 9-27-2023 fails on the $ref here,
+      # switch to this inline re-definition of ActorType enumeration for #CODEGEN to work:
+      # type: string
+      # enum:
+      #   - BATCH
+      #   - USER
+    FdxApiDataProviderIdHeader:
+      name: FDX-API-Data-Provider-Id
+      in: header
+      description: ID for the financial institution responding to the request
+      schema:
+        $ref: '#/components/schemas/Identifier'
+        description: >-
+          If the FDX API service is provided by a service bureau which uses the same end point for
+          multiple institutions, the FDX API client MUST provide a header that identifies the desired
+          financial institution. This corresponds to a data_provider_id in the registry. This header
+          MAY be omitted if identifying a data provider is not required by the API host
+      required: false
+
+  schemas:
+    ############################################################
+    #
+    # Recipient Registration data entities
+    #
+    ############################################################
+
+    Recipient:
+      title: Recipient Provider
+      type: object
+      description: >-
+        Record of Recipient at the Provider.
+        Properties in this structure use 'snake_case' names to match
+        the properties in [IETF RFC 7591](https://datatracker.ietf.org/doc/rfc7591/)
+      allOf:
+        - $ref: '#/components/schemas/RecipientRequest'
+        - type: object
+          properties:
+            client_id:
+              type: string
+              description: OAuth 2.0 client identifier.  Unique ID representing Data Recipient and Identity Chain combination
+            client_secret:
+              type: string
+              description: OAuth 2.0 client secret string
+            grant_types:
+              type: array
+              items:
+                type: string
+              description: Array of OAuth 2.0 grants made available to the Data Recipient
+            token_endpoint_auth_method:
+              type: string
+              description: Requested Authentication method for Authorization Server
+            registration_client_uri:
+              type: string
+              format: uri
+              description: Fully qualified URI for subsequent DCR calls (GET, PUT, DELETE) for managing the Data Recipient registration
+            status:
+              type: string
+              description: Status of Recipient created through dynamic client registration
+            registration_access_token:
+              type: string
+              description: String containing a unique DCR access token to be used in subsequent operations to manage the Data Recipient
+      required:
+        - client_id
+        - status
+        - grant_types
+        - token_endpoint_auth_method
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      examples:
+        - c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+    
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories: [ANY]
+    
+    RecipientRequest:
+      title: Recipient Request
+      type: object
+      description: Used to request a recipient registration.
+        Properties in this structure use 'snake_case' names to match
+        the properties in [IETF RFC 7591](https://datatracker.ietf.org/doc/rfc7591/)
+      properties:
+        client_name:
+          $ref: '#/components/schemas/Identifier'
+          description: The Data Recipient or Data Recipient Application name displayed by Data Provider during
+                       the consent Flow as well as in the Consent Dashboard
+        description:
+          type: string
+          description: A short description of the Data Recipient application
+        redirect_uris:
+          type: array
+          items:
+            type: string
+          description: An array of eligible Redirect URI targets
+        logo_uri:
+          type: string
+          description: Data Recipient Logo URL location
+          format: uri
+        client_uri:
+          type: string
+          description: The URI which provides additional information about the Data Recipient
+          format: uri
+        contacts:
+          type: array
+          items:
+            type: string
+          description: Array of strings representing ways to contact individuals responsible for the Data Recipient application
+        scope:
+          type: string
+          description: String containing a space-separated list of scope values.
+            Applicable FDX scopes are defined in OauthScope and FdxOauthScope enumerations.
+            Prior use of DataCluster enumeration for scopes is deprecated with release V6.3
+        duration_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentDurationType'
+          description: The duration of consent for the Data Recipient consumers
+        duration_period:
+          type: integer
+          description: The maximum consent duration in days for duration_type TIME_BOUND for the Data Recipient,
+            effective from the date of consent
+        lookback_period:
+          type: integer
+          description: The maximum number of days allowed for Data Recipient to obtain in transaction history,
+            effective from the current date
+        registry_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistryReference'
+          description: An array of external registries containing registered entity name, registered entity id and
+            registry fields for the registries where the data recipient is registered
+        intermediaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Intermediary'
+          description: An array of the intermediaries for this data recipient
+      required:
+        - client_name
+        - redirect_uris
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+        - ONE_TIME
+        - PERSISTENT
+        - TIME_BOUND
+    
+    RegistryReference:
+      title: Registry Reference
+      type: object
+      description: Used for registry references.
+        Properties in this structure use 'snake_case' names to match
+        the properties in [IETF RFC 7591](https://datatracker.ietf.org/doc/rfc7591/)
+      properties:
+        registered_entity_name:
+          type: string
+          description: The legal company name for the intermediary
+        registered_entity_id:
+          type: string
+          description: An ID representing the intermediary that can be looked up from a legal identity registry source
+        registry:
+          $ref: '#/components/schemas/Registry'
+          description: The Registry source
+
+    Intermediary:
+      title: Intermediary
+      description: Data Access Platform, Service Provider, or any other entity in the data
+        sharing chain between a Data Provider to a Data Recipient.
+        Properties in this structure use 'snake_case' names to match
+        the properties in [IETF RFC 7591](https://datatracker.ietf.org/doc/rfc7591/)
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of intermediary party
+        description:
+          type: string
+          description: A short description of the intermediary
+        uri:
+          type: string
+          format: uri
+          description: A URL string of a web page providing information about the intermediary
+        logo_uri:
+          type: string
+          format: uri
+          description: A URL string that references a logo for this intermediary
+        contacts:
+          type: array
+          items:
+            type: string
+          description: Array of strings representing ways to contact people responsible for this intermediary
+        registry_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistryReference'
+          description: Registry references for this intermediary
+
+    Registry:
+      title: Registry
+      description: Identifies the type of a Registry
+      type: string
+      enum:
+        - FDX
+        - GLEIF
+        - ICANN
+        - PRIVATE
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
