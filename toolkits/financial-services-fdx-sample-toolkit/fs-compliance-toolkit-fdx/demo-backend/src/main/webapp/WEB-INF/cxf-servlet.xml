@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+~
+~ this software is the property of WSO2 LLC. and its suppliers, if any.
+~ Dissemination of any information or reproduction of any material contained
+~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+~ You may not alter or remove any copyright or other notice from copies of this content.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+         http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"/>
+    <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
+
+    <jaxrs:server id="accountservice" address="/accounts">
+        <jaxrs:serviceBeans>
+            <ref bean="accServiceBean"/>
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+
+    <bean id="accServiceBean" class="org.wso2.openbanking.fdx.demo.backend.services.AccountService"/>
+
+
+</beans>
+

@@ -10,6 +10,7 @@
 package org.wso2.openbanking.fdx.extensions.impl.consent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.wso2.openbanking.fdx.extensions.model.PreProcessConsentRequestBody;
 import org.wso2.openbanking.fdx.extensions.model.StoredBasicConsentResourceData;
@@ -60,16 +61,18 @@ public class PreProcessConsentRetrievalApiImpl {
         payload.put("createdTime", epochSecondsToIso8601(consentResource.getCreatedTime()));
         payload.put("updatedTime", epochSecondsToIso8601(consentResource.getUpdatedTime()));
         payload.put("durationType", consentRequest.optString(FDXCommonConstants.DURATION_TYPE));
-        payload.put("lookbackPeriod", String.valueOf(consentRequest.optInt(FDXCommonConstants.LOOKBACK_PERIOD)));
+        payload.put("lookbackPeriod", consentRequest.optInt(FDXCommonConstants.LOOKBACK_PERIOD));
 
         if (consentRequest.has(FDXCommonConstants.RESOURCES)) {
             payload.put("resources", consentRequest.getJSONArray(FDXCommonConstants.RESOURCES));
         }
 
-        JSONObject revocation = new JSONObject();
-        revocation.put("href", "/consents/" + consentResource.getId() + "/revocation");
-        revocation.put("action", "GET");
-        payload.put("links", new JSONObject().put("revocation", revocation));
+        JSONObject links = new JSONObject();
+        links.put("href", "/consents/" + consentResource.getId());
+        links.put("action", "GET");
+        JSONArray linksArray = new JSONArray();
+        linksArray.put(links);
+        payload.put("links", linksArray);
 
         return payload;
     }

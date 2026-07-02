@@ -22,7 +22,7 @@ Dynamic Client Registration (DCR) allows a Data Recipient application to registe
 Authorization Server without manual intervention. This is the first step in the FDX onboarding flow and must be 
 completed before any consent or data-sharing operations can take place.
 
-Before registering the application, you need to publish the [fdxapi.recipient-registration.yaml](fdx-apis/fdxapi.recipient-registration.yaml). 
+Before registering the application, you need to publish the [fdxapi.recipient-registration.yaml](fdx-apis/openapi-300/fdxapi.recipient-registration.yaml). 
 Refer [Tryout Dynamic Client Registration](https://ob.docs.wso2.com/en/latest/get-started/dynamic-client-registration/) 
 documentation for more details on how to publish the API.
 
@@ -36,7 +36,7 @@ permitted to request.
 
 Sample Request
 
-```
+```bash
 curl --location 'https://localhost:8243/fdxv6.5.0recipientapi/6.5.0/register' \
 --header 'accept: application/json' \
 --header 'x-fapi-interaction-id: c770aef3-6784-41f7-8e0e-ff5f97bddb3a' \
@@ -155,7 +155,7 @@ enforced during token issuance. Use the `POST /api/server/v1/api-resources` endp
 Save the returned `id` — you will need it to authorize the application in the next step.
 
 Sample Request
-```
+```bash
 curl --location 'https://<IS_HOSTNAME>:<IS_PORT>/api/server/v1/api-resources/' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic <BASIC_AUTH_CREDENTIALS>' \
@@ -477,7 +477,7 @@ with the SP `id` retrieved in the previous step.
 A `200 OK` response confirms the authorization detail type is now enabled for the application.
 
 Sample Request
-```
+```bash
 curl --location 'https://localhost:9446/api/server/v1/applications/a3709414-1922-49fa-af83-37e54e1c8226/authorized-apis' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic aXNfYWRtaW5Ad3NvMi5jb206d3NvMjEyMw==' \
@@ -595,7 +595,7 @@ the browser-based authorization redirect within this window.
 **Note:** Replace `{{request_object}}` and `{{client_assertion}}` with the actual signed JWTs generated using the Data 
 Recipient's private key. Sample values are provided below the curl command for reference.
 
-```
+```bash
 curl --location 'https://localhost:9446/oauth2/par' \
 --header 'Accept: */*' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -758,7 +758,7 @@ The authorization code from the below URL is in the code parameter (code=5df248f
 ## Generate user access token
 
 You can generate a user access token using the sample request given below:
-```
+```bash
 curl --location 'https://localhost:9446/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --header 'X-External-Traffic: true' \
@@ -835,3 +835,92 @@ request as `fdxConsentId`.
 as per the consented permissions.
 
 - You can use the user access token and the `fdxConsentId` to make API calls to the resource server to retrieve and revoke the consent.
+
+## Retrieve Consent
+
+You can retrieve the consent details using the `fdxConsentId` obtained from the token response as below:
+
+```bash
+curl --location 'https://localhost:8243/fdxv6.0.0consentapi/6.0.0/consents/<fdxConsentId>' \
+--header 'Authorization: Bearer <USER_ACCESS_TOKEN>' \
+--header 'x-fapi-interaction-id: <INTERACTION_ID>' 
+```
+
+Sample Response
+
+```json
+{
+    "updatedTime": "2026-06-24T06:53:11Z",
+    "lookbackPeriod": 90,
+    "createdTime": "2026-06-24T06:53:11Z",
+    "resources": [
+        {
+            "dataClusters": [
+                "ACCOUNT_BASIC",
+                "ACCOUNT_DETAILED",
+                "TRANSACTIONS",
+                "CUSTOMER_PERSONAL",
+                "CUSTOMER_CONTACT"
+            ],
+            "resourceId": "9deab8ca-9e2b-430f-8e08-d46ee6debc0b",
+            "resourceType": "ACCOUNT"
+        }
+    ],
+    "links": [
+        {
+            "action": "GET",
+            "href": "/consents/c8ba8734-72f9-4c73-802e-689b1331b5fa"
+        }
+    ],
+    "id": "c8ba8734-72f9-4c73-802e-689b1331b5fa",
+    "durationType": "PERSISTENT",
+    "status": "ACTIVE"
+}
+```
+
+## Accounts Retrieval
+
+Once the user approves the account consent, the TPP is eligible to access the account details of the user. The TPP can now 
+invoke the GET /accounts endpoint using the user access token received in the previous step.
+
+Sample Request
+```bash
+curl --location 'https://localhost:8243/fdxv6.0.0coreapi/6.0.0/accounts' \
+--header 'accept: application/json' \
+--header 'x-fapi-interaction-id: c770aef3-6784-41f7-8e0e-ff5f97bddb3a' \
+--header 'FDX-API-Actor-Type: BATCH' \
+--header 'Authorization: Bearer <USER_ACCESS_TOKEN>' \
+```
+
+Sample Response
+```json
+{
+    "page": {
+        "nextOffset": "2",
+        "totalElements": 3
+    },
+    "links": {
+        "next": {
+            "href": "/accounts?offSet=2&limit=10"
+        }
+    },
+    "accounts": [
+        {
+            "accountCategory": "DEPOSIT_ACCOUNT",
+            "accountId": "30080012343456",
+            "accountType": "CHECKING",
+            "accountNumberDisplay": "XXXX4443",
+            "nickname": "My Checking Acc XXXX4443",
+            "status": "OPEN",
+            "balanceType": "ASSET",
+            "currency": {
+                "currencyCode": "USD"
+            },
+            "balanceAsOf": "2017-11-05T13:15:30.751Z",
+            "currentBalance": 332.22,
+            "openingDayBalance": 100.0,
+            "availableBalance": 332.22
+        }
+    ]
+}
+```

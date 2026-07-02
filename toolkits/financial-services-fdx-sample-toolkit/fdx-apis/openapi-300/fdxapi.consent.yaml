@@ -1,0 +1,741 @@
+openapi: 3.0.0
+info:
+  version: '6.0.0'
+  title: FDX V6.0.0 Consent API
+  description: Financial Data Exchange V6.0.0 Consent API
+  contact:
+    name: Financial Data Exchange
+    url: 'https://financialdataexchange.org/'
+    email: fdxsupport@financialdataexchange.org
+  license:
+    name: FDX API License Agreement (11-13-2019)
+    url: 'https://financialdataexchange.org/common/Uploaded%20files/Policies/FDX%20API%20License%20Agreement-(11-13-2019).pdf'
+servers:
+  - url: 'https://api.fi.com/fdx/v6'
+    description: Financial Data Exchange V6.0.0 Consent API
+tags:
+  - name: User Consent
+    description: Manage customer consent grants
+security:
+  - OAuthFapi1Baseline: []
+paths:
+  ############################################################
+  #
+  # Consent paths
+  #
+  ############################################################
+
+  /consents/{consentId}:
+    parameters:
+      - $ref: '#/components/parameters/ConsentIdPath'
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    get:
+      summary: Get Consent Grant
+      description: Get a Consent Grant
+      operationId: getConsentGrant
+      tags:
+        - User Consent
+      responses:
+        '200':
+          description: Ok
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentGrant'
+              examples:
+                (1) Single Resource:
+                  value:
+                    id: 9585694d3ae58863
+                    status: ACTIVE
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: FDX
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Midwest Primary Bank, NA
+                        type: DATA_PROVIDER
+                        homeUri: https://www.midwest.com
+                        logoUri: https://www.midwest.com/81d88112572c.jpg
+                        registry: GLEIF
+                        registeredEntityName: Midwest Primary Bank, NA
+                        registeredEntityId: 549300ATG070THRDJ595
+                    createdTime: "2021-07-03T21:28:10.375Z"
+                    expirationTime: "2021-07-03T22:28:10.374Z"
+                    durationType: ONE_TIME
+                    lookbackPeriod: 60
+                    resources:
+                      - resourceType: ACCOUNT
+                        resourceId: b14e1e714693bc00
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                          - STATEMENTS
+                (2) Multiple Resources:
+                  value:
+                    id: 0e67811f9c12468f
+                    status: ACTIVE
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: GLEIF
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Midwest Primary Bank, NA
+                        type: DATA_PROVIDER
+                        homeUri: https://www.midwest.com
+                        logoUri: https://www.midwest.com/81d88112572c.jpg
+                        registry: GLEIF
+                        registeredEntityName: Midwest Primary Bank, NA
+                        registeredEntityId: 549300ATG070THRDJ595
+                    createdTime: "2021-07-03T22:08:10.375Z"
+                    expirationTime: "2022-07-03T22:08:10.374Z"
+                    durationType: TIME_BOUND
+                    durationPeriod: 365
+                    lookbackPeriod: 60
+                    resources:
+                      - resourceType: ACCOUNT
+                        resourceId: b14e1e714693bc00
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                          - STATEMENTS
+                      - resourceType: ACCOUNT
+                        resourceId: ad6794161f45bc96
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                          - STATEMENTS
+                      - resourceType: CUSTOMER
+                        resourceId: aed694b22bc3d2b3
+                        dataClusters:
+                          - CUSTOMER_CONTACT
+
+  /consents/{consentId}/revocation:
+    parameters:
+      - $ref: '#/components/parameters/ConsentIdPath'
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    put:
+      summary: Revoke a Consent Grant
+      description: Revoke a Consent Grant
+      operationId: revokeConsentGrant
+      tags:
+        - User Consent
+      requestBody:
+        description: Reason and initiator of revocation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRevocationRequest'
+      responses:
+        '204':
+          description: No Content
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+
+    get:
+      summary: Retrieve Consent Revocation record
+      description: Retrieve Consent Revocation record
+      operationId: getConsentRevocation
+      tags:
+        - User Consent
+      responses:
+        '200':
+          description: Ok
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentRevocationList'
+
+components:
+
+  securitySchemes:
+    ############################################################
+    #
+    # Security Schemes
+    #
+    ############################################################
+
+    OAuthFapi1Baseline:
+      type: oauth2
+      description: >-
+        This authorization protocol uses FAPI Security Profile 1.0 Part One — Baseline.
+        To be used with the following FDX API domains: Event - Notification Subscription, Meta,
+        Data Recipient Registration, Tax (the two update endpoints), and FDX Participant Registry.
+
+        Client must comply with
+        [6.2.2 Client provisions](https://openid.net/specs/openid-financial-api-part-1-1_0.html#client-provisions).
+        Authorization server must comply with the
+        [5.2.2 Authorization server](https://openid.net/specs/openid-financial-api-part-1-1_0.html#authorization-server).
+
+        Client, authorization server and resource server requirements described in full by:
+          * [FAPI Security Profile 1.0 Part One — Baseline](https://openid.net/specs/openid-financial-api-part-1-1_0.html)
+          * FDX API Security Model specification published with the FDX API
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://auth.fi.com/fdx/v6/token'
+          scopes: {}
+
+  parameters:
+    ############################################################
+    #
+    # Consent parameters
+    #
+    ############################################################
+
+    ConsentIdPath:
+      name: consentId
+      in: path
+      description: Consent Identifier
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsentId'
+      example: '9585694d3ae58863'
+
+    ############################################################
+    #
+    # Shared request parameters (copied from fdxapi.components.yaml)
+    #
+    ############################################################
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: >-
+        Unique identifier for this interaction as an
+        [IETF RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122) UUID.
+        Used across all FDX API requests and responses
+      schema:
+        type: string
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers (copied from fdxapi.components.yaml)
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+  schemas:
+    ############################################################
+    #
+    # Consent entities
+    #
+    ############################################################
+
+    ConsentGrant:
+      title: Consent Grant entity
+      description: Record of user consent
+      type: object
+      properties:
+        id:
+          # description: The persistent identifier of the consent
+          $ref: '#/components/schemas/Identifier'
+        status:
+          # description: The current status of the consent
+          $ref: '#/components/schemas/ConsentGrantStatus'
+        parties:
+          description: The non-end user parties participating in the Consent Grant
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentGrantParty'
+        createdTime:
+          # description: When the consent was initially granted
+          $ref: '#/components/schemas/Timestamp'
+        expirationTime:
+          # description: When the consent grant will become expired
+          $ref: '#/components/schemas/Timestamp'
+        updatedTime:
+          # description: When the consent grant was updated
+          $ref: '#/components/schemas/Timestamp'
+        durationType:
+          # description: The type of duration of the consent
+          $ref: '#/components/schemas/ConsentDurationType'
+        durationPeriod:
+          # description: The consent duration in days from day of original grant
+          $ref: '#/components/schemas/ConsentDurationPeriod'
+        lookbackPeriod:
+          # description: >-
+          #   Period, in days, for which historical data may be requested;
+          #   measured from request time, not grant time
+          $ref: '#/components/schemas/LookbackPeriod'
+        resources:
+          description: The permissioned resource entities
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentGrantResource'
+        links:
+          # description: Links for related Consent Grant records
+          $ref: '#/components/schemas/HateoasLinks'
+
+    ConsentGrantParty:
+      title: Consent Grant Party entity
+      description: >-
+        Details on the non-end user parties in the Consent Grant. Includes the
+        legal entity operating branded products or services in the data sharing chain.
+        Descriptive information is collected during Data Recipient registration at
+        Data Provider, and populated during issuance by Data Provider from its registry
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      required:
+        - homeUri
+        - registry
+        - registeredEntityName
+        - registeredEntityId
+
+    ConsentGrantResource:
+      title: Consent Grant Resource entity
+      description: Entity of permissioned resources
+      type: object
+      properties:
+        resourceType:
+          # description: Type of resource to be permissioned
+          $ref: '#/components/schemas/ConsentResourceType'
+        resourceId:
+          # description: Identifier of resource to be permissioned
+          $ref: '#/components/schemas/Identifier'
+        dataClusters:
+          description: Names of clusters of data elements permissioned
+          type: array
+          items:
+            $ref: '#/components/schemas/DataCluster'
+          minItems: 1
+      required:
+        - resourceType
+        - resourceId
+        - dataClusters
+
+    ConsentRequest:
+      # title: Consent Request entity
+      # description: >-
+      #   Details of request to create new consent grant.
+      #   This schema is to be used in POST request to Data Provider’s
+      #   'POST /par' endpoint using the Pushed Authorization Request (PAR) method
+      type: object
+      properties:
+        durationType:
+          # description: The type of duration of the consent
+          $ref: '#/components/schemas/ConsentDurationType'
+        durationPeriod:
+          # description: The consent duration in days from day of original grant
+          $ref: '#/components/schemas/ConsentDurationPeriod'
+        lookbackPeriod:
+          # description: >-
+          #   Period, in days, for which historical data may be requested;
+          #   measured from request time, not grant time
+          $ref: '#/components/schemas/LookbackPeriod'
+        resources:
+          description: The requested resource entities
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentRequestedResource'
+
+    ConsentRequestedResource:
+      title: Consent Requested Resource entity
+      description: Details of requested resource and data clusters
+      type: object
+      properties:
+        resourceType:
+          # description: Type of resource permission requested
+          $ref: '#/components/schemas/ConsentResourceType'
+        dataClusters:
+          description: Names of clusters of data elements requested
+          type: array
+          items:
+            $ref: '#/components/schemas/DataCluster'
+          minItems: 1
+      required:
+        - resourceType
+        - dataClusters
+
+    ConsentRevocation:
+      title: Consent Revocation entity
+      description: Details of request to revoke consent grant
+      type: object
+      properties:
+        status:
+          # description: The status of the consent = REVOKED
+          $ref: '#/components/schemas/ConsentGrantStatus'
+        reason:
+          # description: The reason for consent revocation
+          $ref: '#/components/schemas/ConsentUpdateReason'
+        initiator:
+          description: The party initiating consent revocation
+          # $ref: '#/components/schemas/PartyType'
+        updatedTime:
+          # description: When the consent grant was revoked
+          $ref: '#/components/schemas/Timestamp'
+
+    ConsentRevocationList:
+      title: Consent Revocation List entity
+      description: List of consent grant revocation requests
+      type: object
+      properties:
+        revocations:
+          description: The list of revocation requests
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentRevocation'
+
+    ConsentRevocationRequest:
+      title: Consent revocation request entity
+      description: Details of request to revoke consent grant
+      type: object
+      properties:
+        reason:
+          # description: The reason for consent revocation
+          $ref: '#/components/schemas/ConsentUpdateReason'
+        initiator:
+          # description: The party initiating revocation
+          $ref: '#/components/schemas/PartyType'
+
+    FdxTokenIntrospectionResponse:
+      title: OAuth token-introspection response for use with opaque 'access_tokens'
+      description: FDX response enabling transport of ConsentGrant details extended from
+        [JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/html/rfc9068)
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Flag indicating whether 'ConsentGrant' is active
+        iss:
+          type: string
+          description: >-
+            Issuer claim 'iss' identifies the principal that issued the JWT.
+            Contains a [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        sub:
+          type: string
+          description: >-
+            Subject claim 'sub' identifies the principal that is the subject of the JWT.
+            Contains a [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        aud:
+          type: string
+          description: >-
+            Audience claim 'aud' identifies the recipients for whom the JWT is intended.
+            May be a single StringOrURI value or an array of
+            [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) values
+        exp:
+          type: number
+          description: >-
+            Expiration Time claim 'exp' identifies the time on or after which the JWT MUST NOT be accepted
+            Contains a number which is a [NumericDate](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        iat:
+          type: number
+          description: >-
+            Issued At claim 'iat' identifies the time at which the JWT was issued.
+            Contains a number which is a [NumericDate](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        jti:
+          type: string
+          description: >-
+            JWT ID claim 'jti' provides a unique identifier for the JWT.
+            Contains a case-sensitive string value
+        client_id:
+          type: string
+          description: The unique client identifier for the Data Recipient granted the consent
+        scope:
+          type: string
+          description: Space-delimited array of any number of scopes from those in FdxOauthScope,
+            plus 'openid' and 'offline_access'
+        fdxConsentId:
+          $ref: '#/components/schemas/ConsentId'
+          # description: The unique identifier of the current user’s active FDX 'ConsentGrant'
+
+    JwtProfile:
+      title: FDX JWT Profile
+      description: FDX JWT Profile enabling transport of ConsentGrant details in OAuth 'access_token', extended from
+        [JSON Web Token (JWT) Profile for OAuth 2.0 Access Tokens](https://datatracker.ietf.org/doc/html/rfc9068)
+      type: object
+      properties:
+        iss:
+          type: string
+          description: >-
+            Issuer claim 'iss' identifies the principal that issued the JWT.
+            Contains a [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        sub:
+          type: string
+          description: >-
+            Subject claim 'sub' identifies the principal that is the subject of the JWT.
+            Contains a [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        aud:
+          type: string
+          description: >-
+            Audience claim 'aud' identifies the recipients for whom the JWT is intended.
+            May be a single StringOrURI value or an array of
+            [StringOrURI](https://datatracker.ietf.org/doc/html/rfc7519#section-2) values
+        exp:
+          type: number
+          description: >-
+            Expiration Time claim 'exp' identifies the time on or after which the JWT MUST NOT be accepted
+            Contains a number which is a [NumericDate](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        iat:
+          type: number
+          description: >-
+            Issued At claim 'iat' identifies the time at which the JWT was issued.
+            Contains a number which is a [NumericDate](https://datatracker.ietf.org/doc/html/rfc7519#section-2) value
+        jti:
+          type: string
+          description: >-
+            JWT ID claim 'jti' provides a unique identifier for the JWT.
+            Contains a case-sensitive string value
+        client_id:
+          type: string
+          description: The unique client identifier for the Data Recipient granted the consent
+        scope:
+          type: string
+          description: Space-delimited array of any number of scopes from those in FdxOauthScope,
+            plus 'openid' and 'offline_access'
+        fdxConsentId:
+          $ref: '#/components/schemas/ConsentId'
+          # description: The unique identifier of the current user’s active FDX 'ConsentGrant'
+
+    ############################################################
+    #
+    # Consent data types
+    #
+    ############################################################
+
+    ConsentDurationPeriod:
+      title: Consent Duration Period
+      description: Consent duration, in days, from day of original grant
+      type: integer
+
+    ConsentGrantStatus:
+      title: Consent Grant Status
+      description: Current status of Consent Grant
+      type: string
+      enum:
+        - ACTIVE
+        - EXPIRED
+        - REVOKED
+
+    ConsentId:
+      # title: Consent Identifier
+      # description: Unique ID for a consent grant
+      $ref: '#/components/schemas/Identifier'
+
+    ConsentResourceType:
+      title: Consent Resource Type
+      description: >-
+        Resource for which data may be permissioned;
+        can be extended to support additional types of resources
+      type: string
+      enum:
+        - ACCOUNT
+        - CUSTOMER
+        - DOCUMENT
+
+    ConsentUpdateReason:
+      title: Consent Update Reason
+      description: Reason for Updating a Consent Grant
+      type: string
+      enum:
+        - BUSINESS_RULE
+        - USER_ACTION
+
+    DataCluster:
+      title: Data Cluster
+      description: >-
+        Name of permissioned Data Cluster. For Data Cluster definitions refer
+        to the Consent Components > Data Clusters section of the
+        User Experience Guidelines document included in the FDX API
+      type: string
+      enum:
+        - ACCOUNT_BASIC
+        - ACCOUNT_DETAILED
+        - ACCOUNT_PAYMENTS
+        - CUSTOMER_CONTACT
+        - CUSTOMER_PERSONAL
+        - INVESTMENTS
+        - STATEMENTS
+        - TRANSACTIONS
+
+    LookbackPeriod:
+      title: Lookback Period
+      description: >-
+        Period, in days, for which historical data may be requested;
+        period is measured from request time, not grant time
+      type: integer
+
+    ############################################################
+    #
+    # Shared data types (copied from fdxapi.components.yaml)
+    #
+    ############################################################
+
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+        - ONE_TIME
+        - PERSISTENT
+        - TIME_BOUND
+
+    ContentTypes:
+      title: Content Types
+      description: Types of document formats. (Suggested values)
+      type: string
+      enum:
+        - application/json
+        - application/pdf
+        - application/zip
+        - image/gif
+        - image/jpeg
+        - image/png
+        - image/tiff
+
+    HateoasLink:
+      title: HATEOAS Link
+      description: REST application constraint (Hypermedia As The Engine Of Application State)
+      required: [href]
+      type: object
+      properties:
+        href:
+          type: string
+          format: uri-reference
+          description: URL to invoke the action on the resource
+          example: "https://api.fi.com/fdx/v4/accounts/12345"
+        action:
+          # description: HTTP Method to use for the request
+          $ref: '#/components/schemas/HttpAction'
+        rel:
+          description: >-
+            Relation of this link to its containing entity, as defined by and with many
+            example relation values at [IETF RFC5988](https://datatracker.ietf.org/doc/html/rfc5988)
+          type: string
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentTypes'
+          description: Content-types that can be used in the Accept header
+
+    HateoasLinks:
+      title: HATEOAS Links array
+      description: Links relative to this containing entity
+      type: array
+      items:
+        $ref: '#/components/schemas/HateoasLink'
+
+    HttpAction:
+      title: HTTP Action Type
+      description: HTTP Methods to use for requests
+      type: string
+      enum:
+        - DELETE
+        - GET
+        - PATCH
+        - POST
+        - PUT
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+
+    Party:
+      title: Party entity
+      description: FDX Participant - an entity or person that is a part of a FDX API transaction
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          description: Human recognizable common name
+          type: string
+        type:
+          # description: Extensible string enum identifying the type of the party
+          $ref: '#/components/schemas/PartyType'
+        homeUri:
+          description: >-
+            URI for party, where an end user could learn more about the company
+            or application involved in the data sharing chain
+          type: string
+          format: uri
+        logoUri:
+          description: URI for a logo asset to be displayed to the end user
+          type: string
+          format: uri
+        registry:
+          # description: >-
+          #   The registry containing the party's registration with name and id:
+          #   FDX, GLEIF, ICANN, PRIVATE
+          $ref: '#/components/schemas/Registry'
+        registeredEntityName:
+          description: Registered name of party
+          type: string
+        registeredEntityId:
+          description: Registered id of party
+          type: string
+
+    PartyType:
+      title: Party Type
+      description: Identifies the type of a party
+      type: string
+      enum:
+        - DATA_ACCESS_PLATFORM
+        - DATA_PROVIDER
+        - DATA_RECIPIENT
+        - INDIVIDUAL
+        - MERCHANT
+        - VENDOR
+
+    Registry:
+      title: Registry
+      description: Identifies the type of a Registry
+      type: string
+      enum:
+        - FDX
+        - GLEIF
+        - ICANN
+        - PRIVATE
+
+    Timestamp:
+      title: Timestamp
+      description: >-
+        ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to
+        [IETF RFC3339](https://xml2rfc.tools.ietf.org/public/rfc/html/rfc3339.html#anchor14)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
