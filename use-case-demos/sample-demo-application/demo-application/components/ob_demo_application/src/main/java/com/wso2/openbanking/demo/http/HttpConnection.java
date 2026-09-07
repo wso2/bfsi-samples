@@ -18,6 +18,9 @@
 
 package com.wso2.openbanking.demo.http;
 
+import com.wso2.openbanking.demo.devconsole.FlowEntry;
+import com.wso2.openbanking.demo.devconsole.FlowRecorder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,11 +122,23 @@ public class HttpConnection {
      * @throws IOException if the request fails
      */
     public String execute() throws IOException {
-        HttpsURLConnection connection = createConnection();
-        if (body != null) {
-            writeBody(connection);
+        FlowEntry entry = FlowRecorder.start(method, url, headers, body);
+        long startedAt = System.currentTimeMillis();
+        try {
+            HttpsURLConnection connection = createConnection();
+            if (body != null) {
+                writeBody(connection);
+            }
+            String response = readResponse(connection);
+            int status = connection.getResponseCode();
+            FlowRecorder.finish(entry, status, response,
+                    System.currentTimeMillis() - startedAt, status < 200 || status >= 300);
+            return response;
+        } catch (IOException e) {
+            FlowRecorder.finish(entry, 0, String.valueOf(e),
+                    System.currentTimeMillis() - startedAt, true);
+            throw e;
         }
-        return readResponse(connection);
     }
 
     /**
@@ -133,11 +148,22 @@ public class HttpConnection {
      * @throws IOException if the request fails
      */
     public int executeAndGetStatus() throws IOException {
-        HttpsURLConnection connection = createConnection();
-        if (body != null) {
-            writeBody(connection);
+        FlowEntry entry = FlowRecorder.start(method, url, headers, body);
+        long startedAt = System.currentTimeMillis();
+        try {
+            HttpsURLConnection connection = createConnection();
+            if (body != null) {
+                writeBody(connection);
+            }
+            int status = connection.getResponseCode();
+            FlowRecorder.finish(entry, status, "(status only, body not read)",
+                    System.currentTimeMillis() - startedAt, status < 200 || status >= 300);
+            return status;
+        } catch (IOException e) {
+            FlowRecorder.finish(entry, 0, String.valueOf(e),
+                    System.currentTimeMillis() - startedAt, true);
+            throw e;
         }
-        return connection.getResponseCode();
     }
 
     /**

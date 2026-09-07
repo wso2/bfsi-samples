@@ -23,6 +23,7 @@ import Home from "./pages/home-page/home.tsx";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AddAccountsPage from "./pages/add-accounts-page/add-accounts-page.tsx";
+import DevConsole from "./components/dev-console/dev-console.tsx";
 import PaymentsPage from "./pages/payments-page/payments-page.tsx";
 import AllTransactionsPage from "./pages/all-transactions-page/all-transactions.tsx";
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
@@ -163,6 +164,7 @@ const App: React.FC = () => {
                     element={<Navigate to={`/${appInfo.route}`} replace />}
                 />
             </Routes>
+            <DevConsole />
         </AppThemeProvider>
     );
 };

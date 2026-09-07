@@ -135,4 +135,22 @@ public class ConfigLoader {
     public static String getIsBaseUrl() {
         return getProperty("is.base.url");
     }
+
+    /**
+     * Whether the developer console captures Open Banking exchanges. Enabled unless explicitly disabled.
+     *
+     * @return true when capture is enabled
+     */
+    public static boolean isDevConsoleEnabled() {
+        return !"false".equalsIgnoreCase(getProperty("devconsole.enabled"));
+    }
+
+    /**
+     * Whether tokens, assertions and signatures are shortened before being exposed to the console.
+     *
+     * @return true when redaction is enabled
+     */
+    public static boolean isDevConsoleRedacted() {
+        return !"false".equalsIgnoreCase(getProperty("devconsole.redact"));
+    }
 }
