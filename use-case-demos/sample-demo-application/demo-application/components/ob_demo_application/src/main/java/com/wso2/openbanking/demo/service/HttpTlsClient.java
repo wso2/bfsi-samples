@@ -18,6 +18,7 @@
 
 package com.wso2.openbanking.demo.service;
 
+import com.wso2.openbanking.demo.devconsole.FlowRecorder;
 import com.wso2.openbanking.demo.exceptions.SSLContextCreationException;
 import com.wso2.openbanking.demo.http.AuthUrlBuilder;
 import com.wso2.openbanking.demo.http.HttpConnection;
@@ -112,7 +113,9 @@ public final class HttpTlsClient {
     }
 
     public String postConsentAuthRequest(String requestObjectJwt, String clientId, String scope) {
-        return AuthUrlBuilder.build(requestObjectJwt, clientId, scope);
+        String authorizeUrl = AuthUrlBuilder.build(requestObjectJwt, clientId, scope);
+        FlowRecorder.recordRedirect("Browser redirect to authorization endpoint", authorizeUrl);
+        return authorizeUrl;
     }
 
     public String getWithAuth(String url, String token) throws IOException {

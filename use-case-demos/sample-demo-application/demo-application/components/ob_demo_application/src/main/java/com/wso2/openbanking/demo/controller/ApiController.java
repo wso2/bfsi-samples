@@ -19,6 +19,7 @@
 package com.wso2.openbanking.demo.controller;
 
 import com.wso2.openbanking.demo.constants.ApiConstants;
+import com.wso2.openbanking.demo.devconsole.FlowRecorder;
 import com.wso2.openbanking.demo.constants.OpenBankingConstants;
 import com.wso2.openbanking.demo.exceptions.AuthorizationException;
 import com.wso2.openbanking.demo.exceptions.BankInfoLoadException;
@@ -217,6 +218,31 @@ public final class ApiController {
                     .entity("{\"" + ApiConstants.FIELD_ERROR + "\":\"" + e.getMessage() + "\"}")
                     .build();
         }
+    }
+
+    /**
+     * Returns the Open Banking exchanges captured for the developer console, oldest first.
+     *
+     * @return 200 response with the captured exchanges as a JSON array
+     */
+    @GET
+    @Path("/dev-console")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response devConsoleEntries() {
+        return Response.ok(FlowRecorder.snapshot().toString()).build();
+    }
+
+    /**
+     * Clears every captured exchange.
+     *
+     * @return 200 response confirming the console was cleared
+     */
+    @DELETE
+    @Path("/dev-console")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response clearDevConsole() {
+        FlowRecorder.clear();
+        return Response.ok("{\"" + ApiConstants.FIELD_STATUS + "\":\"cleared\"}").build();
     }
 
     /**
