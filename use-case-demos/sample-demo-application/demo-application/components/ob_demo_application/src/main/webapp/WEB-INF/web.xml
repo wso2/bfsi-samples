@@ -30,6 +30,44 @@
         <url-pattern>/init/*</url-pattern>
     </servlet-mapping>
 
+    <!--
+        Static resources stay with the container default servlet. These mappings are more
+        specific than the /* mapping below, so they win.
+    -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/index.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/configurations/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/robots.txt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/vite.svg</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SpaForwardServlet</servlet-name>
+        <servlet-class>com.wso2.openbanking.demo.controller.SpaForwardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SpaForwardServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>com.wso2.openbanking.demo.security.CorsFilter</filter-class>
@@ -37,6 +75,20 @@
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--
+        Makes the session's developer console log available to whatever the backend calls while
+        serving the request, so the OAuth and Open Banking calls are captured without every
+        service having to be handed the session.
+    -->
+    <filter>
+        <filter-name>FlowRecorderFilter</filter-name>
+        <filter-class>com.wso2.openbanking.demo.devconsole.FlowRecorderFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FlowRecorderFilter</filter-name>
+        <url-pattern>/init/*</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>

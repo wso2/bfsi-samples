@@ -18,18 +18,40 @@
 
 package com.wso2.openbanking.demo.service;
 
-import com.wso2.openbanking.demo.exceptions.AuthorizationException;
+import com.wso2.openbanking.demo.constants.OpenBankingConstants;
+import com.wso2.openbanking.demo.devconsole.FlowRecorder;
 import com.wso2.openbanking.demo.exceptions.SSLContextCreationException;
+import com.wso2.openbanking.demo.http.AuthUrlBuilder;
 import com.wso2.openbanking.demo.utils.ConfigLoader;
 import com.wso2.openbanking.demo.utils.JwtUtils;
-import org.json.JSONException;
+import com.wso2.openbanking.demo.utils.PkceUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 
-/** Handles OAuth token requests, consent initialization, and consent authorization. */
+import javax.servlet.http.HttpSession;
+
+/**
+ * Starts a Rich Authorization Request. The requested access is described by
+ * {@code authorization_details} (RFC 9396), pushed to the authorization server's PAR endpoint
+ * (RFC 9126), so no consent resource is initiated over the API beforehand.
+ */
 public final class OAuthTokenService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OAuthTokenService.class);
+
+    private static final String CLIENT_ASSERTION_TYPE =
+            "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
+    private static final String FIELD_REQUEST_URI = "request_uri";
+    private static final String FIELD_ACCESS_TOKEN = "access_token";
+    private static final String STEP_REDIRECT = "Authorization Redirect";
+    private static final String STEP_CLIENT_TOKEN = "Client Credentials Token";
 
     private final HttpTlsClient client;
     private final JwtTokenService jwtTokenService;
@@ -38,8 +60,8 @@ public final class OAuthTokenService {
      * Creates an OAuthTokenService using the given TLS client.
      *
      * @param client TLS HTTP client for making API calls
-     * @throws GeneralSecurityException   if JWT service initialization fails
-     * @throws IOException                if the signing key cannot be read
+     * @throws GeneralSecurityException    if JWT service initialization fails
+     * @throws IOException                 if the signing key cannot be read
      * @throws SSLContextCreationException if the TLS client copy fails
      */
     public OAuthTokenService(HttpTlsClient client)
@@ -49,97 +71,119 @@ public final class OAuthTokenService {
     }
 
     /**
-     * Requests a client credentials access token for the given scope.
+     * Pushes an authorization request describing the given access and returns the URL the
+     * customer is redirected to in order to authorize it.
      *
-     * @param scope OAuth scope to request the token for
-     * @return raw token response JSON string
-     * @throws AuthorizationException if the token request or signing fails
-     */
-    public String getToken(String scope) throws AuthorizationException {
-        try {
-            String clientAssertion = jwtTokenService.createClientAssertion(JwtUtils.generateJti());
-            String body = buildTokenRequestBody(scope, clientAssertion);
-            return client.postJwt(ConfigLoader.getTokenUrl(), body);
-        } catch (IOException e) {
-            throw new AuthorizationException("Failed to contact token endpoint", e);
-        } catch (GeneralSecurityException e) {
-            throw new AuthorizationException("Failed to sign client assertion", e);
-        }
-    }
-
-    /**
-     * Initializes an account consent using the given token and request body.
-     *
-     * @param token       raw token response JSON containing the access token
-     * @param consentBody JSON request body for the consent
-     * @param url         account consent endpoint URL
-     * @return consent response JSON string
-     * @throws IOException    if the API call fails
-     * @throws JSONException  if the token response cannot be parsed
-     */
-    public String initializeConsent(String token, String consentBody, String url)
-            throws IOException, JSONException {
-        String accessToken = new JSONObject(token).getString("access_token");
-        return client.postConsentInit(url, consentBody, accessToken);
-    }
-
-    /**
-     * Initializes a payment consent using the given token and request body.
-     *
-     * @param token       raw token response JSON containing the access token
-     * @param consentBody JSON request body for the payment consent
-     * @param url         payment consent endpoint URL
-     * @return payment consent response JSON string
-     * @throws IOException   if the API call fails
-     * @throws JSONException if the token response cannot be parsed
-     */
-    public String initializePaymentConsent(String token, String consentBody, String url)
-            throws IOException, JSONException {
-        String accessToken = new JSONObject(token).getString("access_token");
-        return client.postPaymentConsentInit(url, consentBody, accessToken);
-    }
-
-    /**
-     * Builds and sends a consent authorization request, returning the redirect URL.
-     *
-     * @param consentResponse consent response JSON from the consent initialization step
-     * @param scope           OAuth scope for the authorization request
+     * @param authorizationDetails RFC 9396 authorization details describing the requested access
+     * @param session              browser session the authorization belongs to
      * @return authorization redirect URL string
-     * @throws GeneralSecurityException if request object signing fails
-     * @throws IOException              if the API call fails
+     * @throws GeneralSecurityException if request object or client assertion signing fails
+     * @throws IOException              if the PAR endpoint cannot be reached
      */
-    public String authorizeConsent(String consentResponse, String scope)
+    public String authorize(JSONArray authorizationDetails, HttpSession session)
             throws GeneralSecurityException, IOException {
-        String consentId = extractConsentId(consentResponse);
-        String requestObject = jwtTokenService.createRequestObject(consentId);
-        return client.postConsentAuthRequest(requestObject, ConfigLoader.getClientId(), scope);
+        String codeVerifier = PkceUtils.generateCodeVerifier();
+        AuthFlowState.storeCodeVerifier(session, codeVerifier);
+        String codeChallenge = PkceUtils.deriveCodeChallenge(codeVerifier);
+
+        String requestObject = jwtTokenService.createRequestObject(
+                authorizationDetails, codeChallenge, JwtUtils.generateNonce());
+        String requestUri = pushAuthorizationRequest(requestObject, authorizationDetails);
+
+        String authorizeUrl = AuthUrlBuilder.buildWithRequestUri(requestUri, ConfigLoader.getClientId());
+        // The browser makes this hop, not this application, so record it here rather than in the
+        // HTTP layer. Its decoded payload is the request object that was pushed, which is where
+        // the access the customer is about to authorize is actually described.
+        FlowRecorder.recordHop(STEP_REDIRECT, "GET", authorizeUrl, null, requestObject);
+        return authorizeUrl;
     }
 
     /**
-     * Extracts the consent ID from a consent response JSON string.
+     * Obtains a client credentials access token. Used for calls this application makes in its own
+     * right rather than on behalf of a customer, such as revoking a consent.
      *
-     * @param consentResponse consent response JSON string
-     * @return consent ID string
+     * @return the access token
+     * @throws GeneralSecurityException if client assertion signing fails
+     * @throws IOException              if the token endpoint cannot be reached
      */
-    private String extractConsentId(String consentResponse) {
-        return new JSONObject(consentResponse)
-                .getJSONObject("Data")
-                .getString("ConsentId");
+    public String getClientCredentialsToken() throws GeneralSecurityException, IOException {
+        String clientAssertion = jwtTokenService.createClientAssertion(JwtUtils.generateJti());
+        // No scope, matching the reference implementation's Postman collection: the access this
+        // token grants is fixed by the client itself, so there is nothing to narrow.
+        String body = "grant_type=client_credentials"
+                + "&client_assertion_type=" + encode(CLIENT_ASSERTION_TYPE)
+                + "&client_assertion=" + encode(clientAssertion)
+                + "&client_id=" + encode(ConfigLoader.getClientId());
+        String response = client.postAccessToken(ConfigLoader.getTokenUrl(), body, STEP_CLIENT_TOKEN);
+        String accessToken = new JSONObject(response).getString(FIELD_ACCESS_TOKEN);
+        // Decode the issued token onto its own step, so the console shows what this grant actually
+        // carries - no consent id, unlike the token the customer's authorization produces.
+        FlowRecorder.attachClaims(STEP_CLIENT_TOKEN, accessToken);
+        return accessToken;
     }
 
     /**
-     * Builds the URL-encoded body for a client credentials token request.
+     * Pushes the authorization request to the PAR endpoint and returns the resulting request URI.
      *
-     * @param scope           OAuth scope to include in the request
-     * @param clientAssertion signed JWT used as the client credential
-     * @return URL-encoded token request body string
+     * @param requestObject        signed request object JWT for the authorization request
+     * @param authorizationDetails authorization details, sent alongside the request object
+     * @return request URI issued by the PAR endpoint
+     * @throws GeneralSecurityException if client assertion signing fails
+     * @throws IOException              if the PAR endpoint cannot be reached
      */
-    private String buildTokenRequestBody(String scope, String clientAssertion) {
-        return "grant_type=client_credentials" +
-                "&scope=" + scope +
-                "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer" +
-                "&client_id=" + ConfigLoader.getClientId() +
-                "&client_assertion=" + clientAssertion +
-                "&redirect_uri=" + ConfigLoader.getRedirectUri();
+    private String pushAuthorizationRequest(String requestObject, JSONArray authorizationDetails)
+            throws GeneralSecurityException, IOException {
+        String clientAssertion = jwtTokenService.createClientAssertion(JwtUtils.generateJti());
+        String body = buildParRequestBody(requestObject, authorizationDetails, clientAssertion);
+        String response = client.postPushedAuthorizationRequest(ConfigLoader.getParUrl(), body);
+        String requestUri = new JSONObject(response).getString(FIELD_REQUEST_URI);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Pushed authorization request accepted, request_uri obtained.");
+        }
+        return requestUri;
+    }
+
+    /**
+     * Builds the URL-encoded body for a pushed authorization request.
+     *
+     * <p>The first five parameters match the reference implementation's Postman collection, which
+     * is the contract this sample is written against. Everything describing the authorization
+     * itself - {@code response_type}, {@code response_mode}, {@code redirect_uri},
+     * {@code scope}, {@code nonce} and the PKCE code challenge - is a claim in the signed request
+     * object instead, so it is covered by the signature rather than sent alongside it. What
+     * remains here cannot be: {@code request} carries that object, and {@code client_id} with the
+     * client assertion pair authenticates this call to the PAR endpoint.
+     * {@code authorization_details} is duplicated because the reference does that too.
+     *
+     * <p>{@code prompt} is the one exception, and is pushed here rather than being a claim. The
+     * Identity Server re-exposes pushed form parameters as request parameters when the customer
+     * reaches the authorization endpoint, but it only mines the request object for a known set of
+     * parameters, and {@code prompt} is not among them - sent as a claim it is silently ignored
+     * and an existing single sign on session is reused. The reference collection does not use
+     * {@code prompt} at all, so it offers no shape to follow for it.
+     *
+     * @param requestObject        signed request object JWT
+     * @param authorizationDetails authorization details describing the requested access
+     * @param clientAssertion      signed JWT used as the client credential
+     * @return URL-encoded PAR request body string
+     */
+    private String buildParRequestBody(String requestObject, JSONArray authorizationDetails,
+                                       String clientAssertion) {
+        String body = "request=" + encode(requestObject)
+                + "&client_assertion_type=" + encode(CLIENT_ASSERTION_TYPE)
+                + "&client_id=" + encode(ConfigLoader.getClientId())
+                + "&client_assertion=" + encode(clientAssertion)
+                + "&" + OpenBankingConstants.FIELD_AUTHORIZATION_DETAILS
+                + "=" + encode(authorizationDetails.toString());
+
+        String prompt = ConfigLoader.getOAuthPrompt();
+        if (prompt != null && !prompt.isEmpty()) {
+            body = body + "&prompt=" + encode(prompt);
+        }
+        return body;
+    }
+
+    private static String encode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

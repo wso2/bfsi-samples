@@ -19,10 +19,16 @@
 package com.wso2.openbanking.demo.utils;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.UUID;
 
 /** Utility class for generating JWT helper values. */
 public class JwtUtils {
+
+    private static final int NONCE_BYTE_LENGTH = 16;
+    private static final SecureRandom RANDOM = new SecureRandom();
+    private static final Base64.Encoder BASE64_URL = Base64.getUrlEncoder().withoutPadding();
 
     /**
      * Generates a unique JWT ID from a random UUID.
@@ -31,5 +37,17 @@ public class JwtUtils {
      */
     public static String generateJti() {
         return new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16).toString();
+    }
+
+    /**
+     * Generates a fresh nonce for an authorization request. It has to be unique per request:
+     * a replayed nonce lets the authorization server reject the authorization as a replay.
+     *
+     * @return base64url encoded random nonce
+     */
+    public static String generateNonce() {
+        byte[] nonceBytes = new byte[NONCE_BYTE_LENGTH];
+        RANDOM.nextBytes(nonceBytes);
+        return BASE64_URL.encodeToString(nonceBytes);
     }
 }

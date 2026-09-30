@@ -50,12 +50,6 @@ const AddAccountsPage = ({bankInformations}: AddAccountsPageProps) => {
     const rootBasePath = routeIndex >= 0 ? currentPathName.substring(0, routeIndex) : currentPathName;
     const normalizedBasePath = rootBasePath === "/" ? "" : rootBasePath;
 
-    const getImageUrl = (imagePath: string) => {
-        if (!imagePath) return "";
-        const cleaned = imagePath.replace(/^\.\//, "");
-        return `${window.location.origin}${normalizedBasePath}/${cleaned}`;
-    };
-
     const onAddAccountsHandler = async (bankName: string) => {
         const target = bankInformations.find((bank) => bank.name === bankName);
         if (!target) {
@@ -133,7 +127,7 @@ const AddAccountsPage = ({bankInformations}: AddAccountsPageProps) => {
                                             <Box className={"account-button-outer"}>
                                                 <Box className={"logo-container"} sx={{marginLeft: '2rem'}}>
                                                     <img
-                                                        src={getImageUrl(account.image)}
+                                                        src={account.image}
                                                         alt={`${account.name} logo`}
                                                     />
                                                 </Box>
@@ -172,7 +166,7 @@ const AddAccountsPage = ({bankInformations}: AddAccountsPageProps) => {
                                         <Box className={"account-button-outer"}>
                                             <Box className={"logo-container"} sx={{marginLeft: '2rem'}}>
                                                 <img
-                                                    src={getImageUrl(account.image)}
+                                                    src={account.image}
                                                     alt={`${account.name} logo`}
                                                 />
                                             </Box>

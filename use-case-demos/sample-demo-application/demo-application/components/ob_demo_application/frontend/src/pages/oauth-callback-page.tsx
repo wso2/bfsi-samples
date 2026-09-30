@@ -22,6 +22,7 @@ import {Box} from "@oxygen-ui/react";
 import useConfigContext from "../hooks/use-config-context.ts";
 import type {Config} from "../hooks/config-interfaces.ts";
 import {queryClient} from "../utility/query-client.ts";
+import {generateTransactionId} from "../utility/transaction-utils.ts";
 
 const ACCOUNTS_SESSION_KEY = "openbanking_added_accounts";
 
@@ -125,15 +126,21 @@ const handlePaymentsResponse = (data: any) => {
     const savedAccountsRaw = sessionStorage.getItem(ACCOUNTS_SESSION_KEY);
     const savedAccounts: any[] = savedAccountsRaw ? JSON.parse(savedAccountsRaw) : [];
 
+    // Use the shared generator rather than a timestamp, so the id matches the T + 8 digit shape
+    // the rest of the data uses, and is checked against the ids already present.
+    const existingTransactions = savedAccounts.flatMap((acc: any) => acc.transactions || []);
+
     const newTxn = {
-        id: `T${Date.now()}`,
+        id: generateTransactionId(existingTransactions),
         date: currentDate,
         reference: pending.reference,
         bank: oldConfig.banks[2]?.name ?? "",
         account: accountId,
         amount: pending.amount,
         currency: pending.currency,
-        creditDebitStatus: "c"
+        // A payment sends money out of the account, so it is a debit - which is also what the
+        // balance below assumes when it subtracts the amount.
+        creditDebitStatus: "d"
     };
 
     // Update the accounts from sessionStorage directly
@@ -169,6 +176,9 @@ const OAuthCallbackPage = () => {
     useEffect(() => {
         const params = getOAuthParams(location);
         const code = params.get("code") || params.get("authorization_code") || params.get("auth_code");
+        // With response_mode=jwt the whole authorization response is one signed JWT (JARM).
+        // The code lives inside it, so hand it to the backend to read.
+        const jarmResponse = params.get("response");
         const accessToken = params.get("access_token");
         const idToken = params.get("id_token");
         const errorParam = params.get("error") || params.get("error_description");
@@ -177,18 +187,21 @@ const OAuthCallbackPage = () => {
             setStatus("Failed to complete OAuth callback.");
             return;
         }
-        if (!code && !accessToken && !idToken) {
-            setError("No OAuth code or token was found in the callback URL.");
+        if (!code && !jarmResponse && !accessToken && !idToken) {
+            setError("No OAuth code, response JWT or token was found in the callback URL.");
             setStatus("Unable to complete OAuth callback.");
             return;
         }
         const completeAuth = async () => {
             try {
-                setStatus("Completing OAuth login with the authorization code...");
+                setStatus("Completing OAuth login with the authorization response...");
 
                 const backendBase = window.location.pathname.replace(/\/callback.*$/, "");
+                const authParam = jarmResponse
+                    ? `response=${encodeURIComponent(jarmResponse)}`
+                    : `code=${encodeURIComponent(code!)}`;
                 const response = await fetch(
-                    `${window.location.origin}${backendBase}/init/processAuth?code=${encodeURIComponent(code!)}`,
+                    `${window.location.origin}${backendBase}/init/processAuth?${authParam}`,
                     {method: "GET"}
                 );
                 if (!response.ok) {

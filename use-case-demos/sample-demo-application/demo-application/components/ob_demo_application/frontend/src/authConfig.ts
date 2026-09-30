@@ -17,10 +17,10 @@
  */
 
 export const authConfig = {
-    clientID: "n4F3yJxPa2ENQpSqUYQqzPTJdvca",
-    baseUrl: "https://obiam:9446",
-    signInRedirectURL: "https://obiam:9446/api-ob-demo-1.0.0",
-    signOutRedirectURL: "https://obiam:9446/api-ob-demo-1.0.0",
+    clientID: "GoaX3zIkVCz7VjYNsagzGf00gEsa",
+    baseUrl: "https://localhost:9446",
+    signInRedirectURL: "https://localhost:9446/api-ob-demo-1.0.0",
+    signOutRedirectURL: "https://localhost:9446/api-ob-demo-1.0.0",
     scope: ["openid", "profile", "email"],
     data: {
         accounts: []

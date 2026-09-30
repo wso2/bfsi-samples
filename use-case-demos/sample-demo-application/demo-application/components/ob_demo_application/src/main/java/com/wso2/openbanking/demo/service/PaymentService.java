@@ -24,22 +24,21 @@ import com.wso2.openbanking.demo.exceptions.PaymentException;
 import com.wso2.openbanking.demo.exceptions.SSLContextCreationException;
 import com.wso2.openbanking.demo.models.Payment;
 import com.wso2.openbanking.demo.utils.ConfigLoader;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
 
-/** Handles payment consent creation, authorization, and payment submission. */
+import javax.servlet.http.HttpSession;
+
+/** Handles payment authorization via a Rich Authorization Request, and payment submission. */
 public final class PaymentService {
 
-    private static final Random RANDOM = new Random();
     private final OAuthTokenService oauthService;
     private final HttpTlsClient client;
-    private Payment currentPayment;
-    private String currentConsentId;
 
     /**
      * Creates a PaymentService with the given HTTP client and OAuth service.
@@ -71,24 +70,19 @@ public final class PaymentService {
      * Creates a payment consent and returns the OAuth authorization redirect URL.
      *
      * @param payment payment details to create a consent for
+     * @param session browser session the authorization belongs to
      * @return authorization redirect URL for the payment consent
-     * @throws AuthorizationException if consent creation or signing fails
+     * @throws AuthorizationException if the authorization request fails
      */
-    public String processPaymentRequest(Payment payment) throws AuthorizationException {
-        this.currentPayment = new Payment(payment);
+    public String processPaymentRequest(Payment payment, HttpSession session) throws AuthorizationException {
+        JSONObject initiation = buildInitiation(payment);
+        AuthFlowState.storePaymentInitiation(session, initiation.toString());
         try {
-            String token = oauthService.getToken(OpenBankingConstants.SCOPE_PAYMENTS);
-            String paymentUrl = ConfigLoader.getPaymentBaseUrl() + OpenBankingConstants.PATH_PAYMENT_CONSENTS;
-            String consentBody = createPaymentConsentBody(payment);
-            String consentResponse = oauthService.initializePaymentConsent(token, consentBody, paymentUrl);
-            this.currentConsentId = new JSONObject(consentResponse)
-                    .getJSONObject(OpenBankingConstants.FIELD_DATA)
-                    .getString(OpenBankingConstants.FIELD_CONSENT_ID);
-            return oauthService.authorizeConsent(consentResponse, OpenBankingConstants.SCOPE_PAYMENTS);
+            return oauthService.authorize(createPaymentAuthorizationDetails(initiation), session);
         } catch (IOException e) {
-            throw new AuthorizationException("Failed to contact payment consent endpoint", e);
+            throw new AuthorizationException("Failed to push the payment authorization request", e);
         } catch (GeneralSecurityException e) {
-            throw new AuthorizationException("Failed to sign payment consent request", e);
+            throw new AuthorizationException("Failed to sign the payment authorization request", e);
         }
     }
 
@@ -96,58 +90,50 @@ public final class PaymentService {
      * Submits the current payment using the given access token.
      *
      * @param accessToken valid OAuth access token from the authorization callback
+     * @param consentId   consent identifier that authorized the payment
+     * @param session     browser session the authorization belongs to
      * @return true if payment was submitted successfully, false if no pending payment exists
      * @throws PaymentException if the payment submission request fails
      */
-    public boolean processPaymentAuthorization(String accessToken) throws PaymentException {
+    public boolean processPaymentAuthorization(String accessToken, String consentId, HttpSession session)
+            throws PaymentException {
+        String initiation = AuthFlowState.consumePaymentInitiation(session);
+        if (initiation == null || consentId == null) {
+            return false;
+        }
         try {
-            if (currentPayment == null || currentConsentId == null) {
-                return false;
-            }
-            String paymentUrl = ConfigLoader.getPaymentBaseUrl() + OpenBankingConstants.PATH_PAYMENTS;
-            String paymentBody = createPaymentSubmissionBody(currentPayment, currentConsentId);
+            String paymentUrl = ConfigLoader.getPaymentBaseUrl() + OpenBankingConstants.PATH_DOMESTIC_PAYMENTS;
+            String paymentBody = createPaymentSubmissionBody(new JSONObject(initiation), consentId);
             client.postPayments(paymentUrl, paymentBody, accessToken);
             return true;
         } catch (IOException e) {
             throw new PaymentException("Failed to submit payment to bank endpoint", e);
-        } finally {
-            currentPayment = null;
-            currentConsentId = null;
         }
     }
 
     /**
-     * Builds the JSON request body for a payment consent.
+     * Wraps a payment initiation in the authorization details that request consent for it.
      *
-     * @param payment payment details to include in the consent body
-     * @return payment consent request body as a JSON string
+     * @param initiation the payment initiation the customer is asked to authorize
+     * @return a {@code domestic_payment_v1.0} authorization details array
      */
-    private String createPaymentConsentBody(Payment payment) {
-        String[] userAccount = parseAccountIdentifier(payment.getUserAccount());
-        String[] payeeAccount = parseAccountIdentifier(payment.getPayeeAccount());
-        JSONObject initiation = buildInitiation(
-                userAccount, payeeAccount,
-                payment.getAmount(), payment.getCurrency(), payment.getReference());
-        return new JSONObject()
-                .put(OpenBankingConstants.FIELD_DATA,
-                        new JSONObject().put(OpenBankingConstants.FIELD_INITIATION, initiation))
-                .put(OpenBankingConstants.FIELD_RISK, new JSONObject())
-                .toString(4);
+    private JSONArray createPaymentAuthorizationDetails(JSONObject initiation) {
+        JSONObject domesticPayment = new JSONObject()
+                .put(OpenBankingConstants.FIELD_TYPE, OpenBankingConstants.TYPE_DOMESTIC_PAYMENT)
+                .put(OpenBankingConstants.FIELD_INITIATION, initiation)
+                .put(OpenBankingConstants.FIELD_RISK, new JSONObject());
+        return new JSONArray().put(domesticPayment);
     }
 
     /**
-     * Builds the JSON request body for submitting a payment.
+     * Builds the JSON request body for submitting a payment. The initiation is the very object
+     * that was authorized, so the submission cannot drift from the consent.
      *
-     * @param payment   payment details to submit
-     * @param consentId consent ID approved during the authorization step
+     * @param initiation the authorized payment initiation
+     * @param consentId  consent ID that authorized this payment
      * @return payment submission request body as a JSON string
      */
-    private String createPaymentSubmissionBody(Payment payment, String consentId) {
-        String[] userAccount = parseAccountIdentifier(payment.getUserAccount());
-        String[] payeeAccount = parseAccountIdentifier(payment.getPayeeAccount());
-        JSONObject initiation = buildInitiation(
-                userAccount, payeeAccount,
-                payment.getAmount(), payment.getCurrency(), payment.getReference());
+    private String createPaymentSubmissionBody(JSONObject initiation, String consentId) {
         return new JSONObject()
                 .put(OpenBankingConstants.FIELD_DATA, new JSONObject()
                         .put(OpenBankingConstants.FIELD_CONSENT_ID, consentId)
@@ -157,30 +143,30 @@ public final class PaymentService {
     }
 
     /**
-     * Builds the payment initiation JSON object from account and payment details.
+     * Builds the payment initiation JSON object from the payment the customer entered.
      *
-     * @param userAccount  parsed debtor account parts (name and ID)
-     * @param payeeAccount parsed creditor account parts (name and ID)
-     * @param amount       payment amount as a string
-     * @param currency     payment currency code
-     * @param reference    optional remittance reference text
+     * @param payment payment details captured on the payment screen
      * @return payment initiation JSON object
      */
-    private JSONObject buildInitiation(String[] userAccount, String[] payeeAccount,
-                                       String amount, String currency, String reference) {
+    private JSONObject buildInitiation(Payment payment) {
+        String[] userAccount = parseAccountIdentifier(payment.getUserAccount());
+        String[] payeeAccount = parseAccountIdentifier(payment.getPayeeAccount());
+
         JSONObject initiation = new JSONObject();
         initiation.put(OpenBankingConstants.FIELD_INSTRUCTION_IDENTIFICATION, generateInstructionId());
         initiation.put(OpenBankingConstants.FIELD_END_TO_END_IDENTIFICATION, generateEndToEndId());
-        initiation.put(OpenBankingConstants.FIELD_LOCAL_INSTRUMENT, OpenBankingConstants.LOCAL_INSTRUMENT_PAYM);
-        initiation.put(OpenBankingConstants.FIELD_INSTRUCTED_AMOUNT, buildAmount(amount, currency));
+        initiation.put(OpenBankingConstants.FIELD_LOCAL_INSTRUMENT,
+                OpenBankingConstants.LOCAL_INSTRUMENT_DOMESTIC_CREDIT_TRANSFER);
+        initiation.put(OpenBankingConstants.FIELD_INSTRUCTED_AMOUNT,
+                buildAmount(payment.getAmount(), payment.getCurrency()));
         initiation.put(OpenBankingConstants.FIELD_CREDITOR_ACCOUNT, buildCreditorAccount(payeeAccount));
         initiation.put(OpenBankingConstants.FIELD_DEBTOR_ACCOUNT, buildDebtorAccount(userAccount));
+
+        String reference = payment.getReference();
         if (reference != null && !reference.trim().isEmpty()) {
-            initiation.put(OpenBankingConstants.FIELD_REMITTANCE_INFORMATION,
-                    new JSONObject().put(OpenBankingConstants.FIELD_REFERENCE, reference));
+            initiation.put(OpenBankingConstants.FIELD_REMITTANCE_INFORMATION, new JSONObject()
+                    .put(OpenBankingConstants.FIELD_UNSTRUCTURED, new JSONArray().put(reference)));
         }
-        initiation.put(OpenBankingConstants.FIELD_SUPPLEMENTARY_DATA,
-                new JSONObject().put("additionalProp1", new JSONObject()));
         return initiation;
     }
 
@@ -205,8 +191,8 @@ public final class PaymentService {
      */
     private JSONObject buildCreditorAccount(String[] payeeAccount) {
         return new JSONObject()
-                .put(OpenBankingConstants.FIELD_SCHEME_NAME, OpenBankingConstants.SCHEME_SORT_CODE_ACCOUNT_NUMBER)
-                .put(OpenBankingConstants.FIELD_IDENTIFICATION, generateNumericId(14))
+                .put(OpenBankingConstants.FIELD_SCHEME_NAME, OpenBankingConstants.SCHEME_BBAN)
+                .put(OpenBankingConstants.FIELD_IDENTIFICATION, payeeAccount[1])
                 .put(OpenBankingConstants.FIELD_NAME, payeeAccount[0])
                 .put(OpenBankingConstants.FIELD_SECONDARY_IDENTIFICATION, OpenBankingConstants.PAYMENT_SECONDARY_ID_FIXED);
     }
@@ -219,7 +205,7 @@ public final class PaymentService {
      */
     private JSONObject buildDebtorAccount(String[] userAccount) {
         return new JSONObject()
-                .put(OpenBankingConstants.FIELD_SCHEME_NAME, OpenBankingConstants.SCHEME_SORT_CODE_ACCOUNT_NUMBER)
+                .put(OpenBankingConstants.FIELD_SCHEME_NAME, OpenBankingConstants.SCHEME_BBAN)
                 .put(OpenBankingConstants.FIELD_IDENTIFICATION, userAccount[1])
                 .put(OpenBankingConstants.FIELD_NAME, userAccount[0])
                 .put(OpenBankingConstants.FIELD_SECONDARY_IDENTIFICATION,
@@ -271,36 +257,4 @@ public final class PaymentService {
                 + UUID.randomUUID().toString().substring(0, 8).toUpperCase(Locale.ROOT);
     }
 
-    /**
-     * Converts a hex character to a single numeric digit (0–9).
-     *
-     * @param c hex character to convert
-     * @return numeric digit derived from the hex character
-     */
-    private int hexCharToDigit(char c) {
-        if (c >= '0' && c <= '9') {
-            return c - '0';
-        }
-        int letterValue = (c >= 'a') ? (c - 'a') : (c - 'A');
-        return letterValue % 10;
-    }
-
-    /**
-     * Generates a numeric-only ID string of the given length using a UUID.
-     *
-     * @param length desired length of the numeric ID
-     * @return numeric ID string of exactly the specified length
-     */
-    private String generateNumericId(int length) {
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        StringBuilder numericId = new StringBuilder();
-        for (char c : uuid.toCharArray()) {
-            if (numericId.length() >= length) break;
-            numericId.append(hexCharToDigit(c));
-        }
-        while (numericId.length() < length) {
-            numericId.append(RANDOM.nextInt(10));
-        }
-        return numericId.substring(0, length);
-    }
 }

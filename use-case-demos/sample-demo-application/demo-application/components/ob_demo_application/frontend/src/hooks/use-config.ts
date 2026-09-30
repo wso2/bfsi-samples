@@ -20,6 +20,25 @@ import { useQuery} from "@tanstack/react-query";
 import type { Config } from "./config-interfaces";
 import { api } from "../utility/api";
 import {queryClient} from "../utility/query-client.ts";
+import { resolveAssetUrl } from "../utility/asset-url.ts";
+
+/**
+ * @function withResolvedAssets
+ * @description Anchors the configuration's asset paths to the application's base path, so that
+ * an image does not depend on which URL the page was opened at. See {@link resolveAssetUrl}.
+ *
+ * @param {Config} config Configuration as it was fetched.
+ * @returns {Config} The same configuration with usable asset URLs.
+ */
+const withResolvedAssets = (config: Config): Config => ({
+    ...config,
+    user: config.user && {
+        ...config.user,
+        image: resolveAssetUrl(config.user.image),
+        background: resolveAssetUrl(config.user.background),
+    },
+    banks: config.banks?.map((bank) => ({ ...bank, image: resolveAssetUrl(bank.image) })),
+});
 
 /**
  * @function useConfig
@@ -41,7 +60,7 @@ export const useConfig = () =>
                 console.log("Error getting config query");
             }
             const res = await api.get<Config>("config.json");
-            const data = ((res as any)?.data ?? res) as Config;
+            const data = withResolvedAssets(((res as any)?.data ?? res) as Config);
             try {
                 queryClient.setQueryData(["appConfig"],data as Config);
             } catch {

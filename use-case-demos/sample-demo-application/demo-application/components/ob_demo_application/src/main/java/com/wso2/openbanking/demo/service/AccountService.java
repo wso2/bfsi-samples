@@ -26,6 +26,8 @@ import com.wso2.openbanking.demo.models.Transaction;
 import com.wso2.openbanking.demo.utils.ConfigLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -35,10 +37,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.reflections.Reflections.log;
+import javax.servlet.http.HttpSession;
+
 
 /** Handles account consent, data fetching, and consent revocation via the Open Banking API. */
 public final class AccountService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
     private final HttpTlsClient client;
     private final OAuthTokenService oauthService;
@@ -89,6 +94,16 @@ public final class AccountService {
     }
 
     /**
+     * Sets the consent identifier that authorized the current access token, so fetched accounts
+     * can be stamped with the consent they belong to.
+     *
+     * @param consentId consent identifier resolved from the token exchange, may be null
+     */
+    public void setConsentId(String consentId) {
+        this.currentConsentId = consentId;
+    }
+
+    /**
      * Fetches all accounts and their transactions for the current consent.
      *
      * @return list of accounts with transaction data
@@ -100,20 +115,26 @@ public final class AccountService {
     }
 
     /**
-     * Creates an account consent and returns the OAuth authorization URL.
+     * Starts an account access authorization and returns the OAuth authorization URL.
      *
-     * @return authorization redirect URL for the account consent flow
-     * @throws Exception if consent creation or authorization fails
+     * @param session browser session the authorization belongs to
+     * @return authorization redirect URL for the account access flow
+     * @throws Exception if the authorization request fails
      */
-    public String processAddAccount() throws Exception {
-        String addAccountUrl = ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNT_CONSENTS;
-        String consentBody = createAccountConsentBody();
-        String token = oauthService.getToken(OpenBankingConstants.SCOPE_ACCOUNTS);
-        String consentResponse = oauthService.initializeConsent(token, consentBody, addAccountUrl);
-        currentConsentId = new JSONObject(consentResponse)
-                .getJSONObject(OpenBankingConstants.FIELD_DATA)
-                .getString(OpenBankingConstants.FIELD_CONSENT_ID);
-        return oauthService.authorizeConsent(consentResponse, OpenBankingConstants.SCOPE_ACCOUNTS);
+    public String processAddAccount(HttpSession session) throws Exception {
+        return oauthService.authorize(createAccountAuthorizationDetails(), session);
+    }
+
+    /**
+     * Builds the URL of a single account resource. No path may end in a slash: the Identity
+     * Server redirects such a request, and the gateway rejects the redirect as a response its
+     * schema does not define.
+     *
+     * @param accountId account ID to address
+     * @return the account resource URL
+     */
+    private String accountUrl(String accountId) {
+        return ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS + "/" + accountId;
     }
 
     /**
@@ -124,7 +145,7 @@ public final class AccountService {
      */
     private List<String> fetchAccountIds() throws IOException {
         String response = client.getWithAuth(
-                ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS.stripTrailing(),
+                ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS,
                 this.accessToken);
         JSONArray accountsArray = new JSONObject(response)
                 .getJSONObject(OpenBankingConstants.FIELD_DATA)
@@ -134,6 +155,37 @@ public final class AccountService {
             accountIds.add(accountsArray.getJSONObject(i).getString(OpenBankingConstants.FIELD_ACCOUNT_ID));
         }
         return accountIds;
+    }
+
+    /**
+     * Fetches the display name of an account by its ID.
+     *
+     * <p>The nickname is what labels the account, so it is what the customer should see. The Name
+     * inside the nested Account array is the account *holder*, which is the same across every
+     * account someone owns, so it is only a fallback.
+     *
+     * @param accountId account ID to look up
+     * @return account name or a default value if not found
+     * @throws IOException if the API call fails
+     */
+    private String fetchAccountName(String accountId) throws IOException {
+        String url = accountUrl(accountId);
+        String response = client.getWithAuth(url, this.accessToken);
+        JSONObject accountDataNode = new JSONObject(response)
+                .getJSONObject(OpenBankingConstants.FIELD_DATA)
+                .getJSONArray(OpenBankingConstants.FIELD_ACCOUNT)
+                .getJSONObject(0);
+
+        String nickname = accountDataNode.optString(OpenBankingConstants.FIELD_NICKNAME, "");
+        if (!nickname.isEmpty()) {
+            return nickname;
+        }
+        if (accountDataNode.has(OpenBankingConstants.FIELD_ACCOUNT)) {
+            return accountDataNode.getJSONArray(OpenBankingConstants.FIELD_ACCOUNT)
+                    .getJSONObject(0)
+                    .optString(OpenBankingConstants.FIELD_NAME, OpenBankingConstants.DEFAULT_ACCOUNT_NAME);
+        }
+        return OpenBankingConstants.DEFAULT_STANDARD_ACCOUNT;
     }
 
     /**
@@ -157,27 +209,6 @@ public final class AccountService {
         return accounts;
     }
 
-    /**
-     * Fetches the display name of an account by its ID.
-     *
-     * @param accountId account ID to look up
-     * @return account name or a default value if not found
-     * @throws IOException if the API call fails
-     */
-    private String fetchAccountName(String accountId) throws IOException {
-        String url = ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS + accountId;
-        String response = client.getWithAuth(url, this.accessToken);
-        JSONObject accountDataNode = new JSONObject(response)
-                .getJSONObject(OpenBankingConstants.FIELD_DATA)
-                .getJSONArray(OpenBankingConstants.FIELD_ACCOUNT)
-                .getJSONObject(0);
-        if (accountDataNode.has(OpenBankingConstants.FIELD_ACCOUNT)) {
-            return accountDataNode.getJSONArray(OpenBankingConstants.FIELD_ACCOUNT)
-                    .getJSONObject(0)
-                    .optString(OpenBankingConstants.FIELD_NAME, OpenBankingConstants.DEFAULT_ACCOUNT_NAME);
-        }
-        return accountDataNode.optString(OpenBankingConstants.FIELD_NICKNAME, OpenBankingConstants.DEFAULT_STANDARD_ACCOUNT);
-    }
 
     /**
      * Fetches the current balance of an account by its ID.
@@ -187,8 +218,7 @@ public final class AccountService {
      * @throws IOException if the API call fails
      */
     private double fetchAccountBalance(String accountId) throws IOException {
-        String url = ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS
-                + accountId + OpenBankingConstants.PATH_BALANCES;
+        String url = accountUrl(accountId) + OpenBankingConstants.PATH_BALANCES;
         String response = client.getWithAuth(url, this.accessToken);
         String amount = new JSONObject(response)
                 .getJSONObject(OpenBankingConstants.FIELD_DATA)
@@ -207,8 +237,7 @@ public final class AccountService {
      * @throws IOException if the API call fails
      */
     private List<Transaction> fetchAccountTransactions(String accountId) throws IOException {
-        String url = ConfigLoader.getAccountBaseUrl() + OpenBankingConstants.PATH_ACCOUNTS
-                + accountId + OpenBankingConstants.PATH_TRANSACTIONS;
+        String url = accountUrl(accountId) + OpenBankingConstants.PATH_TRANSACTIONS;
         String response = client.getWithAuth(url, this.accessToken);
         JSONObject root = new JSONObject(response);
         if (!root.has(OpenBankingConstants.FIELD_DATA)
@@ -268,25 +297,31 @@ public final class AccountService {
     }
 
     /**
-     * Builds the JSON request body for creating an account consent.
+     * Builds the authorization details describing the account access this demo needs: the
+     * permissions behind the accounts, balances and transactions screens, over a 90 day
+     * consent covering the last 30 days of transactions.
      *
-     * @return account consent request body as a JSON string
+     * @return an {@code account_information_v1.0} authorization details array
      */
-    private String createAccountConsentBody() {
+    private JSONArray createAccountAuthorizationDetails() {
         ZonedDateTime now = ZonedDateTime.now(java.time.ZoneOffset.of(OpenBankingConstants.TIMEZONE_OFFSET));
-        JSONObject permissions = new JSONObject()
-                .put("Permissions", new JSONArray()
+        JSONObject accountInformation = new JSONObject()
+                .put(OpenBankingConstants.FIELD_TYPE, OpenBankingConstants.TYPE_ACCOUNT_INFORMATION)
+                .put(OpenBankingConstants.FIELD_PERMISSIONS, new JSONArray()
                         .put(OpenBankingConstants.PERM_READ_ACCOUNTS_BASIC)
                         .put(OpenBankingConstants.PERM_READ_ACCOUNTS_DETAIL)
                         .put(OpenBankingConstants.PERM_READ_BALANCES)
-                        .put(OpenBankingConstants.PERM_READ_TRANSACTIONS_DETAIL))
-                .put("ExpirationDateTime", now.plusDays(90).format(ISO_DATETIME_FORMATTER))
-                .put("TransactionFromDateTime", now.minusDays(30).format(ISO_DATETIME_FORMATTER))
-                .put("TransactionToDateTime", now.format(ISO_DATETIME_FORMATTER));
-        return new JSONObject()
-                .put(OpenBankingConstants.FIELD_DATA, permissions)
-                .put(OpenBankingConstants.FIELD_RISK, new JSONObject())
-                .toString();
+                        .put(OpenBankingConstants.PERM_READ_TRANSACTIONS_BASIC)
+                        .put(OpenBankingConstants.PERM_READ_TRANSACTIONS_DETAIL)
+                        .put(OpenBankingConstants.PERM_READ_TRANSACTIONS_CREDITS)
+                        .put(OpenBankingConstants.PERM_READ_TRANSACTIONS_DEBITS))
+                .put(OpenBankingConstants.FIELD_EXPIRATION_DATE_TIME,
+                        now.plusDays(90).format(ISO_DATETIME_FORMATTER))
+                .put(OpenBankingConstants.FIELD_TRANSACTION_FROM_DATE_TIME,
+                        now.minusDays(30).format(ISO_DATETIME_FORMATTER))
+                .put(OpenBankingConstants.FIELD_TRANSACTION_TO_DATE_TIME,
+                        now.format(ISO_DATETIME_FORMATTER));
+        return new JSONArray().put(accountInformation);
     }
 
     /**
@@ -298,16 +333,23 @@ public final class AccountService {
      * @return true if revocation succeeded, false otherwise
      * @throws Exception if the revocation request fails
      */
-    public boolean revokeAccountConsent(String accountId, String bankName, String consentId) throws Exception {
-        log.info("[DELETE] Attempting to revoke consent for accountId: {}, bankName: {}, {}",
-                accountId, bankName, consentId);
-        String tokenResponse = oauthService.getToken(OpenBankingConstants.SCOPE_ACCOUNTS);
-        String token = new JSONObject(tokenResponse).getString("access_token");
+    public boolean revokeAccountConsent(String accountId, String bankName, String consentId) {
+        if (consentId == null || consentId.isEmpty()) {
+            LOG.warn("No consent id given for accountId: {}, bankName: {}; nothing to revoke.",
+                    accountId, bankName);
+            return false;
+        }
         String revokeUrl = ConfigLoader.getAccountBaseUrl()
-                + OpenBankingConstants.PATH_ACCOUNT_CONSENTS + "/" + consentId;
-        log.info("[DELETE] Calling revoke URL: {}", revokeUrl);
-        boolean success = client.deleteWithAuth(revokeUrl, token);
-        log.info("[DELETE] OB backend revocation success: {}", success);
-        return success;
+                + OpenBankingConstants.PATH_CONSENTS + "/" + consentId;
+        LOG.info("Revoking consent {} for accountId: {}, bankName: {}", consentId, accountId, bankName);
+        try {
+            // This call is made by the application rather than on behalf of the customer, so it
+            // carries a client credentials token, not the customer's access token.
+            String token = oauthService.getClientCredentialsToken();
+            return client.deleteWithAuth(revokeUrl, token);
+        } catch (GeneralSecurityException | IOException e) {
+            LOG.error("Failed to revoke consent {}: {}", consentId, e.getMessage(), e);
+            return false;
+        }
     }
 }

@@ -18,25 +18,30 @@
 
 package com.wso2.openbanking.demo.service;
 
+import com.wso2.openbanking.demo.constants.OpenBankingConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/** Represents the JWT request object payload for OAuth authorization requests. */
+/**
+ * Represents the JWT request object payload for a Rich Authorization Request (RFC 9396).
+ * The access being requested is carried by {@code authorization_details} rather than by a
+ * scope or a pre-initiated consent identifier.
+ */
 public class RequestObjectPayload {
-
-    private static final String FIELD_ESSENTIAL = "essential";
 
     private final String iss;
     private final String responseType;
+    private final String responseMode;
     private final String redirectUri;
-    private final String state;
     private final String nonce;
     private final String clientId;
     private final String aud;
     private final long nbf;
     private final long exp;
     private final String scope;
-    private final String consentId;
+    private final String codeChallenge;
+    private final String codeChallengeMethod;
+    private final JSONArray authorizationDetails;
 
     /**
      * Creates a RequestObjectPayload from the given builder.
@@ -46,15 +51,17 @@ public class RequestObjectPayload {
     private RequestObjectPayload(Builder builder) {
         this.iss = builder.iss;
         this.responseType = builder.responseType;
+        this.responseMode = builder.responseMode;
         this.redirectUri = builder.redirectUri;
-        this.state = builder.state;
         this.nonce = builder.nonce;
         this.clientId = builder.iss;
         this.aud = builder.aud;
         this.nbf = builder.nbf;
         this.exp = builder.exp;
         this.scope = builder.scope;
-        this.consentId = builder.consentId;
+        this.codeChallenge = builder.codeChallenge;
+        this.codeChallengeMethod = builder.codeChallengeMethod;
+        this.authorizationDetails = builder.authorizationDetails;
     }
 
     /** Builder for constructing a RequestObjectPayload with individual field setters. */
@@ -62,14 +69,16 @@ public class RequestObjectPayload {
 
         String iss;
         private String responseType;
+        private String responseMode;
         private String redirectUri;
-        private String state;
         private String nonce;
         private String aud;
         private long nbf;
         private long exp;
         private String scope;
-        private String consentId;
+        private String codeChallenge;
+        private String codeChallengeMethod;
+        private JSONArray authorizationDetails;
 
         /**
          * Sets the issuer claim.
@@ -83,7 +92,7 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the response type claim.
+         * Sets the expected OAuth response type.
          *
          * @param responseType expected OAuth response type
          * @return this builder
@@ -94,24 +103,24 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the redirect URI claim.
+         * Sets the response mode, for example {@code jwt} to request a JARM response.
+         *
+         * @param responseMode OAuth response mode
+         * @return this builder
+         */
+        public Builder responseMode(String responseMode) {
+            this.responseMode = responseMode;
+            return this;
+        }
+
+        /**
+         * Sets the redirect URI the authorization response is returned to.
          *
          * @param redirectUri OAuth callback redirect URI
          * @return this builder
          */
         public Builder redirectUri(String redirectUri) {
             this.redirectUri = redirectUri;
-            return this;
-        }
-
-        /**
-         * Sets the state claim.
-         *
-         * @param state OAuth state parameter for CSRF protection
-         * @return this builder
-         */
-        public Builder state(String state) {
-            this.state = state;
             return this;
         }
 
@@ -138,7 +147,7 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the not-before time claim.
+         * Sets the not-before claim.
          *
          * @param nbf Unix timestamp before which the token is not valid
          * @return this builder
@@ -149,7 +158,7 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the expiration time claim.
+         * Sets the expiry claim.
          *
          * @param exp Unix timestamp at which the token expires
          * @return this builder
@@ -160,7 +169,7 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the scope claim.
+         * Sets the requested scopes.
          *
          * @param scope space-separated OAuth scopes to request
          * @return this builder
@@ -171,20 +180,34 @@ public class RequestObjectPayload {
         }
 
         /**
-         * Sets the consent ID claim.
+         * Sets the PKCE code challenge and its transformation method.
          *
-         * @param consentId Open Banking consent ID to include in the request
+         * @param codeChallenge       PKCE code challenge
+         * @param codeChallengeMethod code challenge transformation method
          * @return this builder
          */
-        public Builder consentId(String consentId) {
-            this.consentId = consentId;
+        public Builder codeChallenge(String codeChallenge, String codeChallengeMethod) {
+            this.codeChallenge = codeChallenge;
+            this.codeChallengeMethod = codeChallengeMethod;
             return this;
         }
 
         /**
-         * Builds and returns the RequestObjectPayload.
+         * Sets the authorization details describing the access being requested.
          *
-         * @return new RequestObjectPayload with the configured fields
+         * @param authorizationDetails RFC 9396 authorization details array
+         * @return this builder
+         */
+        public Builder authorizationDetails(JSONArray authorizationDetails) {
+            // Copied so a later edit by the caller cannot change what gets signed.
+            this.authorizationDetails = new JSONArray(authorizationDetails.toString());
+            return this;
+        }
+
+        /**
+         * Builds the request object payload.
+         *
+         * @return a new RequestObjectPayload instance
          */
         public RequestObjectPayload build() {
             return new RequestObjectPayload(this);
@@ -192,43 +215,32 @@ public class RequestObjectPayload {
     }
 
     /**
-     * Serializes the payload to a JSON string including all OAuth and claims fields.
+     * Serializes the payload to a JSON string including all OAuth and authorization detail fields.
      *
      * @return JSON string representation of the request object payload
      */
     public String toJson() {
-        JSONObject intentId = new JSONObject()
-                .put("value", consentId)
-                .put(FIELD_ESSENTIAL, true);
-
-        JSONObject acr = new JSONObject()
-                .put("values", new JSONArray()
-                        .put("urn:openbanking:psd2:sca")
-                        .put("urn:openbanking:psd2:ca"))
-                .put(FIELD_ESSENTIAL, true);
-
-        JSONObject idToken = new JSONObject()
-                .put("acr", acr)
-                .put("openbanking_intent_id", intentId)
-                .put("auth_time", new JSONObject().put(FIELD_ESSENTIAL, true));
-
-        JSONObject userInfo = new JSONObject()
-                .put("openbanking_intent_id", intentId);
-
-        return new JSONObject()
+        JSONObject payload = new JSONObject()
                 .put("iss", iss)
                 .put("response_type", responseType)
                 .put("redirect_uri", redirectUri)
-                .put("state", state)
                 .put("nonce", nonce)
                 .put("client_id", clientId)
                 .put("aud", aud)
                 .put("nbf", nbf)
                 .put("exp", exp)
+                .put("iat", nbf)
                 .put("scope", scope)
-                .put("claims", new JSONObject()
-                        .put("id_token", idToken)
-                        .put("userinfo", userInfo))
-                .toString();
+                .put(OpenBankingConstants.FIELD_AUTHORIZATION_DETAILS, authorizationDetails);
+
+        if (responseMode != null) {
+            payload.put("response_mode", responseMode);
+        }
+        if (codeChallenge != null) {
+            payload.put("code_challenge", codeChallenge);
+            payload.put("code_challenge_method", codeChallengeMethod);
+        }
+
+        return payload.toString();
     }
 }

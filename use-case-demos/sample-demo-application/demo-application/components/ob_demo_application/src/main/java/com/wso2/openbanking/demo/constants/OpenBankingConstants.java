@@ -18,7 +18,10 @@
 
 package com.wso2.openbanking.demo.constants;
 
-/** Constants for Open Banking API field names, schemes, permissions, and URL path segments. */
+/**
+ * Constants for the non-regulated Open Banking API: JSON field names, RAR authorization detail
+ * types, code sets, permissions, and URL path segments.
+ */
 public final class OpenBankingConstants {
 
     private OpenBankingConstants() { }
@@ -26,6 +29,19 @@ public final class OpenBankingConstants {
     // JSON top-level field names
     public static final String FIELD_DATA = "Data";
     public static final String FIELD_RISK = "Risk";
+
+    // Rich Authorization Request fields
+    public static final String FIELD_AUTHORIZATION_DETAILS      = "authorization_details";
+    public static final String FIELD_TYPE                       = "type";
+    public static final String FIELD_PERMISSIONS                = "Permissions";
+    public static final String FIELD_EXPIRATION_DATE_TIME       = "ExpirationDateTime";
+    public static final String FIELD_TRANSACTION_FROM_DATE_TIME = "TransactionFromDateTime";
+    public static final String FIELD_TRANSACTION_TO_DATE_TIME   = "TransactionToDateTime";
+
+    /** Authorization detail type requesting account information access. */
+    public static final String TYPE_ACCOUNT_INFORMATION = "account_information_v1.0";
+    /** Authorization detail type requesting a single domestic payment. */
+    public static final String TYPE_DOMESTIC_PAYMENT    = "domestic_payment_v1.0";
 
     // Account JSON fields
     public static final String FIELD_ACCOUNT    = "Account";
@@ -52,34 +68,35 @@ public final class OpenBankingConstants {
     public static final String FIELD_CREDITOR_ACCOUNT           = "CreditorAccount";
     public static final String FIELD_DEBTOR_ACCOUNT             = "DebtorAccount";
     public static final String FIELD_REMITTANCE_INFORMATION     = "RemittanceInformation";
+    public static final String FIELD_UNSTRUCTURED               = "Unstructured";
     public static final String FIELD_REFERENCE                  = "Reference";
-    public static final String FIELD_SUPPLEMENTARY_DATA         = "SupplementaryData";
     public static final String FIELD_SCHEME_NAME                = "SchemeName";
     public static final String FIELD_IDENTIFICATION             = "Identification";
     public static final String FIELD_SECONDARY_IDENTIFICATION   = "SecondaryIdentification";
     public static final String FIELD_INITIATION                 = "Initiation";
 
-    // Open Banking scheme identifiers
-    public static final String SCHEME_SORT_CODE_ACCOUNT_NUMBER = "OB.SortCodeAccountNumber";
-    public static final String LOCAL_INSTRUMENT_PAYM           = "OB.Paym";
+    // ISO external code sets used by the non-regulated standard
+    public static final String SCHEME_BBAN                            = "BBAN";
+    public static final String LOCAL_INSTRUMENT_DOMESTIC_CREDIT_TRANSFER = "DomesticCreditTransfer";
 
-    // Consent permissions
-    public static final String PERM_READ_ACCOUNTS_BASIC      = "ReadAccountsBasic";
-    public static final String PERM_READ_ACCOUNTS_DETAIL     = "ReadAccountsDetail";
-    public static final String PERM_READ_BALANCES            = "ReadBalances";
-    public static final String PERM_READ_TRANSACTIONS_DETAIL = "ReadTransactionsDetail";
+    // Account information permissions
+    public static final String PERM_READ_ACCOUNTS_BASIC       = "ReadAccountsBasic";
+    public static final String PERM_READ_ACCOUNTS_DETAIL      = "ReadAccountsDetail";
+    public static final String PERM_READ_BALANCES             = "ReadBalances";
+    public static final String PERM_READ_TRANSACTIONS_BASIC   = "ReadTransactionsBasic";
+    public static final String PERM_READ_TRANSACTIONS_DETAIL  = "ReadTransactionsDetail";
+    public static final String PERM_READ_TRANSACTIONS_CREDITS = "ReadTransactionsCredits";
+    public static final String PERM_READ_TRANSACTIONS_DEBITS  = "ReadTransactionsDebits";
 
-    // Consent/token scopes
-    public static final String SCOPE_ACCOUNTS = "accounts openid";
-    public static final String SCOPE_PAYMENTS = "payments openid";
+    /** The only scope the RAR flow requests; the granted access is described by authorization_details. */
+    public static final String SCOPE_OPENID = "openid";
 
     // URL path segments
-    public static final String PATH_ACCOUNTS         = "/accounts/";
-    public static final String PATH_BALANCES         = "/balances";
-    public static final String PATH_TRANSACTIONS     = "/transactions";
-    public static final String PATH_ACCOUNT_CONSENTS = "/account-access-consents";
-    public static final String PATH_PAYMENT_CONSENTS = "/payment-consents";
-    public static final String PATH_PAYMENTS         = "/payments";
+    public static final String PATH_CONSENTS          = "/consents";
+    public static final String PATH_ACCOUNTS          = "/accounts";
+    public static final String PATH_BALANCES          = "/balances";
+    public static final String PATH_TRANSACTIONS      = "/transactions";
+    public static final String PATH_DOMESTIC_PAYMENTS = "/domestic-payments";
 
     // Timezone
     public static final String TIMEZONE_OFFSET = "+05:30";

@@ -18,7 +18,10 @@
 
 package com.wso2.openbanking.demo.service;
 
+import com.wso2.openbanking.demo.constants.OpenBankingConstants;
 import com.wso2.openbanking.demo.utils.ConfigLoader;
+import com.wso2.openbanking.demo.utils.PkceUtils;
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -104,13 +107,15 @@ public final class JwtTokenService {
     }
 
     /**
-     * Creates a signed JWT request object containing the authorization claims for the given consent ID.
+     * Creates a signed JWT request object for a Rich Authorization Request.
      *
-     * @param consentId consent ID to include in the request object payload
+     * @param authorizationDetails RFC 9396 authorization details describing the requested access
+     * @param codeChallenge        PKCE code challenge for the authorization request
+     * @param nonce                fresh nonce for this authorization request
      * @return signed JWT string representing the request object
      * @throws GeneralSecurityException if JWT signing fails
      */
-    public String createRequestObject(String consentId)
+    public String createRequestObject(JSONArray authorizationDetails, String codeChallenge, String nonce)
             throws GeneralSecurityException {
         long currentTime = getCurrentTimeSeconds();
         long expiration = currentTime + TimeUnit.MINUTES.toSeconds(TOKEN_VALIDITY_MINUTES);
@@ -124,14 +129,15 @@ public final class JwtTokenService {
         RequestObjectPayload payload = new RequestObjectPayload.Builder()
                 .iss(ConfigLoader.getClientId())
                 .responseType(ConfigLoader.getResponseType())
+                .responseMode(ConfigLoader.getResponseMode())
                 .redirectUri(ConfigLoader.getRedirectUri())
-                .state(ConfigLoader.getOAuthState())
-                .nonce(ConfigLoader.getOAuthNonce())
+                .nonce(nonce)
                 .aud(ConfigLoader.getTokenUrl())
                 .nbf(currentTime)
                 .exp(expiration)
-                .scope("openid accounts payments")
-                .consentId(consentId)
+                .scope(OpenBankingConstants.SCOPE_OPENID)
+                .codeChallenge(codeChallenge, PkceUtils.CODE_CHALLENGE_METHOD)
+                .authorizationDetails(authorizationDetails)
                 .build();
 
         return buildJwt(header.toJson(), payload.toJson());

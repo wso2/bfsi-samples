@@ -23,7 +23,7 @@
  * HTTP error checking, and uses TypeScript generics for type-safe data retrieval.
  */
 // export const baseUrl = 'base url for config json file location';
-export const baseUrl = './configurations';
+export const baseUrl = `${import.meta.env.BASE_URL}configurations`;
 
 /**
  * Asynchronously fetches JSON data from a specific API endpoint.

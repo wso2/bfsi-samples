@@ -27,6 +27,7 @@ import PaymentsPage from "./pages/payments-page/payments-page.tsx";
 import AllTransactionsPage from "./pages/all-transactions-page/all-transactions.tsx";
 import AllStandingOrders from "./pages/all-standing-orders/all-standing-orders.tsx";
 import OAuthCallbackPage from "./pages/oauth-callback-page.tsx";
+import DevConsole from "./components/dev-console/dev-console.tsx";
 
 const App: React.FC = () => {
     const { state, signIn, signOut, getBasicUserInfo } = useAuthContext();
@@ -86,6 +87,11 @@ const App: React.FC = () => {
 
     return (
         <AppThemeProvider color={colors}>
+            {/*
+              Outside the routes so the captured flow stays on screen across the OAuth callback,
+              which is where most of it is recorded.
+            */}
+            <DevConsole />
             <Routes>
                 <Route
                     path="/"

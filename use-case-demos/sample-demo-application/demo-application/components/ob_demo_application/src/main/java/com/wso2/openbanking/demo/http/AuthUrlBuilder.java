@@ -22,29 +22,21 @@ import com.wso2.openbanking.demo.utils.ConfigLoader;
 
 import static org.apache.cxf.common.util.UrlUtils.urlEncode;
 
-/** Builds the OAuth authorization URL with required query parameters. */
+/** Builds the OAuth authorization URL for a pushed authorization request. */
 public class AuthUrlBuilder {
 
     /**
-     * Builds a complete OAuth authorization URL using the given parameters.
+     * Builds an authorization URL that references a request already pushed to the PAR endpoint.
+     * All other authorization parameters were sent with the pushed request, so only the client
+     * identifier and the request URI are carried on the redirect (RFC 9126 section 4).
      *
-     * @param requestObjectJwt signed JWT included as the {@code request} query parameter
-     * @param clientId         OAuth client ID
-     * @param scope            requested OAuth scopes
+     * @param requestUri request URI returned by the PAR endpoint
+     * @param clientId   OAuth client ID
      * @return fully constructed authorization URL
      */
-    public static String build(String requestObjectJwt, String clientId, String scope) {
-        StringBuilder url = new StringBuilder(ConfigLoader.getAuthorizeUrl());
-
-        url.append("?response_type=").append(urlEncode(ConfigLoader.getResponseType()));
-        url.append("&client_id=").append(clientId);
-        url.append("&scope=").append(urlEncode(scope));
-        url.append("&redirect_uri=").append(urlEncode(ConfigLoader.getRedirectUri()));
-        url.append("&state=").append(urlEncode(ConfigLoader.getOAuthState()));
-        url.append("&request=").append(urlEncode(requestObjectJwt));
-        url.append("&prompt=").append(urlEncode(ConfigLoader.getOAuthPrompt()));
-        url.append("&nonce=").append(urlEncode(ConfigLoader.getOAuthNonce()));
-
-        return url.toString();
+    public static String buildWithRequestUri(String requestUri, String clientId) {
+        return ConfigLoader.getAuthorizeUrl()
+                + "?client_id=" + urlEncode(clientId)
+                + "&request_uri=" + urlEncode(requestUri);
     }
 }

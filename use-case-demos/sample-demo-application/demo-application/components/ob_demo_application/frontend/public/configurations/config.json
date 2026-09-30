@@ -17,10 +17,10 @@
       "border": "#FF5100",
       "route": "ascend-global",
       "bankThemeId": 1,
-      "startingAccountNumbers": "0066",
+      "startingAccountNumbers": "6600",
       "accounts": [
         {
-          "id": "0066-1123-7724",
+          "id": "6600112377",
           "bank": "Ascend Global Bank",
           "name": "savings account",
           "balance": 1350,
@@ -28,9 +28,9 @@
             {
               "id": "T00123456",
               "date": 1,
-              "reference": "INV-4521/ABC",
+              "reference": "Salary",
               "bank": "Ascend Global",
-              "account": "1234-5678-9012-3456",
+              "account": "6600112377",
               "amount": "1250.75",
               "currency": "USD",
               "creditDebitStatus": "c"
@@ -38,9 +38,9 @@
             {
               "id": "T00123460",
               "date": 3,
-              "reference": "INV-4522/DEF",
+              "reference": "Refund",
               "bank": "Ascend Global",
-              "account": "1234-5678-9012-3456",
+              "account": "6600112377",
               "amount": "340.00",
               "currency": "GBP",
               "creditDebitStatus": "c"
@@ -48,9 +48,9 @@
             {
               "id": "T00123461",
               "date": 12,
-              "reference": "FEE-8801/GHI",
+              "reference": "Account fee",
               "bank": "Ascend Global",
-              "account": "1234-5678-9012-3456",
+              "account": "6600112377",
               "amount": "12.50",
               "currency": "GBP",
               "creditDebitStatus": "d"
@@ -58,7 +58,7 @@
           ]
         },
         {
-          "id": "0066-4435-9454",
+          "id": "6600443594",
           "bank": "Ascend Global Bank",
           "name": "Current account",
           "balance": 5350,
@@ -66,9 +66,9 @@
             {
               "id": "T00123459",
               "date": 33,
-              "reference": "FEE-7765/PQR",
+              "reference": "Brew & Bean",
               "bank": "Ascend Global",
-              "account": "5555-6666-7777-8888",
+              "account": "6600443594",
               "amount": "25.50",
               "currency": "USD",
               "creditDebitStatus": "d"
@@ -76,9 +76,9 @@
             {
               "id": "T00123462",
               "date": 15,
-              "reference": "PAY-1102/STU",
+              "reference": "Halcyon Design",
               "bank": "Ascend Global",
-              "account": "5555-6666-7777-8888",
+              "account": "6600443594",
               "amount": "875.00",
               "currency": "GBP",
               "creditDebitStatus": "c"
@@ -89,7 +89,7 @@
       "standingOrders": [
         {
           "id": "SO-3001",
-          "reference": "RENT-OCT-25",
+          "reference": "Rent",
           "bank": "Ascend Global",
           "nextDate": 28,
           "status": "Active",
@@ -98,7 +98,7 @@
         },
         {
           "id": "SO-3004",
-          "reference": "UTILITY-ELECTRIC",
+          "reference": "Electricity bill",
           "bank": "Ascend Global",
           "nextDate": 25,
           "status": "Active",
@@ -107,7 +107,7 @@
         },
         {
           "id": "SO-3006",
-          "reference": "UTILITY-GAS",
+          "reference": "Gas bill",
           "bank": "Ascend Global",
           "nextDate": 27,
           "status": "Active",
@@ -124,10 +124,10 @@
       "border": "#FFCC66",
       "route": "global-asset-trust",
       "bankThemeId": 3,
-      "startingAccountNumbers": "0044",
+      "startingAccountNumbers": "4400",
       "accounts": [
         {
-          "id": "0044-4435-9454",
+          "id": "4400443594",
           "bank": "Global Asset Trust",
           "name": "Current account",
           "balance": 750,
@@ -135,9 +135,9 @@
             {
               "id": "T00123458",
               "date": 10,
-              "reference": "DEP-3321/LMN",
+              "reference": "Meridian Tech",
               "bank": "Global Asset Trust",
-              "account": "1111-2222-3333-4444",
+              "account": "4400443594",
               "amount": "99.99",
               "currency": "GBP",
               "creditDebitStatus": "d"
@@ -145,9 +145,9 @@
             {
               "id": "T00123463",
               "date": 15,
-              "reference": "DEP-3322/OPQ",
+              "reference": "Savings transfer",
               "bank": "Global Asset Trust",
-              "account": "1111-2222-3333-4444",
+              "account": "4400443594",
               "amount": "1500.00",
               "currency": "GBP",
               "creditDebitStatus": "c"
@@ -155,9 +155,9 @@
             {
               "id": "T00123464",
               "date": 2,
-              "reference": "FEE-9901/RST",
+              "reference": "Continental Rail",
               "bank": "Global Asset Trust",
-              "account": "1111-2222-3333-4444",
+              "account": "4400443594",
               "amount": "45.00",
               "currency": "EUR",
               "creditDebitStatus": "d"
@@ -168,7 +168,7 @@
       "standingOrders": [
         {
           "id": "SO-3003",
-          "reference": "MORTGAGE-PAY",
+          "reference": "Mortgage payment",
           "bank": "Global Asset Trust",
           "nextDate": 32,
           "status": "Active",
@@ -177,7 +177,7 @@
         },
         {
           "id": "SO-3007",
-          "reference": "INSURANCE-HOME",
+          "reference": "Home insurance",
           "bank": "Global Asset Trust",
           "nextDate": 37,
           "status": "Active",
@@ -186,7 +186,7 @@
         },
         {
           "id": "SO-3008",
-          "reference": "SAVINGS-TRANSFER",
+          "reference": "Transfer to savings",
           "bank": "Global Asset Trust",
           "nextDate": 28,
           "status": "Active",
@@ -203,10 +203,10 @@
       "border": "#8E4714",
       "route": "trust-union",
       "bankThemeId": 2,
-      "startingAccountNumbers": "0055",
+      "startingAccountNumbers": "5500",
       "accounts": [
         {
-          "id": "0055-4435-9454",
+          "id": "5500443594",
           "bank": "Trust Union",
           "name": "Current account",
           "balance": 1265.20,
@@ -214,9 +214,9 @@
             {
               "id": "T00123457",
               "date": 11,
-              "reference": "PAY-9876/XYZ",
+              "reference": "Emma Wilson",
               "bank": "Trust Union",
-              "account": "9876-5432-1098-7654",
+              "account": "5500443594",
               "amount": "500.00",
               "currency": "EUR",
               "creditDebitStatus": "c"
@@ -227,7 +227,7 @@
       "standingOrders": [
         {
           "id": "SO-3002",
-          "reference": "SUBSCRIPTION-PRO",
+          "reference": "Pro subscription",
           "bank": "Trust Union",
           "nextDate": 22,
           "status": "Active",
@@ -236,7 +236,7 @@
         },
         {
           "id": "SO-3005",
-          "reference": "ANNUAL-LICENSE",
+          "reference": "Annual licence",
           "bank": "Trust Union",
           "nextDate": 334,
           "status": "Paused",
@@ -245,7 +245,7 @@
         },
         {
           "id": "SO-3009",
-          "reference": "PHONE-PLAN",
+          "reference": "Phone plan",
           "bank": "Trust Union",
           "nextDate": 24,
           "status": "Active",
@@ -392,5 +392,5 @@
     {"requiredStar": "#e74c3c"}
   ],
 
-  "accountNumbersToAdd": ["-0566-1212","-0045-2020","-0400-1010"]
+  "accountNumbersToAdd": ["566121","045202","400101"]
 }

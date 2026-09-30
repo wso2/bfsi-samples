@@ -35,7 +35,12 @@ interface TableComponentProps {
  * @param id - The transaction ID (e.g., "T001" or "T00123460")
  * @returns Formatted ID with exactly 8 digits (e.g., "T00123460")
  */
-const formatTransactionId = (id: string): string => {
+const formatTransactionId = (id: string | undefined): string => {
+    // A transaction read from the bank can reach here without an id, so this has to tolerate one
+    // missing: throwing here unmounts the whole page rather than leaving one cell empty.
+    if (!id) {
+        return "";
+    }
     const match = id.match(/^([A-Z]+)(\d+)$/);
     if (match) {
         const prefix = match[1]; // e.g., "T"
@@ -125,10 +130,16 @@ const TableComponent =
                                 const isTransactionData = (data: TransactionData | StandingOrders): data is TransactionData => {
                                     return 'creditDebitStatus' in data;
                                 };
+                                // Credit is green and points up, debit is red and points down. Matched on
+                                // the first letter so that both vocabularies work: the demo data says
+                                // "c"/"d", while a transaction read from the bank carries the API's
+                                // "Credit"/"Debit".
+                                const isCredit = isTransactionData(dataRow)
+                                    && String(dataRow.creditDebitStatus ?? "").trim().toLowerCase().startsWith("c");
                                 const credDebitStatus = tableType === "transaction" && isTransactionData(dataRow)
-                                    ? (dataRow.creditDebitStatus === "c"
-                                        ? <Box style={{color: 'var(--oxygen-palette-primary-redArrowColor)'}} aria-label="Credit transaction"><ArrowDownIcon size={24} /></Box>
-                                        : <Box style={{color: 'var(--oxygen-palette-primary-greenArrowColor)'}} aria-label="Debit transaction"><ArrowUpIcon size={24} /></Box>)
+                                    ? (isCredit
+                                        ? <Box style={{color: 'var(--oxygen-palette-primary-greenArrowColor)'}} aria-label="Credit transaction"><ArrowUpIcon size={24} /></Box>
+                                        : <Box style={{color: 'var(--oxygen-palette-primary-redArrowColor)'}} aria-label="Debit transaction"><ArrowDownIcon size={24} /></Box>)
                                     : null;
 
                                 return(

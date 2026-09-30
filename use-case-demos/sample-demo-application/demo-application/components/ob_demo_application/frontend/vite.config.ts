@@ -21,6 +21,8 @@ import react from '@vitejs/plugin-react'
 
 
 export default defineConfig({
-  base: './',
+  // Absolute base: the app is served from the context root itself (/api-ob-demo-1.0.0),
+  // where relative asset URLs would resolve against the server root instead.
+  base: '/api-ob-demo-1.0.0/',
   plugins: [react()],
 });

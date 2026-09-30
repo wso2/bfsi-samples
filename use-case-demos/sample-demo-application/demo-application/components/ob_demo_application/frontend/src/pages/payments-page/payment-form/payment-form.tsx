@@ -30,6 +30,26 @@ export const ErrorMessage = ({error}: {error: any}) => {
     return <p className={"error-message-payments"}>{error.message}</p>;
 };
 
+/**
+ * @function formatAccountLabel
+ * @description Renders an account value for display as `Name (identifier)`.
+ *
+ * The value itself stays `Name-identifier`: that is the shape the backend splits on its first
+ * hyphen, so it must not change. Only the label the customer reads is reformatted - identifiers
+ * such as `0066-1123-7724` contain hyphens of their own, which is why the split is on the first
+ * one here too.
+ *
+ * @param {string} value Composed account value, as held by the form.
+ * @returns {string} The value rendered for display.
+ */
+const formatAccountLabel = (value: string): string => {
+    const separator = value.indexOf("-");
+    if (separator < 0) {
+        return value;
+    }
+    return `${value.substring(0, separator)} (${value.substring(separator + 1)})`;
+};
+
 const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}: PaymentFormProps) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
@@ -98,7 +118,7 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}: PaymentFormPr
         setIsConfirming(false);
         setFormDataToSubmit(null);
     };
-    const paymentConfirmationMsg = `Do you wish to proceed with the payment of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formDataToSubmit?.payeeAccount}?`;
+    const paymentConfirmationMsg = `Do you wish to proceed with the payment of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formatAccountLabel(formDataToSubmit?.payeeAccount ?? "")}?`;
     if (isRedirecting) {
         return <RedirectionComponent/>;
     }
@@ -116,18 +136,21 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}: PaymentFormPr
                                     if (selected === "") {
                                         return <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select your account</span>;
                                     }
-                                    return selected;
+                                    return formatAccountLabel(selected);
                                 }}
                                 error={!!errors.userAccount}>
                             {banksWithAllAccounts.map((bankWithAccounts) =>
-                                bankWithAccounts.accounts.map((account) => (
-                                    <MenuItem key={`${bankWithAccounts.bank.name}-${account.id}`}
-                                              value={`${bankWithAccounts.bank.name}-${account.id}`}
-                                              disabled={disabledBankNames.has(bankWithAccounts.bank.name)}
-                                              style={disabledBankNames.has(bankWithAccounts.bank.name) ? {opacity: 0.45} : {}}>
-                                        {bankWithAccounts.bank.name}-{account.id}
-                                    </MenuItem>
-                                ))
+                                bankWithAccounts.accounts.map((account) => {
+                                    const accountValue = `${bankWithAccounts.bank.name}-${account.id}`;
+                                    return (
+                                        <MenuItem key={accountValue}
+                                                  value={accountValue}
+                                                  disabled={disabledBankNames.has(bankWithAccounts.bank.name)}
+                                                  style={disabledBankNames.has(bankWithAccounts.bank.name) ? {opacity: 0.45} : {}}>
+                                            {formatAccountLabel(accountValue)}
+                                        </MenuItem>
+                                    );
+                                })
                             )}
                         </Select>
                     )}/>
@@ -143,14 +166,17 @@ const PaymentForm = ({banksWithAllAccounts, payeeData, banksList}: PaymentFormPr
                                     if (selected === "") {
                                         return <span style={{color: 'rgba(0, 0, 0, 0.38)'}}>Select biller account</span>;
                                     }
-                                    return selected;
+                                    return formatAccountLabel(selected);
                                 }}
                                 error={!!errors.payeeAccount}>
-                            {payeeData.map((payee, index) => (
-                                <MenuItem key={index} value={`${payee.name}-${payee.accountNumber}`}>
-                                    {payee.name}-{payee.accountNumber}
-                                </MenuItem>
-                            ))}
+                            {payeeData.map((payee, index) => {
+                                const payeeValue = `${payee.name}-${payee.accountNumber}`;
+                                return (
+                                    <MenuItem key={index} value={payeeValue}>
+                                        {formatAccountLabel(payeeValue)}
+                                    </MenuItem>
+                                );
+                            })}
                         </Select>
                     )}/>
                     <ErrorMessage error={errors.payeeAccount}/>

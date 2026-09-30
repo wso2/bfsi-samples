@@ -18,6 +18,8 @@
 
 package com.wso2.openbanking.demo.http;
 
+import com.wso2.openbanking.demo.devconsole.FlowRecorder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +36,17 @@ import javax.net.ssl.SSLContext;
 /** Builds and executes HTTPS requests with configurable method, headers, and body. */
 public class HttpConnection {
 
+    private static final int HTTP_OK = 200;
+    private static final int HTTP_MULTIPLE_CHOICES = 300;
+
     private final String url;
     private final SSLContext sslContext;
     private final String method;
     private final Map<String, String> headers;
     private String body;
     private boolean followRedirects = true;
+    private String label;
+    private boolean recorded;
 
     /**
      * Creates an HttpConnection with the given URL, SSL context, and HTTP method.
@@ -113,17 +120,38 @@ public class HttpConnection {
     }
 
     /**
+     * Names this call for the developer console. Without a label the console falls back to the
+     * method and URL, which is enough to identify the call but not to explain it.
+     *
+     * @param label short name of the step, e.g. "Token Exchange"
+     * @return this HttpConnection instance for chaining
+     */
+    public HttpConnection withLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    /**
      * Executes the request and returns the response body.
      *
      * @return response body as a string
      * @throws IOException if the request fails
      */
     public String execute() throws IOException {
-        HttpsURLConnection connection = createConnection();
-        if (body != null) {
-            writeBody(connection);
+        try {
+            HttpsURLConnection connection = createConnection();
+            if (body != null) {
+                writeBody(connection);
+            }
+            return readResponse(connection);
+        } catch (IOException e) {
+            // A call that never reached a status still belongs in the console: a refused
+            // connection or a rejected certificate is exactly what one wants to see there.
+            if (!recorded) {
+                record(0, String.valueOf(e), true);
+            }
+            throw e;
         }
-        return readResponse(connection);
     }
 
     /**
@@ -133,11 +161,20 @@ public class HttpConnection {
      * @throws IOException if the request fails
      */
     public int executeAndGetStatus() throws IOException {
-        HttpsURLConnection connection = createConnection();
-        if (body != null) {
-            writeBody(connection);
+        try {
+            HttpsURLConnection connection = createConnection();
+            if (body != null) {
+                writeBody(connection);
+            }
+            int responseCode = connection.getResponseCode();
+            record(responseCode, "", responseCode < HTTP_OK || responseCode >= HTTP_MULTIPLE_CHOICES);
+            return responseCode;
+        } catch (IOException e) {
+            if (!recorded) {
+                record(0, String.valueOf(e), true);
+            }
+            throw e;
         }
-        return connection.getResponseCode();
     }
 
     /**
@@ -187,10 +224,42 @@ public class HttpConnection {
      */
     private String readResponse(HttpsURLConnection connection) throws IOException {
         int responseCode = connection.getResponseCode();
-        InputStream is = (responseCode >= 200 && responseCode < 300)
-                ? connection.getInputStream()
-                : connection.getErrorStream();
+        boolean successful = responseCode >= HTTP_OK && responseCode < HTTP_MULTIPLE_CHOICES;
+        InputStream is = successful ? connection.getInputStream() : connection.getErrorStream();
 
+        String responseBody = is == null ? "" : readBody(is);
+        record(responseCode, responseBody, !successful);
+        if (!successful) {
+            // Surfaced rather than returned, so the caller fails with the status and the server's
+            // own message instead of tripping over an error body while parsing it as a result.
+            throw new IOException(method + " " + url + " returned HTTP " + responseCode
+                    + ": " + responseBody.trim());
+        }
+        return responseBody;
+    }
+
+    /**
+     * Reports the call to the developer console. It is a no-op unless a flow log is bound to the
+     * thread, which it is only while a backend request is being served.
+     *
+     * @param status       HTTP status received, or 0 if the call never got one
+     * @param responseBody response body received, or the failure if the call never got one
+     * @param error        true when the call did not succeed
+     */
+    private void record(int status, String responseBody, boolean error) {
+        recorded = true;
+        FlowRecorder.record(label == null ? method + " " + url : label,
+                method, url, headers, body, status, responseBody, error);
+    }
+
+    /**
+     * Reads a response stream into a string.
+     *
+     * @param is stream to read
+     * @return the stream contents
+     * @throws IOException if reading fails
+     */
+    private static String readBody(InputStream is) throws IOException {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(is, StandardCharsets.UTF_8))) {
             StringBuilder sb = new StringBuilder();

@@ -65,16 +65,18 @@ const HeroSection = ({userInfo, appInfo}:HeroSectionProps) => {
         navigate(absolutePath);
     }
     const greetingSelection = () => {
-        const currentHour = new Date().getHours();
-        if (currentHour >= 5 && currentHour < 12) {
-            return ", Good Morning!";
-        } else if (currentHour >= 0 && currentHour < 5) {
-            return ", Good Night!";
-        } else if (currentHour >= 12 && currentHour < 18) {
-            return  ", Good Afternoon!";
-        } else {
-            return  ", Good Evening!";
-        }
+        return  ", Good Evening!";
+
+//         const currentHour = new Date().getHours();
+//         if (currentHour >= 5 && currentHour < 12) {
+//             return ", Good Morning!";
+//         } else if (currentHour >= 0 && currentHour < 5) {
+//             return ", Good Night!";
+//         } else if (currentHour >= 12 && currentHour < 18) {
+//             return  ", Good Afternoon!";
+//         } else {
+//             return  ", Good Evening!";
+//         }
     }
 
     return (

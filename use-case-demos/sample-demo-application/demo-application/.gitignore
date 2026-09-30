@@ -2,16 +2,4 @@ target
 dist
 node
 node_modules
-src/main/webapp/assets
-src/main/webapp/configurations
-src/main/webapp/fonts
-src/main/webapp/resources
-src/main/webapp/index.html
-src/main/webapp/robots.txt
-src/main/webapp/vite.svg
 /.idea/
-
-
-
-
-
